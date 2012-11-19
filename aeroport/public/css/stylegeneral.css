@@ -1,0 +1,121 @@
+html, body{
+	height:100%;
+}
+body {
+	background-color:#1dbff0;
+	overflow-y:scroll;
+	margin:0 50px;
+	font-family:sansationbold, sans-serif;
+}
+
+#bodyPage { 
+	min-height:100%;
+	width:100%;
+	min-width:600px;
+	background-color:white;
+	text-align:center;
+	
+	
+	color:#6297a2;
+	font-family:sansationbold, sans-serif;
+}
+header{
+	width:453px;
+	height:170px;
+	margin:0 auto;
+	overflow:hidden;
+	margin-bottom:50px;
+}
+header img{
+	width:453px;
+	height:170px;
+}
+
+input[type=text], input[type=password]{
+	padding:12px;
+	border:none;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0px 1px 6px 0px #147390;
+	box-shadow: 0px 1px 6px 0px #147390;
+	color:#56a3b3;
+	font-family:sansationitalic, sans-serif;
+	font-size:1.2em;width:300px; 
+}
+
+input[type=submit]{
+	color:white;
+	background-color:#79b0bc;
+	padding:11px 30px;
+	font-size:1.3em;
+	min-width:200px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	font-family:sansationbold_italic, sans-serif;
+}
+
+.errors{
+	padding-top:10px;
+}
+
+section#index #avion{
+	margin:0 auto;
+	height:150px;
+}
+section#index #avion img{
+	width:519px;
+	height:218px;
+}
+
+section#index *{
+	margin:0 auto;
+}
+
+
+#fieldsetConnexion dt{ height:0; }
+#fieldsetConnexion dd{ 
+	margin-bottom:25px;
+	width:324px; 
+}
+
+/* POLICES */
+@font-face {
+    font-family: 'sansationregular';
+    src: url('polices/sansation_regular-webfont.eot');
+    src: url('polices/sansation_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('polices/sansation_regular-webfont.woff') format('woff'),
+         url('polices/sansation_regular-webfont.ttf') format('truetype'),
+         url('polices/sansation_regular-webfont.svg#sansationregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'sansationbold';
+    src: url('polices/sansation_bold-webfont.eot');
+    src: url('polices/sansation_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('polices/sansation_bold-webfont.woff') format('woff'),
+         url('polices/sansation_bold-webfont.ttf') format('truetype'),
+         url('polices/sansation_bold-webfont.svg#sansationbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'sansationbold_italic';
+    src: url('polices/sansation_bold_italic-webfont.eot');
+    src: url('polices/sansation_bold_italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('polices/sansation_bold_italic-webfont.woff') format('woff'),
+         url('polices/sansation_bold_italic-webfont.ttf') format('truetype'),
+         url('polices/sansation_bold_italic-webfont.svg#sansationbold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'sansationitalic';
+    src: url('polices/sansation_italic-webfont.eot');
+    src: url('polices/sansation_italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('polices/sansation_italic-webfont.woff') format('woff'),
+         url('polices/sansation_italic-webfont.ttf') format('truetype'),
+         url('polices/sansation_italic-webfont.svg#sansationitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

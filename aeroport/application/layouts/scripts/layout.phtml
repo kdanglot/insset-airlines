@@ -1,0 +1,38 @@
+<?php 
+	$this->headTitle()->SetSeparator(' - ');
+	$this->headTitle('INSSET Airlines');
+	echo $this->doctype('HTML5');
+?>
+<!DOCTYPE html>
+<html lang="fr" >
+	<head>
+		<meta charset="utf-8" /> 
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/reset.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/stylegeneral.css" />
+		<!--[if IE]>
+			<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/ie.css" />
+		<![endif]-->
+		<?php echo $this->headTitle() ?>
+		
+	</head>
+	<body>
+		<div id="bodyPage">
+		
+			
+				<!-- HEADER -->	
+				<header>
+					<img src="img/logo.jpg" alt="Logo Insset Airlines" />
+					<h1>INSSET Airlines</h1>
+				</header>
+					
+				<!-- CONTAINER -->			
+				<?php echo $this->layout()->content; ?>
+					
+				<!-- FOOTER -->
+				<footer>
+				</footer>
+				
+		</div>
+	</body>
+</html>
+
