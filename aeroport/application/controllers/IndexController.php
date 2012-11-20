@@ -26,7 +26,7 @@ class IndexController extends Zend_Controller_Action
             		$auth = Zend_Auth::getInstance();
             		// charger et parametrer l'adapteur
             		// ne pas oublier de coder les mdp
-            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'user', 'login', 'motDePasse');
+            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'utilisateur', 'login', 'motDePasse');
             		// charger les crédits (login/mdp) à tester
             		$dbAdapter->setIdentity($login);
             		$dbAdapter->setCredential($mdp);
@@ -39,7 +39,7 @@ class IndexController extends Zend_Controller_Action
     					// on stocke les données dans la session
     					$auth->getStorage()->write($dataUser);
     					// on récupère le type d'utilisateur
-    					$typeUser = $dataUser->typeUser;
+    					$typeUser = $dataUser->typeEmploye;
     					// redirection différente selon le type de l'utiliateur
     					switch ($typeUser) {
     						case 'administrateur':
@@ -62,13 +62,13 @@ class IndexController extends Zend_Controller_Action
        
     } // indexAction()
     
-    public function testAction() {
-    	echo 'index/test';
+    public function deconnexionAction() {
     	$auth = Zend_Auth::getInstance();
-		$identity = $auth->getIdentity();
-		echo '<br />';
-		echo 'Bienvenue ' . $identity->loginUser;
+    	$auth->clearIdentity();
+    	$this->_redirect('/index/index');
     }
+    
+    public function testAction() {}
     
 
    
