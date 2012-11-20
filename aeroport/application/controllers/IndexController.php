@@ -26,7 +26,7 @@ class IndexController extends Zend_Controller_Action
             		$auth = Zend_Auth::getInstance();
             		// charger et parametrer l'adapteur
             		// ne pas oublier de coder les mdp
-            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'user', 'loginUser', 'mdpUser');
+            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'utilisateur', 'login', 'motDePasse');
             		// charger les crédits (login/mdp) à tester
             		$dbAdapter->setIdentity($login);
             		$dbAdapter->setCredential($mdp);
@@ -35,7 +35,7 @@ class IndexController extends Zend_Controller_Action
             		
             		if($res->isValid($formData)) {
             			// on récupère les infos de la personne après authentification
-    					$dataUser = $dbAdapter->getResultRowObject(null, 'mdpUser');
+    					$dataUser = $dbAdapter->getResultRowObject(null, 'motDePasse');
     					// on stocke les données dans la session
     					$auth->getStorage()->write($dataUser);
     					// on récupère le type d'utilisateur
