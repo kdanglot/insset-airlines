@@ -1,0 +1,12 @@
+<?php
+	echo 'ds/index';
+	echo '<br />';
+	$auth = Zend_Auth::getInstance();
+	$identity = $auth->getIdentity();
+	echo 'Bienvenue ' . $identity->login . ' ';
+	echo '<a href="/index/deconnexion">Deconnexion</a>';
+	echo '<br />';	
+	echo '<br />';
+	echo '<a href="/directionstrategique/ajouterligne">Ajouter des lignes</a>';
+	
+	
