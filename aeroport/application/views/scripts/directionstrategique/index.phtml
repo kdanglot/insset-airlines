@@ -1,12 +1,40 @@
-<?php
+<?php 
 	echo 'ds/index';
 	echo '<br />';
 	$auth = Zend_Auth::getInstance();
 	$identity = $auth->getIdentity();
 	echo 'Bienvenue ' . $identity->login . ' ';
-	echo '<a href="/index/deconnexion">Deconnexion</a>';
-	echo '<br />';	
-	echo '<br />';
-	echo '<a href="/directionstrategique/ajouterligne">Ajouter des lignes</a>';
+?>
+<a href="/index/deconnexion">Deconnexion</a>
+<br />	
+<br />
+<div id="menuDs">
+	<ol>
+		<li><a href="/directionstrategique/ajouterligne">Ajouter des lignes</a></li>
+		<li><a href="/directionstrategique/modifierligne">Modifier des lignes</a></li>
+	</ol>
+</div>
+____________________________________________ 
+<br />
+<table>
+	<tr>
+		<th>Id</th>
+		<th>Heure de départ</th>
+		<th>Duree</th>
+		<th>Périodicité</th>
+	</tr>
+<?php foreach($this->lignes as $ligne) : ?>
+	<tr>
+		<td><?php echo $this->escape($ligne->idLigne);?>
+		<td><?php echo $this->escape($ligne->heureDepart);?></td>
+		<td><?php echo $this->escape($ligne->duree);?></td>
+		<td><?php echo $this->escape($ligne->typePeriodicite);?></td>
+	</tr>
+<?php endforeach;?>	
+</table>
+
+
+	
+	
 	
 	
