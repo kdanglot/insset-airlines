@@ -25,10 +25,10 @@ ____________________________________________
 	</tr>
 <?php foreach($this->lignes as $ligne) : ?>
 	<tr>
-		<td><?php echo $this->escape($ligne->idLigne);?>
-		<td><?php echo $this->escape($ligne->heureDepart);?></td>
-		<td><?php echo $this->escape($ligne->duree);?></td>
-		<td><?php echo $this->escape($ligne->typePeriodicite);?></td>
+		<td><?php echo $ligne['idLigne'];?>
+		<td><?php echo $ligne['heureDepart'];?></td>
+		<td><?php echo $ligne['duree'];?></td>
+		<td><?php echo $ligne['typePeriodicite'];?></td>
 	</tr>
 <?php endforeach;?>	
 </table>
