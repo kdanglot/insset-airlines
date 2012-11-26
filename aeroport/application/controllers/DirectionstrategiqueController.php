@@ -5,7 +5,8 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 
 	public function indexAction() {
 		$lignes = new Application_Model_DbTable_Ligne();
-		$this->view->lignes = $lignes->fetchAll();
+		$this->view->lignes = $lignes->afficherLesLignes();
+		//var_dump($lignes->afficherLesLignes());
 		/*$db = Zend_Registry::get('db');
 		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'ligne', 'heure', 'motDePasse');*/
 	}
