@@ -1,7 +1,15 @@
 <?php
 class DirectionstrategiqueController extends Zend_Controller_Action {
-	// direction strategique
-	public function init() {}
+	
+	public function init() {
+		$auth = Zend_Auth::getInstance();
+		$identity = $auth->getIdentity();
+		$typeUtilisateur = $identity->typeEmploye;
+		 
+		/*if('administrateur' != $typeUtilisateur || 'directionstrategique' != $typeUtilisateur) {
+			$this->_redirect('index/index');
+		}*/
+	}
 
 	public function indexAction() {
 		$lignes = new Application_Model_DbTable_Ligne();

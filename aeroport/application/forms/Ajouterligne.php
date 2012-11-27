@@ -3,6 +3,10 @@
 class Application_Form_Ajouterligne extends Zend_Form {
 
 	public function init() {
+		$db = Zend_Registry::get('db');
+		$aeroport = new Application_Model_DbTable_Aeroport();
+		$res = $aeroport->afficherLesAeroports();
+		var_dump($res);
 		 
 		$this->setMethod('post');
 		$this->setAttrib('id', 'ajouterLigneFormulaire');
@@ -25,18 +29,14 @@ class Application_Form_Ajouterligne extends Zend_Form {
 		$eDuree->addValidator('NotEmpty');
 		
 		// element Text aeroport de depart + attributs
-		$eAeroportDepart = new Zend_Form_Element_Text('aeroportDepart');
+		$eAeroportDepart = new Zend_Form_Element_Select('aeroportDepart');
 		$eAeroportDepart->setLabel("Aéroport de départ :");
-		$eAeroportDepart->setRequired(true);
-		$eAeroportDepart->addFilter('StringTrim');
-		$eAeroportDepart->addValidator('NotEmpty');
+		$eAeroportDepart->setRequired(true);	
 		
 		// element Text aeroport d'arrive + attributs
-		$eAeroportArrive = new Zend_Form_Element_Text('aeroportArrive');
+		$eAeroportArrive = new Zend_Form_Element_Select('aeroportArrive');
 		$eAeroportArrive->setLabel("Aéroport d'arrivé :");
 		$eAeroportArrive->setRequired(true);
-		$eAeroportArrive->addFilter('StringTrim');
-		$eAeroportArrive->addValidator('NotEmpty');
 		
 		// element Select periodicite + attributs
 		$ePeriodicite = new Zend_Form_Element_Select('periodicite');

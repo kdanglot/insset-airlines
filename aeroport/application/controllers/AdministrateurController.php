@@ -4,7 +4,13 @@ class AdministrateurController extends Zend_Controller_Action
 {
 
     public function init() {
-        /* Initialize action controller here */
+    	$auth = Zend_Auth::getInstance();
+    	$identity = $auth->getIdentity();
+    	$typeUtilisateur = $identity->typeEmploye;
+    	
+    	if('administrateur' != $typeUtilisateur) {
+    		$this->_redirect('index/index');
+    	}
     }
 
     public function indexAction() {

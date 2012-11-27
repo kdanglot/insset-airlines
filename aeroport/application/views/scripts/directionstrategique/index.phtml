@@ -19,19 +19,18 @@ ____________________________________________
 <table>
 	<tr>
 		<th>Id</th>
-		<th>Heure de départ</th>
-		<th>Duree</th>
-		<th>Périodicité</th>
+		<th>Aéroport de départ</th>
+		<th>Aéroport d'arrivé</th>
 	</tr>
 <?php foreach($this->lignes as $ligne) : ?>
 	<tr>
 		<td><?php echo $ligne['idLigne'];?>
-		<td><?php echo $ligne['heureDepart'];?></td>
-		<td><?php echo $ligne['duree'];?></td>
-		<td><?php echo $ligne['typePeriodicite'];?></td>
+		<td><?php echo $ligne['Depart'];?></td>
+		<td><?php echo $ligne['Arrive'];?></td>
 	</tr>
 <?php endforeach;?>	
 </table>
+
 
 
 	

@@ -5,10 +5,12 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        
+     	$acl = new Zend_Acl();
+     	$acl->addRole('admin');
+     	$acl->addResource('administrateur');
+     	$acl->allow('admin','administrateur', 'index');
     } // init()
-    
-
+   
     public function indexAction() {
 	
 		$formConnexion = new Application_Form_Connexion();
@@ -26,7 +28,7 @@ class IndexController extends Zend_Controller_Action
             		$auth = Zend_Auth::getInstance();
             		// charger et parametrer l'adapteur
             		// ne pas oublier de coder les mdp
-            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'utilisateur', 'login', 'motDePasse');
+            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'utilisateurs', 'UTI_login', 'UTI_password');
             		// charger les crédits (login/mdp) à tester
             		$dbAdapter->setIdentity($login);
             		$dbAdapter->setCredential($mdp);
@@ -35,11 +37,11 @@ class IndexController extends Zend_Controller_Action
             		
             		if($res->isValid($formData)) {
             			// on récupère les infos de la personne après authentification
-    					$dataUser = $dbAdapter->getResultRowObject(null, 'motDePasse');
+    					$dataUser = $dbAdapter->getResultRowObject(null, 'UTI_password');
     					// on stocke les données dans la session
     					$auth->getStorage()->write($dataUser);
     					// on récupère le type d'utilisateur
-    					$typeUser = $dataUser->typeEmploye;
+    					$typeUser = $dataUser->UTI_typeEmploye;
     					// redirection différente selon le type de l'utiliateur
     					switch ($typeUser) {
     						case 'administrateur':

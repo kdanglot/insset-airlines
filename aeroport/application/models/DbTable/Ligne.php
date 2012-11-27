@@ -1,15 +1,36 @@
 <?php
 class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 
-	protected $_name = 'ligne';
+	protected $_name = 'lignes';
 	
 	public function afficherLesLignes() {
 		$db = Zend_Registry::get('db');
-		$sql = 'SELECT l.idLigne, duree, typePeriodicite, heureDepart FROM ligne l, trajet t WHERE l.idLigne = t.idLigne';
+		$sql = "SELECT idLigne,
+(
+select CONCAT(GROUP_CONCAT(v.nom SEPARATOR ', '),'/', a.nom ) from aeroport a
+join dessert d on d.idAeroport = a.idAeroport
+join villes v on v.idVilles= d.idVilles
+where a.idAeroport =
+(
+select t2.idAeroport from trajet t2 where t1.idLigne = t2.idLigne and t2.ordre = MIN(t1.ordre)
+) 
+) as Depart,
+(
+select CONCAT(GROUP_CONCAT(v.nom SEPARATOR ', '),'/', a.nom ) from aeroport a
+join dessert d on d.idAeroport = a.idAeroport
+join villes v on v.idVilles= d.idVilles
+where a.idAeroport =
+(
+select t2.idAeroport from trajet t2 where t1.idLigne = t2.idLigne and t2.ordre = MAX(t1.ordre)
+)
+) as Arrive
+FROM trajet t1
+group by idLigne";		
+		
 		$result = $db->fetchAll($sql);
 		
 		return $result;	
-	}
+	} // afficherLigne()
 	
 	public function ajouterLigne($heureDepart, $duree, $periodicite) {
 		$data = array(
