@@ -3,30 +3,39 @@
 	echo '<br />';
 	$auth = Zend_Auth::getInstance();
 	$identity = $auth->getIdentity();
-	echo 'Bienvenue ' . $identity->UTI_login . ' ';
 ?>
+<div id='identification'>
 <a href="/index/deconnexion">Deconnexion</a>
+<?php echo 'Bienvenue ' . $identity->UTI_login . ' ';?>
+</div>
 <br />	
 <br />
 <div id="menuDs">
 	<ol>
 		<li><a href="/directionstrategique/ajouterligne">Ajouter des lignes</a></li>
-		<li><a href="/directionstrategique/modifierligne">Modifier des lignes</a></li>
 	</ol>
 </div>
 ____________________________________________ 
 <br />
 <table>
 	<tr>
-		<th>Id</th>
+		<th>Id ligne</th>
+		<th>Ville de départ</th>
 		<th>Aéroport de départ</th>
+		<th>Ville d'arrivée
 		<th>Aéroport d'arrivé</th>
+		<th></th>
+		<th></th>
 	</tr>
 <?php foreach($this->lignes as $ligne) : ?>
 	<tr>
 		<td><?php echo $ligne['LIG_id'];?>
-		<td><?php //echo $ligne['Depart'];?></td>
-		<td><?php //echo $ligne['Arrive'];?></td>
+		<td><?php echo $ligne['nomVilleDepart'];?></td>
+		<td><?php echo $ligne['nomAeroportDepart'];?></td>
+		<td><?php echo $ligne['nomVilleArrivee'];?></td>
+		<td><?php echo $ligne['nomAeroportArrivee'];?></td>
+		<td><a href="/directionstrategique/modifierligne">Modifier la ligne</a></td>
+		<td><a href="/directionstrategique/supprimerligne">Supprimer la ligne</a></td>
 	</tr>
 <?php endforeach;?>	
 </table>
