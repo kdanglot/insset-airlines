@@ -6,7 +6,7 @@ class AdministrateurController extends Zend_Controller_Action
     public function init() {
     	$auth = Zend_Auth::getInstance();
     	$identity = $auth->getIdentity();
-    	$typeUtilisateur = $identity->typeEmploye;
+    	$typeUtilisateur = $identity->UTI_typeEmploye;
     	
     	if('administrateur' != $typeUtilisateur) {
     		$this->_redirect('index/index');
@@ -19,7 +19,7 @@ class AdministrateurController extends Zend_Controller_Action
         echo '<br />';
     	$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();		
-		echo 'Bienvenue ' . $identity->login;
+		echo 'Bienvenue ' . $identity->UTI_login;
     }
 
 
