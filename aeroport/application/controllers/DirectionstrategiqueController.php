@@ -4,9 +4,9 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 	public function init() {
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
-		$typeUtilisateur = $identity->typeEmploye;
+		$typeUtilisateur = $identity->UTI_typeEmploye;
 		 
-		/*if('administrateur' != $typeUtilisateur || 'directionstrategique' != $typeUtilisateur) {
+		/*if(('administrateur' != $typeUtilisateur) || ('directionstrategique' != $typeUtilisateur)) {
 			$this->_redirect('index/index');
 		}*/
 	}

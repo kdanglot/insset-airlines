@@ -5,28 +5,7 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 	
 	public function afficherLesLignes() {
 		$db = Zend_Registry::get('db');
-		$sql = "SELECT idLigne,
-(
-select CONCAT(GROUP_CONCAT(v.nom SEPARATOR ', '),'/', a.nom ) from aeroport a
-join dessert d on d.idAeroport = a.idAeroport
-join villes v on v.idVilles= d.idVilles
-where a.idAeroport =
-(
-select t2.idAeroport from trajet t2 where t1.idLigne = t2.idLigne and t2.ordre = MIN(t1.ordre)
-) 
-) as Depart,
-(
-select CONCAT(GROUP_CONCAT(v.nom SEPARATOR ', '),'/', a.nom ) from aeroport a
-join dessert d on d.idAeroport = a.idAeroport
-join villes v on v.idVilles= d.idVilles
-where a.idAeroport =
-(
-select t2.idAeroport from trajet t2 where t1.idLigne = t2.idLigne and t2.ordre = MAX(t1.ordre)
-)
-) as Arrive
-FROM trajet t1
-group by idLigne";		
-		
+		$sql = "SELECT LIG_id FROM lignes";		
 		$result = $db->fetchAll($sql);
 		
 		return $result;	

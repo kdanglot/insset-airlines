@@ -3,7 +3,7 @@
 	echo '<br />';
 	$auth = Zend_Auth::getInstance();
 	$identity = $auth->getIdentity();
-	echo 'Bienvenue ' . $identity->login . ' ';
+	echo 'Bienvenue ' . $identity->UTI_login . ' ';
 ?>
 <a href="/index/deconnexion">Deconnexion</a>
 <br />	
@@ -24,9 +24,9 @@ ____________________________________________
 	</tr>
 <?php foreach($this->lignes as $ligne) : ?>
 	<tr>
-		<td><?php echo $ligne['idLigne'];?>
-		<td><?php echo $ligne['Depart'];?></td>
-		<td><?php echo $ligne['Arrive'];?></td>
+		<td><?php echo $ligne['LIG_id'];?>
+		<td><?php //echo $ligne['Depart'];?></td>
+		<td><?php //echo $ligne['Arrive'];?></td>
 	</tr>
 <?php endforeach;?>	
 </table>
