@@ -2,6 +2,7 @@
 # IGNORED BY ANTOINE
 #####################
 aeroport/library/
+aeroport/application/configs/application.ini
 
 ###################
 # NETBEANS
