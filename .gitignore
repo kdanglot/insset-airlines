@@ -2,6 +2,8 @@
 # IGNORED BY ANTOINE
 #####################
 aeroport/application/configs/application.ini
+# Windaube
+aeroport\application\configs\application.ini
 aeroport/library/
 
 ###################
