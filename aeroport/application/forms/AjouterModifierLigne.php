@@ -6,73 +6,78 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$db = Zend_Registry::get('db');
 		$aeroport = new Application_Model_DbTable_Aeroport();
 		$aeroports = $aeroport->afficherLesAeroports();
+		$pays = new Application_Model_DbTable_Pays();
+		$lesPays = $pays->afficherLesPays();
+		var_dump($lesPays);
 		 
 		$this->setMethod('post');
 		$this->setAttrib('id', 'ajouterLigneFormulaire');
-		
-		// element Hidden idLigne + attributs
-		$eIdLigne = new Zend_Form_Element_Hidden('idLigne');
-			$eIdLigne->addValidator('NotEmpty');
-			$eIdLigne->addFilter('Int');
 		 
 		// element Text heure de depart + attributs
 		$eHeureDepart = new Zend_Form_Element_Text('heureDepart');
-			$eHeureDepart->setAttrib('placeholder', 'heureDepart');
-			$eHeureDepart->setAttrib('autofocus', 'autofocus');
-			$eHeureDepart->setAttrib('required', 'required');
-			$eHeureDepart->setLabel('Heure de départ : ');
-			$eHeureDepart->setRequired(true);
-			$eHeureDepart->addFilter('StringTrim');
-			$eHeureDepart->addValidator('NotEmpty');
+		$eHeureDepart->setAttrib('placeholder', 'heureDepart');
+		$eHeureDepart->setAttrib('autofocus', 'autofocus');
+		$eHeureDepart->setLabel('Heure de départ : ');
+		$eHeureDepart->setRequired(true);
+		$eHeureDepart->addFilter('StringTrim');
+		$eHeureDepart->addValidator('NotEmpty');
 
 		// element Text heure d'arrive + attributs
 		$eHeureArrivee = new Zend_Form_Element_Text('heureArrivee');
-			$eHeureArrivee->setAttrib('placeholder', "Heure d'arrivée");
-			$eHeureArrivee->setAttrib('required', 'required');
-			$eHeureArrivee->setLabel("Heure d'arrivée");
-			$eHeureArrivee->setRequired(true);
-			$eHeureArrivee->addFilter('StringTrim');
-			$eHeureArrivee->addValidator('NotEmpty');
+		$eHeureArrivee->setAttrib('placeholder', "Heure d'arrivée");
+		$eHeureArrivee->setLabel("Heure d'arrivée");
+		$eHeureArrivee->setRequired(true);
+		$eHeureArrivee->addFilter('StringTrim');
+		$eHeureArrivee->addValidator('NotEmpty');
 		
 		// element Select pays de depart + attributs
 		$ePaysDepart = new Zend_Form_Element_Select('paysDepart');
-			$ePaysDepart->setLabel("Pays de départ :");
-			/*foreach($pays as $p) {
-				$ePaysDepart->addMultiOption($aeroport['AER_id'], $aeroport['AER_nom']);
-			}*/
+		$ePaysDepart->setLabel("Pays de départ :");
+		$ePaysDepart->setAttrib('id', 'p1');
+		
+		$ePaysDepart->setAttrib('onChange', 'go();');
+		$ePaysDepart->addMultiOption('-1', 'Choisissez un pays');
+		foreach($lesPays as $p) {
+			$ePaysDepart->addMultiOption($p['PAY_id'], $p['PAY_nom']);
+		}
+		$ePaysDepart->setRequired(true);
 		
 		// element Text aeroport de depart + attributs
 		$eAeroportDepart = new Zend_Form_Element_Select('aeroportDepart');
-			$eAeroportDepart->setLabel("Aéroport de départ :");
-			foreach($aeroports as $aeroport) {
-				$eAeroportDepart->addMultiOption($aeroport['AER_id'], $aeroport['AER_nom']);
-			}
-			$eAeroportDepart->setRequired(true);	
+		$eAeroportDepart->setLabel("Aéroport de départ :");
+		$eAeroportDepart->setAttrib('id', 'a1');
+		$eAeroportDepart->setAttrib('name', 'a1');
+		$eAeroportDepart->addMultiOption('-1', 'Choisissez un aeroport');
+		/*foreach($aeroports as $a) {
+			$eAeroportDepart->addMultiOption($a['AER_id'], $a['AER_nom']);
+		}*/
+		$eAeroportDepart->setRequired(true);	
 		
 		// element Select pays d'arrivé + attributs
 		$ePaysArrive = new Zend_Form_Element_Select('paysArrive');
-			$ePaysArrive->setLabel("Pays d'arrivé :");
-			/*foreach($pays as $p) {
-			 $ePaysArrive->addMultiOption($aeroport['AER_id'], $aeroport['AER_nom']);
-			}*/
+		$ePaysArrive->setLabel("Pays d'arrivé :");
+		foreach($lesPays as $p) {
+		 $ePaysArrive->addMultiOption($p['PAY_id'], $p['PAY_nom']);
+		}
+		$ePaysArrive->setRequired(true);
 		
 		// element Text aeroport d'arrive + attributs
 		$eAeroportArrive = new Zend_Form_Element_Select('aeroportArrive');
-			$eAeroportArrive->setLabel("Aéroport d'arrivé :");
-			foreach($aeroports as $aeroport) {
-				$eAeroportArrive->addMultiOption($aeroport['AER_id'], $aeroport['AER_nom']);
-			}
-			$eAeroportArrive->setRequired(true);
+		$eAeroportArrive->setLabel("Aéroport d'arrivé :");
+		foreach($aeroports as $a) {
+			$eAeroportArrive->addMultiOption($a['AER_id'], $a['AER_nom']);
+		}
+		$eAeroportArrive->setRequired(true);
 		
 		// element Select periodicite + attributs
 		$ePeriodicite = new Zend_Form_Element_Select('periodicite');
-			$ePeriodicite->setLabel('Periodicite : ');
-			$ePeriodicite->addMultiOptions(array('unique'=>'unique','journalier'=>'journalier','hebdomadaire'=>'hebdomadaire','mensuel'=>'mensuel','annuel'=>'annuel'));
+		$ePeriodicite->setLabel('Periodicite : ');
+		$ePeriodicite->addMultiOptions(array('unique'=>'unique','journalier'=>'journalier','hebdomadaire'=>'hebdomadaire','mensuel'=>'mensuel','annuel'=>'annuel'));
 		
 
 		// element Submit connexion + attributs
 		$eAjouter = new Zend_Form_Element_Submit('ajouter');
-			$eAjouter->setAttrib('id', 'boutonAjouter');
+		$eAjouter->setAttrib('id', 'boutonAjouter');
 
 		// ajout des elements au formulaire
 		$this->addElements(array($eHeureDepart, $eHeureArrivee, $ePeriodicite, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAjouter));
