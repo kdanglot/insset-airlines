@@ -20,15 +20,41 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 	}
 	
 	public function ajouterligneAction() {
-		$formAjouterLigne = new Application_Form_Ajouterligne();
+		$formAjouterLigne = new Application_Form_AjouterModifierLigne();
 		$this->view->formAjouterLigne = $formAjouterLigne;
+		
+		if ($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+			
+			if ($formAjouterLigne->isValid($formData)) {
+			
+				$heureDepart = $formAjouterLigne->getValue('heureDepart');
+				$heureArrivee = $formAjouterLigne->getValue('heureArrivee');
+				$aeroportDepart = $formAjouterLigne->getValue('aeroportDepart');
+				$aeroportArrivee = $formAjouterLigne->getValue('aeroportArrivee');
+				$periodicite = $formAjouterLigne->getValue('periodicite');
+				
+				$ligne = new Application_Model_DbTable_Ligne();
+				$ligne->ajouterLigne($heureDepart, $heureDepart, $heureArrivee, array($aeroportDepart, $aeroportArrivee), $periodicite);
+
+				$this->_helper->redirector('index');
+			} else {
+				$formAjouterLigne->populate($formData);
+			}
+		}
+
 	}
 	
 	public function modifierligneAction() {
-		$formModifierLigne = new Application_Form_Modifierligne();
-		$this->view->formModifierLigne = $formModifierLigne;
+		$ligne = new Application_Model_DbTable_Ligne();
+		$this->view->formModifierLigne = $ligne->getLigneById('1');
 	}
 	
 	public function ajaxAction() {}
+
+
+		
+	
+
 
 }

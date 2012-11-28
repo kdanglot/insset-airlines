@@ -3,9 +3,48 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 
 	protected $_name = 'lignes';
 	
+	public function getLigneById($id){
+	
+		$id = intval($id);
+		
+		$db = Zend_Registry::get('db');
+		
+		$infosLigne = <<<REQUETE
+			SELECT LIG_heureDepart, LIG_duree, LIG_typePeriodicite 
+			FROM lignes
+			WHERE LIG_id = :id
+REQUETE;
+
+		$infosTrajets = <<<REQUETE
+			SELECT TRA_ordre, AER_id, AER_nom, VIL_nom
+			FROM lignes
+			NATURAL JOIN trajets
+			NATURAL JOIN aeroports
+			NATURAL JOIN aeroportsappartiennentvilles
+			NATURAL JOIN villes
+			WHERE LIG_id = :id
+			ORDER BY TRA_ordre ASC
+REQUETE;
+		
+		$getInfosLigne = $db->prepare($infosLigne);
+		$getInfosLigne->bindValue('id', $id, PDO::PARAM_INT);
+		$getInfosLigne->execute();
+		
+		// Si rien n'est trouvé
+		if ($getInfosLigne->rowCount() == 0) {
+            throw new Exception("Impossible de trouver la ligne $id");
+        }
+		
+		$getInfosTrajets = $db->prepare($infosTrajets);
+		$getInfosTrajets->bindValue('id', $id, PDO::PARAM_INT);
+		$getInfosTrajets->execute();
+		
+		return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
+	}
+	
 	public function afficherLesLignes() {
 		$db = Zend_Registry::get('db');
-		$sql = "SELECT depart.LIG_id, idAeroportDepart, nomAeroportDepart, idVilleDepart, nomVilleDepart, 
+		$sql = "SELECT depart.LIG_id id, idAeroportDepart, nomAeroportDepart, idVilleDepart, nomVilleDepart, 
 						idAeroportArrivee, nomAeroportArrivee, idVilleArrivee, nomVilleArrivee
 				FROM (
 					SELECT AER_id idAeroportArrivee, trajets.LIG_id, AER_nom nomAeroportArrivee,
@@ -14,7 +53,7 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 					NATURAL JOIN aeroports
 					NATURAL JOIN aeroportsappartiennentvilles
 					NATURAL JOIN villes, (
-						SELECT COUNT( * ) c, LIG_id
+						SELECT (COUNT( * ) - 1) c, LIG_id
 						FROM trajets
 						GROUP BY LIG_id
 						)nombre
@@ -26,7 +65,7 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 					NATURAL JOIN aeroports
 					NATURAL JOIN aeroportsappartiennentvilles
 					NATURAL JOIN villes
-					WHERE TRA_ordre =  '1'
+					WHERE TRA_ordre = '0'
 					)depart
 					WHERE depart.LIG_id = arrivee.LIG_id";
 				
@@ -35,13 +74,48 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 		return $result;	
 	} // afficherLigne()
 	
-	public function ajouterLigne($heureDepart, $duree, $periodicite) {
-		$data = array(
-				'heureDepart' => $heureDepart,
-				'duree' => $duree,
-				'typePeriodicite' => $periodicite
-		);
-		$this->insert($data);
+	public function ajouterLigne($heureDepart, $heureArrivee, $trajets, $periodicite) {
+		
+		$auth = Zend_Auth::getInstance();
+		$identity = $auth->getIdentity();
+		
+		$bdd = Zend_Registry::get('db');
+		
+		$infosLigne = <<<REQUETE
+			INSERT INTO lignes
+			(UTI_id_directionStrategique, LIG_heureDepart, LIG_heureArrivee, LIG_typePeriodicite, LIG_dateAjout)
+			VALUES
+			(:idUser, :heureDepart, :heureArrivee, :typePeriodicite, :dateAjout)
+REQUETE;
+		
+		$ajouterLigne = $bdd->prepare($infosLigne);
+			$ajouterLigne->bindValue('idUser', $identity->UTI_id, PDO::PARAM_INT);
+			$ajouterLigne->bindValue('heureDepart', $heureDepart, PDO::PARAM_STR);
+			$ajouterLigne->bindValue('heureArrivee', $heureArrivee, PDO::PARAM_STR);
+			$ajouterLigne->bindValue('typePeriodicite', $periodicite, PDO::PARAM_STR);
+			$ajouterLigne->bindValue('dateAjout', 'NOW()', PDO::PARAM_STR);
+		$ajouterLigne->execute();
+		
+		$infosTrajet = <<<REQUETE
+			INSERT INTO trajets
+			(LIG_id, AER_id, TRA_ordre)
+			VALUES
+			(:idAeroport, :ordre)
+REQUETE;
+
+		$idAeroport; 
+		$ordre = 0;
+
+		$ajouterTrajet = $bdd->prepare($infosTrajet);
+			$ajouterTrajet->bindParam('idAeroport', $idAeroport, PDO::PARAM_INT);
+			$ajouterTrajet->bindParam('ordre', $ordre, PDO::PARAM_INT);
+		
+		foreach($trajets as $aeroport){
+			$idAeroport = $aeroport;
+			$ajouterTrajet->execute();
+			$ordre ++;
+		}
+		
 	} // ajouterLigne()
 	
 	public function modifierLigne($id, $heureDepart, $duree, $periodicite) {
