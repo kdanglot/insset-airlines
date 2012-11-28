@@ -10,7 +10,7 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 		$db = Zend_Registry::get('db');
 		
 		$infosLigne = <<<REQUETE
-			SELECT LIG_heureDepart, LIG_duree, LIG_typePeriodicite 
+			SELECT LIG_heureDepart heureDepart, LIG_heureArrivee heureArrivee, LIG_typePeriodicite periodicite 
 			FROM lignes
 			WHERE LIG_id = :id
 REQUETE;
@@ -39,7 +39,8 @@ REQUETE;
 		$getInfosTrajets->bindValue('id', $id, PDO::PARAM_INT);
 		$getInfosTrajets->execute();
 		
-		return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
+		// return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
+		return $getInfosLigne->fetch();
 	}
 	
 	public function afficherLesLignes() {
@@ -67,7 +68,8 @@ REQUETE;
 					NATURAL JOIN villes
 					WHERE TRA_ordre = '0'
 					)depart
-					WHERE depart.LIG_id = arrivee.LIG_id";
+					WHERE depart.LIG_id = arrivee.LIG_id
+					ORDER BY id";
 				
 		$result = $db->fetchAll($sql);
 		
@@ -75,7 +77,7 @@ REQUETE;
 	} // afficherLigne()
 	
 	public function ajouterLigne($heureDepart, $heureDepart, $heureArrivee, $trajets, $periodicite) {
-		var_dump($trajets);exit;
+	
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
 		
@@ -100,16 +102,16 @@ REQUETE;
 			INSERT INTO trajets
 			(LIG_id, AER_id, TRA_ordre)
 			VALUES
-			(:idAeroport, :ordre)
+			(:idLigne, :idAeroport, :ordre)
 REQUETE;
-
 		$idAeroport; 
 		$ordre = 0;
 
 		$ajouterTrajet = $bdd->prepare($infosTrajet);
+			$ajouterTrajet->bindValue('idLigne', $bdd->lastInsertId(), PDO::PARAM_INT);
 			$ajouterTrajet->bindParam('idAeroport', $idAeroport, PDO::PARAM_INT);
 			$ajouterTrajet->bindParam('ordre', $ordre, PDO::PARAM_INT);
-		
+			
 		foreach($trajets as $aeroport){
 			$idAeroport = $aeroport;
 			$ajouterTrajet->execute();

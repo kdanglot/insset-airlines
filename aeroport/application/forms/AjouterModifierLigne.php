@@ -8,7 +8,11 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$aeroports = $aeroport->afficherLesAeroports();
 		$pays = new Application_Model_DbTable_Pays();
 		$lesPays = $pays->afficherLesPays();
+
 		//var_dump($aeroport->aeroportPays('1'));
+
+		// var_dump($lesPays);
+
 		 
 		$this->setMethod('post');
 		$this->setAttrib('id', 'ajouterLigneFormulaire');
