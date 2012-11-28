@@ -10,7 +10,7 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 		$db = Zend_Registry::get('db');
 		
 		$infosLigne = <<<REQUETE
-			SELECT LIG_heureDepart, LIG_duree, LIG_typePeriodicite 
+			SELECT LIG_heureDepart heureDepart, LIG_heureArrivee heureArrivee, LIG_typePeriodicite periodicite 
 			FROM lignes
 			WHERE LIG_id = :id
 REQUETE;
@@ -39,7 +39,8 @@ REQUETE;
 		$getInfosTrajets->bindValue('id', $id, PDO::PARAM_INT);
 		$getInfosTrajets->execute();
 		
-		return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
+		// return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
+		return $getInfosLigne->fetch();
 	}
 	
 	public function afficherLesLignes() {
