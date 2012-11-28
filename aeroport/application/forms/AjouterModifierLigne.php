@@ -12,6 +12,10 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		 
 		$this->setMethod('post');
 		$this->setAttrib('id', 'ajouterLigneFormulaire');
+		
+		// element hidden id
+		$eIdLigne = new Zend_Form_Element_Hidden('id');
+        $eIdLigne->addFilter('Int');
 		 
 		// element Text heure de depart + attributs
 		$eHeureDepart = new Zend_Form_Element_Text('heureDepart');
@@ -40,7 +44,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		foreach($lesPays as $p) {
 			$ePaysDepart->addMultiOption($p['PAY_id'], $p['PAY_nom']);
 		}
-		$ePaysDepart->setRequired(true);
+		// $ePaysDepart->setRequired(true);
 		
 		// element Text aeroport de depart + attributs
 		$eAeroportDepart = new Zend_Form_Element_Select('aeroportDepart');
@@ -51,7 +55,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		/*foreach($aeroports as $a) {
 			$eAeroportDepart->addMultiOption($a['AER_id'], $a['AER_nom']);
 		}*/
-		$eAeroportDepart->setRequired(true);	
+		// $eAeroportDepart->setRequired(true);	
 		
 		// element Select pays d'arrivé + attributs
 		$ePaysArrive = new Zend_Form_Element_Select('paysArrive');
@@ -59,7 +63,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		foreach($lesPays as $p) {
 		 $ePaysArrive->addMultiOption($p['PAY_id'], $p['PAY_nom']);
 		}
-		$ePaysArrive->setRequired(true);
+		// $ePaysArrive->setRequired(true);
 		
 		// element Text aeroport d'arrive + attributs
 		$eAeroportArrive = new Zend_Form_Element_Select('aeroportArrive');
@@ -67,7 +71,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		foreach($aeroports as $a) {
 			$eAeroportArrive->addMultiOption($a['AER_id'], $a['AER_nom']);
 		}
-		$eAeroportArrive->setRequired(true);
+		// $eAeroportArrive->setRequired(true);
 		
 		// element Select periodicite + attributs
 		$ePeriodicite = new Zend_Form_Element_Select('periodicite');
