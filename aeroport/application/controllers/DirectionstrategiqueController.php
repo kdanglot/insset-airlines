@@ -50,6 +50,8 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 		$this->view->formModifierLigne = $ligne->getLigneById('1');
 	}
 	
-	public function ajaxAction() {}
+	public function ajaxAction() {
+		$this->view->msg = "bonjour";
+	}
 
 }

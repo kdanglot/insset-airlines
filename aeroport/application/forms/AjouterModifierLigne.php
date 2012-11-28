@@ -8,7 +8,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$aeroports = $aeroport->afficherLesAeroports();
 		$pays = new Application_Model_DbTable_Pays();
 		$lesPays = $pays->afficherLesPays();
-		var_dump($lesPays);
+		//var_dump($aeroport->aeroportPays('1'));
 		 
 		$this->setMethod('post');
 		$this->setAttrib('id', 'ajouterLigneFormulaire');
@@ -52,8 +52,8 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Text aeroport de depart + attributs
 		$eAeroportDepart = new Zend_Form_Element_Select('aeroportDepart');
 		$eAeroportDepart->setLabel("Aéroport de départ :");
-		$eAeroportDepart->setAttrib('id', 'a1');
-		$eAeroportDepart->setAttrib('name', 'a1');
+		$eAeroportDepart->setAttrib('id', 'a2');
+		$eAeroportDepart->setAttrib('name', 'a2');
 		$eAeroportDepart->addMultiOption('-1', 'Choisissez un aeroport');
 		/*foreach($aeroports as $a) {
 			$eAeroportDepart->addMultiOption($a['AER_id'], $a['AER_nom']);

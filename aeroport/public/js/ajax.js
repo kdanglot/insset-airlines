@@ -16,9 +16,6 @@ function getXhr() {
      return xhr;
 } // getXhr()     
 
-/**
-* Méthode qui sera appelée sur le click du bouton
-*/
 function go() {
 	var xhr = getXhr();
     // On défini ce qu'on va faire quand on aura la réponse
@@ -30,7 +27,7 @@ function go() {
 			document.getElementById('a1').innerHTML = leselect;
          }
     }
-    xhr.open("POST","directionstrategique/ajouter",true);
+    xhr.open("POST","public/ajax/testAjax.php",true);
     // ici, l'id de l'auteur
 	sel = document.getElementById('p1');
 	idPays = sel.options[sel.selectedIndex].value;
