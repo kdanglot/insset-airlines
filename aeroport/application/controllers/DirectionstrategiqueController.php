@@ -28,5 +28,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 		$formModifierLigne = new Application_Form_Modifierligne();
 		$this->view->formModifierLigne = $formModifierLigne;
 	}
+	
+	public function ajaxAction() {}
 
 }

@@ -6,7 +6,7 @@ class DrhController extends Zend_Controller_Action {
 		echo '<br />';
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
-		echo 'Bienvenue ' . $identity->loginUser;
+		echo 'Bienvenue ' . $identity->UTI_login;
 	}
 	
 }

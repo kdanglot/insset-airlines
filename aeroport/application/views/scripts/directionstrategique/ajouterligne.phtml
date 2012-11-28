@@ -1,2 +1,15 @@
 <?php
 	echo $this->formAjouterLigne;
+	
+	echo "<select name='a1'";
+	if(isset($_POST["idPays"])){
+		echo $_POST["idPays"];
+		$db = Zend_Registry::get('db');
+		$aeroport = new Application_Model_DbTable_Aeroport();
+		$aeroports = $aeroport->aeroportPays($_POST["idPays"]);
+		foreach($aeroports as $a) {
+			echo "<option value='".$row["AER_id"]."'>".$row["AER_nom"]."</option>";
+		}
+	}
+	else echo 'erreur';
+	echo "</select>";

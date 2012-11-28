@@ -9,4 +9,16 @@ class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 		
 		return $result;
 	}
+	
+	public function aeroportPays($idPays) {
+		$db = Zend_Registry::get('db');
+		$sql = 'SELECT a.AER_id, AER_nom 
+				FROM aeroports a , pays p, villes v, aeroportsappartiennentvilles av
+				WHERE a.AER_id = av.AER_id 
+				AND av.VIL_id = v.VIL_id 
+				AND v.PAY_id = p.PAY_id 
+				AND p.PAY_id ='.$idPays.';';
+		$result = $db->fetchAll($sql);		
+		return $result;
+	}
 }
