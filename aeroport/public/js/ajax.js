@@ -17,14 +17,17 @@ function getXhr() {
 } // getXhr()     
 
 function go() {
+	alert('test');
 	var xhr = getXhr();
     // On défini ce qu'on va faire quand on aura la réponse
     xhr.onreadystatechange = function(){
+    	alert('test2');
     	// On ne fait quelque chose que si on a tout reçu et que le serveur est ok
         if(xhr.readyState == 4 && xhr.status == 200) {
         	leselect = xhr.responseText;
 			// On se sert de innerHTML pour rajouter les options a la liste
 			document.getElementById('a1').innerHTML = leselect;
+			alert('test3');
          }
     }
     xhr.open("POST","public/ajax/testAjax.php",true);
@@ -34,3 +37,4 @@ function go() {
 	alert(idPays);
 	xhr.send("idPays="+idPays);                
 } // go()
+
