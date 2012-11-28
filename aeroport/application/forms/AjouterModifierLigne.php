@@ -42,7 +42,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$ePaysDepart = new Zend_Form_Element_Select('paysDepart');
 		$ePaysDepart->setLabel("Pays de départ :");
 		$ePaysDepart->setAttrib('id', 'p1');
-		
+		$ePaysDepart->setAttrib('name', 'p1');		
 		$ePaysDepart->setAttrib('onChange', 'go();');
 		$ePaysDepart->addMultiOption('-1', 'Choisissez un pays');
 		foreach($lesPays as $p) {

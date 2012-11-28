@@ -87,8 +87,5 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 		}
 	}
 	
-	public function ajaxAction() {
-		$this->view->msg = "bonjour";
-	}
-
+	
 }
