@@ -35,7 +35,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 				$periodicite = $formAjouterLigne->getValue('periodicite');
 				
 				$ligne = new Application_Model_DbTable_Ligne();
-				$ligne->ajouterLigne($heureDepart, $heureDepart, $heureArrivee, array($aeroportDepart, $aeroportArrivee), $periodicite);
+				$ligne->ajouterLigne($heureDepart, $heureDepart, $heureArrivee, array($aeroportDepart = '1', $aeroportArrivee = '2'), $periodicite);
 
 				$this->_helper->redirector('index');
 			} else {
