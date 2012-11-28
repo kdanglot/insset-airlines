@@ -74,8 +74,8 @@ REQUETE;
 		return $result;	
 	} // afficherLigne()
 	
-	public function ajouterLigne($heureDepart, $heureArrivee, $trajets, $periodicite) {
-		
+	public function ajouterLigne($heureDepart, $heureDepart, $heureArrivee, $trajets, $periodicite) {
+		var_dump($trajets);exit;
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
 		
