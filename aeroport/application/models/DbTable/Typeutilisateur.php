@@ -1,4 +1,6 @@
 <?php
-class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
+class Application_Model_DbTable_TypeUtilisateur extends Zend_Db_Table_Abstract {
 	protected $_name = 'typesutilisateurs';
+	protected $primary = 'TUTI_id';
+    protected $_dependentTables = 'Application_Model_DbTable_Utilisateur';
 }
