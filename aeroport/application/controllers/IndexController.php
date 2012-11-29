@@ -49,7 +49,7 @@ class IndexController extends Zend_Controller_Action
     					$utilisateur = new Application_Model_DbTable_Utilisateur();
     					$typeUtilisateur = $utilisateur->typeUtiliateur($idTypeUtilisateur);
     					$typeUtilisateur = $typeUtilisateur[0]['TUTI_libelle'];
-    					
+    					var_dump($typeUtilisateur);
     					// redirection différente selon le type de l'utiliateur
     					switch ($typeUtilisateur) {
     						case 'administrateur':
@@ -58,7 +58,7 @@ class IndexController extends Zend_Controller_Action
     						case 'drh':
     							$this->_redirect('/drh/index/');
     						break;
-    						case 'directionstrategique':
+    						case 'direction stratégique':
     							$this->_redirect('/directionstrategique/index/');
     						break;
     					}
