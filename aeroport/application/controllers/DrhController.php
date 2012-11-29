@@ -1,10 +1,17 @@
 <?php
 class DrhController extends Zend_Controller_Action {
 	
-	public function indexAction() {
-		$auth = Zend_Auth::getInstance();
-		$identity = $auth->getIdentity();
-		echo 'Bienvenue ' . $identity->UTI_login;
+	public function init() {}
+	
+	public function indexAction() {}
+	
+	public function ajouterutilisateurAction() {
+		$formAjout = new Application_Form_AjouterModifierUtilisateur();
+		$this->view->formAjout = $formAjout;
 	}
+	
+	public function modifier_utilisateurAction() {}
+	
+	public function supprimer_utilisateurAction() {}
 	
 }

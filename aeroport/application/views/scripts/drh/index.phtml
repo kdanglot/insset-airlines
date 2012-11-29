@@ -1,0 +1,8 @@
+<?php 
+	$auth = Zend_Auth::getInstance();
+	$identity = $auth->getIdentity();
+	echo 'Bienvenue ' . $identity->UTI_login;
+?>
+<div>
+	<a href=<?php echo $this->url(array('controller' => 'drh', 'action' => 'ajouterutilisateur'));?>>Ajouter un utilisateur</a>
+</div>
