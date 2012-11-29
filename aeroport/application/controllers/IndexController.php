@@ -43,9 +43,13 @@ class IndexController extends Zend_Controller_Action
     					$dataUser = $dbAdapter->getResultRowObject(null, 'UTI_password');
     					// on stocke les données dans la session
     					$auth->getStorage()->write($dataUser);
-    					// on récupère le type d'utilisateur
-    					$typeUtilisateur = $dataUser->UTI_typeEmploye;
-    					var_dump($typeUtilisateur);
+    					// on récupère l'id de l'utilisateur
+    					$idTypeUtilisateur = $dataUser->TUTI_id;
+    					// on récupère le type de l'utilisateur
+    					$utilisateur = new Application_Model_DbTable_Utilisateur();
+    					$typeUtilisateur = $utilisateur->typeUtiliateur($idTypeUtilisateur);
+    					$typeUtilisateur = $typeUtilisateur[0]['TUTI_libelle'];
+    					
     					// redirection différente selon le type de l'utiliateur
     					switch ($typeUtilisateur) {
     						case 'administrateur':
