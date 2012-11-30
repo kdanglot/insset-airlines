@@ -71,17 +71,10 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		}
 	}
 	
-	public function modifierLigne($id, $heureDepart, $duree, $periodicite) {
-		$data = array(
-				'heureDepart' => $heureDepart,
-				'duree' => $duree,
-				'typePeriodicite' => $periodicite
-		);
-		$this->update($data, 'id = '. (int)$id);
-	} // modifierLigne()
-	
-	public function supprimerLigne($id) {
-		$this->delete('id =' . (int)$id);
-	} // supprimerLigne()
+	public function supprimerPilote($id) {
+// 		var_dump($this->find($id)->current()->UTI_id);
+		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
+		$tableUtilisateur->delete('UTI_id =' . (int)$this->find($id)->current()->UTI_id);
+	} 
 
 }
