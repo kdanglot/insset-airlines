@@ -43,5 +43,45 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		
 		return $piloteTab;
 	}
+	
+	public function ajouterPilote($UTI_nom, $UTI_prenom, $UTI_login, $UTI_password, $UTI_dateEmbauche, $UTI_dateAjout, $idBrevets) {
+		$tableTypeUtilisateur = new Application_Model_DbTable_TypeUtilisateur();
+		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
+		$utilisateur = $tableUtilisateur->createRow();
+		$utilisateur->TUTI_id = $tableTypeUtilisateur->fetchAll("TUTI_libelle = 'pilote'")->current()->TUTI_id;  //Trouver type utilisateur
+		$utilisateur->UTI_nom = $UTI_nom;
+		$utilisateur->UTI_prenom	= $UTI_prenom;
+		$utilisateur->UTI_login = $UTI_login;
+		$utilisateur->UTI_password = $UTI_password;
+		$utilisateur->UTI_dateEmbauche = $UTI_dateEmbauche;
+		$utilisateur->UTI_dateAjout = $UTI_dateAjout;
+		$utilisateur->UTI_dateSupression = null;
+		$idUtilisateur = $utilisateur->save();
+		$tablePilote = new Application_Model_DbTable_Pilote();
+		$pilote = $tablePilote->createRow();
+		$pilote->UTI_id = $idUtilisateur;
+		$idPilote = $pilote->save();
+		$tableBrevets = new Application_Model_DbTable_Brevets();
+		for ($i = 0; $i < count($idBrevets); $i++) {
+			$brevet = $tableBrevets->createRow();
+			$brevet->PIL_id = $idPilote;
+			$brevet->TBRE_id = $idBrevets[$i]["idBrevets"];
+			$brevet->BRE_dateFin = $idBrevets[$i]["dateFin"];
+			$brevet->save();
+		}
+	}
+	
+	public function modifierLigne($id, $heureDepart, $duree, $periodicite) {
+		$data = array(
+				'heureDepart' => $heureDepart,
+				'duree' => $duree,
+				'typePeriodicite' => $periodicite
+		);
+		$this->update($data, 'id = '. (int)$id);
+	} // modifierLigne()
+	
+	public function supprimerLigne($id) {
+		$this->delete('id =' . (int)$id);
+	} // supprimerLigne()
 
 }
