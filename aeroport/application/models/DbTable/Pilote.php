@@ -71,10 +71,20 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		}
 	}
 	
-	public function supprimerPilote($id) {
-// 		var_dump($this->find($id)->current()->UTI_id);
+	public function modifierPilote($id, $pilote) {
+// 		Tableau a envoyer
+// 				$p["UTI_nom"] = "GUN";
+// 				$p["UTI_prenom"] = "TOP";
+// 				$p["UTI_login"] = "top";
+// 				$p["UTI_password"] = "top";
+// 				$p["UTI_dateEmbauche"] = "2012-11-28";
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
-		$tableUtilisateur->delete('UTI_id =' . (int)$this->find($id)->current()->UTI_id);
+		$tableUtilisateur->modifierUtilisateur($this->find($id)->current()->UTI_id, $pilote);
 	} 
-
+	
+	public function supprimerPilote($id) {
+		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
+		$tableUtilisateur->supprimerUtilisateur($this->find($id)->current()->UTI_id);
+// 		$tableUtilisateur->delete('UTI_id =' . $this->find($id)->current()->UTI_id);
+	} 
 }

@@ -8,7 +8,7 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
     protected $_dependentTables = 'Application_Model_DbTable_Pilote';
 
 
-	public function typeUtiliateur($idUtilisateur) {
+	public function typeUtilisateur($idUtilisateur) {
 		$db = Zend_Registry::get('db');
 		$sql = 'SELECT u.TUTI_id, TUTI_libelle 
 				FROM utilisateurs u, typesutilisateurs tu
@@ -17,5 +17,32 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 		$res = $db->fetchAll($sql);
 		return $res;
 	}
+	
+	public function ajouterUtilisateur($idUtilisateur, $utilisateur) {
+		$utilisateurBDD = $this->find($idUtilisateur)->current();
+		
+		$utilisateurBDD->UTI_nom = $utilisateur["UTI_nom"];
+		$utilisateurBDD->UTI_prenom = $utilisateur["UTI_prenom"];
+		$utilisateurBDD->UTI_login = $utilisateur["UTI_login"];
+		$utilisateurBDD->UTI_password = $utilisateur["UTI_password"];
+		$utilisateurBDD->UTI_dateEmbauche = $utilisateur["UTI_dateEmbauche"];
+		
+		$utilisateurBDD->save();
+	}
+	
+	public function modifierUtilisateur($idUtilisateur, $utilisateur) {
+		$utilisateurBDD = $this->find($idUtilisateur)->current();
+		
+		$utilisateurBDD->UTI_nom = $utilisateur["UTI_nom"];
+		$utilisateurBDD->UTI_prenom = $utilisateur["UTI_prenom"];
+		$utilisateurBDD->UTI_login = $utilisateur["UTI_login"];
+		$utilisateurBDD->UTI_password = $utilisateur["UTI_password"];
+		$utilisateurBDD->UTI_dateEmbauche = $utilisateur["UTI_dateEmbauche"];
+		
+		$utilisateurBDD->save();
+	}
+	
+	public function supprimerUtilisateur($idUtilisateur) {
+		$this->find($idUtilisateur)->current()->delete();
+	}
 } // Applicaion_Model_DbTable_User
-
