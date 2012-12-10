@@ -3,6 +3,36 @@
 	$identity = $auth->getIdentity();
 	echo 'Bienvenue ' . $identity->UTI_login;
 ?>
+<?php var_dump($this->listePilote);?>
 <div>
-	<a href=<?php echo $this->url(array('controller' => 'drh', 'action' => 'ajouterutilisateur'));?>>Ajouter un utilisateur</a>
+	<a href=<?php echo $this->url(array('controller' => 'drh', 'action' => 'ajouterutilisateur'));?>>Ajouter un pilote</a>
 </div>
+<table>
+	<tr>
+		<th>Nom</th>
+		<th>Prénom</th>
+		<th>Login</th>
+		<th>Brevet(s)</th>
+		<th>Date Embauche</th>
+		<th></th>
+		<th></th>
+	</tr>
+	
+	<?php foreach($this->listePilote as $pilote) :?>
+	<tr>
+		<td><?php echo $pilote['utilisateur']['UTI_nom'];?></td>
+		<td><?php echo $pilote['utilisateur']['UTI_prenom'];?></td>
+		<td><?php echo $pilote['utilisateur']['UTI_login'];?></td>
+		<td>
+		<select>
+		<?php for($i=0; $i<count($pilote['brevets']); $i++) :?>		
+		<option><?php echo $pilote['brevets'][$i]['TBRE_nom'];?></option>
+		<?php endfor;?>
+		</select></td>
+		<td><?php echo $pilote['utilisateur']['UTI_dateEmbauche'];?></td>
+		<td><a href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'modifierutilisateur'));?>>Modifier un pilote</a></td>
+		<td><a href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerutilisateur'));?>>Supprimer un pilote</a></td>		
+		
+	</tr>
+	<?php endforeach;?>
+</table>
