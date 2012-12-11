@@ -6,10 +6,8 @@ class DrhController extends Zend_Controller_Action {
 	public function indexAction() {
 		$db = Zend_Registry::get('db');
 		$pilote = new Application_Model_DbTable_Pilote();
-		$res = $pilote->afficherLesPilotes();
-		var_dump($res);
-		
-		echo $res[0]['utilisateur']['UTI_nom'];
+		$res = $pilote->afficherLesPilotes();		
+		$this->view->listePilote = $res;		
 	}
 	
 	public function ajouterutilisateurAction() {
