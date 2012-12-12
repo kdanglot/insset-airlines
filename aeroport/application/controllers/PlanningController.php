@@ -59,6 +59,18 @@ class PlanningController extends Zend_Controller_Action
 				$aeroportDepart = $this->_getParam('aeroportDepart', 0);
 				$aeroportArrivee = $this->_getParam('aeroportArrivee', 0);
 				
+				$vol = new Application_Model_DbTable_Vol();
+				
+				// Si le vol existe on affiche ses données
+				if(isset($idVol)){
+					
+				}
+				
+				// Sinon on le créé avec des données générées
+				else{
+					
+				}
+				
 			}
 		
 		}
