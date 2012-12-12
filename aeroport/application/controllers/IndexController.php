@@ -46,21 +46,33 @@ class IndexController extends Zend_Controller_Action
     					// on récupère l'id de l'utilisateur
     					$idTypeUtilisateur = $dataUser->TUTI_id;
     					// on récupère le type de l'utilisateur
-    					$utilisateur = new Application_Model_DbTable_Utilisateur();
-    					$typeUtilisateur = $utilisateur->typeUtilisateur($idTypeUtilisateur);
+    					$infosUser = new Application_Model_DbTable_Utilisateur();
+    					$infosType = $infosUser->typeUtilisateur($idTypeUtilisateur);
     					$typeUtilisateur = $typeUtilisateur[0]['TUTI_libelle'];
     					var_dump($typeUtilisateur);
-    					// redirection différente selon le type de l'utiliateur
+						
+						// Définition des types d'utilisateur (à synchroniser avec ceux de la BDD)
+						define('ADMIN', 1);
+						define('DRH', 2);
+						define('DS', 3);
+						define('MAINTENANCE', 4);
+						define('PILOTE', 5);
+						define('PLANNING', 6);
+						
+    					// redirection différente selon le type de l'utiliateur		
     					switch ($typeUtilisateur) {
-    						case 'administrateur':
+    						case ADMIN :
     							$this->_redirect('/administrateur/index/');
-    						break;
-    						case 'drh':
+								break;
+    						case DRH :
     							$this->_redirect('/drh/index/');
-    						break;
-    						case 'direction stratégique':
+								break;
+    						case DS :
     							$this->_redirect('/directionstrategique/index/');
-    						break;
+								break;
+							case PLANNING :
+								$this->_redirect('/planning/index/');
+								break;
     					}
     	  
             		}
