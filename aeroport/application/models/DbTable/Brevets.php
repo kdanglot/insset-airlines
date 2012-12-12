@@ -15,4 +15,5 @@ class Application_Model_DbTable_Brevets extends Zend_Db_Table_Abstract {
 							'refTableClass' => 'Application_Model_DbTable_TypesBrevet'
 						)
 			);
+	
 }
