@@ -6,16 +6,28 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 	protected $_name = 'utilisateurs';
 	protected $primary = 'UTI_id';
     protected $_dependentTables = 'Application_Model_DbTable_Pilote';
+	
+	protected $_referenceMap = array (
+				'TypeUtilisateur' => array(
+							'columns' => 'TUTI_id', 
+							'refColumns' => 'TUTI_id', 	
+							'refTableClass' => 'Application_Model_DbTable_TypeUtilisateur'
+					)
+			);
 
 
 	public function typeUtilisateur($idUtilisateur) {
-		$db = Zend_Registry::get('db');
-		$sql = 'SELECT u.TUTI_id, TUTI_libelle 
-				FROM utilisateurs u, typesutilisateurs tu
-				WHERE u.TUTI_id = tu.TUTI_id
-				AND u.TUTI_id = '.$idUtilisateur.';';
-		$res = $db->fetchAll($sql);
-		return $res;
+		$utilisateur = $this->find($idUtilisateur)->current();
+		$typeUtilisateur = $utilisateur->findParentApplication_Model_DbTable_TypeUtilisateur();
+		return $typeUtilisateur->TUTI_libelle;
+		
+// 		$db = Zend_Registry::get('db');
+// 		$sql = 'SELECT u.TUTI_id, TUTI_libelle 
+// 				FROM utilisateurs u, typesutilisateurs tu
+// 				WHERE u.TUTI_id = tu.TUTI_id
+// 				AND u.TUTI_id = '.$idUtilisateur.';';
+// 		$res = $db->fetchAll($sql);
+// 		return $res;
 	}
 	
 	public function ajouterUtilisateur($idUtilisateur, $utilisateur) {
