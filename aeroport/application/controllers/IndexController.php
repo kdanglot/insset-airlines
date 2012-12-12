@@ -39,41 +39,22 @@ class IndexController extends Zend_Controller_Action
             		$res = $auth->authenticate($dbAdapter);
           
             		if($res->isValid($formData)) {
+					
             			// on récupère les infos de la personne après authentification
     					$dataUser = $dbAdapter->getResultRowObject(null, 'UTI_password');
+						
     					// on stocke les données dans la session
     					$auth->getStorage()->write($dataUser);
+						
     					// on récupère l'id de l'utilisateur
     					$idTypeUtilisateur = $dataUser->TUTI_id;
-    					// on récupère le type de l'utilisateur
-    					$infosUser = new Application_Model_DbTable_Utilisateur();
-    					$infosType = $infosUser->typeUtilisateur($idTypeUtilisateur);
-    					$typeUtilisateur = $typeUtilisateur[0]['TUTI_libelle'];
-    					var_dump($typeUtilisateur);
+    					
+						// on récupère l'alias de l'utilisateur
+    					$infosUser = new Application_Model_DbTable_TypeUtilisateur();
+    					$infosType = $infosUser->getTypeUtilisateur($idTypeUtilisateur);
 						
-						// Définition des types d'utilisateur (à synchroniser avec ceux de la BDD)
-						define('ADMIN', 1);
-						define('DRH', 2);
-						define('DS', 3);
-						define('MAINTENANCE', 4);
-						define('PILOTE', 5);
-						define('PLANNING', 6);
-						
-    					// redirection différente selon le type de l'utiliateur		
-    					switch ($typeUtilisateur) {
-    						case ADMIN :
-    							$this->_redirect('/administrateur/index/');
-								break;
-    						case DRH :
-    							$this->_redirect('/drh/index/');
-								break;
-    						case DS :
-    							$this->_redirect('/directionstrategique/index/');
-								break;
-							case PLANNING :
-								$this->_redirect('/planning/index/');
-								break;
-    					}
+						// Redirection
+						$this->_redirect('/' . $infosType->TUTI_alias . '/index');
     	  
             		}
             		else {

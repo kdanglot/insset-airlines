@@ -16,10 +16,10 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 			);
 
 
-	public function typeUtilisateur($idUtilisateur) {
-		$utilisateur = $this->find($idUtilisateur)->current();
-		$typeUtilisateur = $utilisateur->findParentApplication_Model_DbTable_TypeUtilisateur();
-		return $typeUtilisateur->TUTI_libelle;
+	// public function getAliasTypeUtilisateur($idUtilisateur) {
+		// $utilisateur = $this->find($idUtilisateur)->current();
+		// $infos = $utilisateur->findParentApplication_Model_DbTable_TypeUtilisateur();
+		// return $infos->TUTI_alias;
 		
 // 		$db = Zend_Registry::get('db');
 // 		$sql = 'SELECT u.TUTI_id, TUTI_libelle 
