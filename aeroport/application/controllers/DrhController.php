@@ -11,11 +11,39 @@ class DrhController extends Zend_Controller_Action {
 	}
 	
 	public function ajouterutilisateurAction() {
-		$formAjout = new Application_Form_AjouterModifierUtilisateur();
+		$formAjout = new Application_Form_AjouterPilote();
 		$this->view->formAjout = $formAjout;
+		
+		if($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+			if($formAjout->isValid($formData)) {
+				$prenom = $formAjout->getValue('prenom');
+				$nom = $formAjout->getValue('nom');
+				$login = $formAjout->getValue('login');
+				$mdp = $formAjout->getValue('mdp');
+				$mdp = hash('sha256', $mdp);
+				$idBrevets = $formAjout->getValue('typeBrevet');
+				$dateEmbauche = $formAjout->getValue('dateEmbauche');
+				$dateAjout = date('Y-m-d');
+
+				$db = Zend_Registry::get('db');
+				$pilote = new Application_Model_DbTable_Pilote();
+				$pilote->ajouterPilote($nom, $prenom, $login, $mdp, $dateEmbauche, $dateAjout, $idBrevets);
+			}
+		}
 	}
 	
-	public function modifier_utilisateurAction() {}
+	public function modifierpiloteAction() {
+		$id = $this->_request->getParam('id');
+		$pilote = new Application_Model_DbTable_Pilote();
+		$res = $pilote->afficherPilote($id);
+		
+		$form = new Application_Form_ModifierPilote();
+		$form->populate($res);
+		
+		echo $res->UTI_id;
+		echo $res->UTI_mail;
+	}
 	
 	public function supprimer_utilisateurAction() {}
 	
