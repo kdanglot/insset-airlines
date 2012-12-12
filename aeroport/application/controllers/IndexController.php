@@ -47,7 +47,7 @@ class IndexController extends Zend_Controller_Action
     					$idTypeUtilisateur = $dataUser->TUTI_id;
     					// on récupère le type de l'utilisateur
     					$utilisateur = new Application_Model_DbTable_Utilisateur();
-    					$typeUtilisateur = $utilisateur->typeUtiliateur($idTypeUtilisateur);
+    					$typeUtilisateur = $utilisateur->typeUtilisateur($idTypeUtilisateur);
     					$typeUtilisateur = $typeUtilisateur[0]['TUTI_libelle'];
     					var_dump($typeUtilisateur);
     					// redirection différente selon le type de l'utiliateur
