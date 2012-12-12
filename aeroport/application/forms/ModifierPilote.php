@@ -5,7 +5,7 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$this->setMethod('POST');
 		$this->setAttrib('id', 'modifierPilote');
 		
-		$eId = new Zend_Form_Element_Hidden('id');
+		$eId = new Zend_Form_Element_Text('id');
 		$eId->setAttrib('id', 'id');
 				
 		$ePrenom = new Zend_Form_Element_Text('prenom');
@@ -26,22 +26,32 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$eLogin->setRequired(true);
 		$eLogin->addValidator('NotEmpty');
 		
+		$eMail = new Zend_Form_Element_Text('email');
+		$eMail->setAttrib('id', 'email');
+		$eMail->setLabel('Email');
+		$eMail->setRequired(true);
+		$eMail->addValidator('NotEmpty');
+		
+		$eDateEmbauche = new Zend_Form_Element_Text('dateEmbauche');
+		$eDateEmbauche->setAttrib('id', 'dateEmbauche');
+		$eDateEmbauche->setLabel('Date embauche');
+		$eDateEmbauche->setRequired(true);
+		
 		$eAncienMdp = new Zend_Form_Element_Password('ancienMdp');
 		$eAncienMdp->setAttrib('id', 'ancienMdp');
 		$eAncienMdp->setLabel('Ancien mdp :');
-		$eAncienMdp->setRequired(true);
-		$eAncienMdp->addValidator('NotEmpty');
 		
 		$eNouveauMdp = new Zend_Form_Element_Password('nouveauMdp');
 		$eNouveauMdp->setAttrib('id', 'mdp');
 		$eNouveauMdp->setLabel('Nouveay mdp :');
-		$eNouveauMdp->setRequired(true);
-		$eNouveauMdp->addValidator('NotEmpty');
 		
 		$eConfirmeMdp = new Zend_Form_Element_Password('ConfirmeMdp');
 		$eConfirmeMdp->setAttrib('id', 'mdp');
 		$eConfirmeMdp->setLabel('Confirme mdp :');
-		$eConfirmeMdp->setRequired(true);
-		$eConfirmeMdp->addValidator('NotEmpty');
+		
+		$eModifier = new Zend_Form_Element_Submit('modifier');
+		$eModifier->setAttrib('id', 'boutonModifier');
+		
+		$this->addElements(array($eId, $eNom, $ePrenom, $eLogin, $eMail, $eDateEmbauche, $eAncienMdp, $eNouveauMdp, $eConfirmeMdp, $eModifier));
 	}
 }
