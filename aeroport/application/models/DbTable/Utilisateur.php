@@ -28,7 +28,7 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 // 				AND u.TUTI_id = '.$idUtilisateur.';';
 // 		$res = $db->fetchAll($sql);
 // 		return $res;
-	}
+	// }
 	
 	public function ajouterUtilisateur($idUtilisateur, $utilisateur) {
 		$utilisateurBDD = $this->find($idUtilisateur)->current();
