@@ -14,7 +14,7 @@ class PlanningController extends Zend_Controller_Action
 
     public function indexAction() {
     	$vols = new Application_Model_DbTable_Vol();
-		$this->view->vols = $vols->getVols();
+		// $this->view->vols = $vols->afficherVolPlanning();
     }
 
 	public function planifierAction() {
@@ -35,7 +35,7 @@ class PlanningController extends Zend_Controller_Action
 			
 				// Récupérer les données
 				$idVol = $formPlanifier->getValue('idVol');
-				$ligne = $formPlanifier->getValue('ligne');
+				$ligne = $formPlanifier->getValue('idLigne');
 				$dateDepart = $formPlanifier->getValue('dateDepart');
 				$aeroportDepart = $formPlanifier->getValue('aeroportDepart');
 				$dateArrivee = $formPlanifier->getValue('dateArrivee');
@@ -71,14 +71,13 @@ class PlanningController extends Zend_Controller_Action
 		else{
 			
 			$idVol = $this->_getParam('idVol', 0);
-			$ligne = $this->_getParam('ligne', 0);
+			$ligne = $this->_getParam('idLigne', 0);
 			$aeroportDepart = $this->_getParam('aeroportDepart', 0);
 			$aeroportArrivee = $this->_getParam('aeroportArrivee', 0);
 			
-			
 			// Si le vol existe on affiche ses données
-			if(isset($idVol)){
-				
+			if($idVol){
+			
 				// Récupérer les données
 				$vol = new Application_Model_DbTable_Vol();
 				$vol->getVol($idVol);
@@ -88,7 +87,11 @@ class PlanningController extends Zend_Controller_Action
 			
 			// Sinon on le créé avec des données générées
 			else{
-				
+			
+				// Récupérer les données
+				$vol = new Application_Model_DbTable_Vol();
+				// $vol->getVolFictif($ligne, $aeroportDepart);
+				// $formPlanifier->populate($vol);
 			}
 
 		}
