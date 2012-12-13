@@ -15,7 +15,14 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 	public function afficherPilote($idPilote) {
 		$pilote = $this->find($idPilote)->current();
 		$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
-		return $utilisateur;
+		$listeBrevets = $pilote->findApplication_Model_DbTable_TypesBrevetViaApplication_Model_DbTable_Brevets();
+		$tabPilote = array();
+		$tabPilote[0]['utilisateur']['UTI_nom'] = $utilisateur->UTI_nom;
+		$tabPilote[0]['utilisateur']['UTI_prenom'] = $utilisateur->UTI_prenom;
+		$tabPilote[0]['utilisateur']['UTI_login'] = $utilisateur->UTI_login;
+		$tabPilote[0]['utilisateur']['UTI_mail'] = $utilisateur->UTI_mail;
+		$tabPilote[0]['utilisateur']['UTI_dateEmbauche'] = $utilisateur->UTI_dateEmbauche;
+		return $tabPilote;
 	}
 	
 	public function afficherLesPilotes() {
@@ -53,12 +60,12 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		$tableTypeUtilisateur = new Application_Model_DbTable_TypeUtilisateur();
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
 		$utilisateur = $tableUtilisateur->createRow();
-		$utilisateur->TUTI_id = $tableTypeUtilisateur->fetchAll("TUTI_libelle = 'pilote'")->current()->TUTI_id;  //Trouver type utilisateur
+		$utilisateur->TUTI_id = 5;
 		$utilisateur->UTI_nom = $UTI_nom;
 		$utilisateur->UTI_prenom	= $UTI_prenom;
 		$utilisateur->UTI_login = $UTI_login;
 		$utilisateur->UTI_password = $UTI_password;
-		$utilisateurs->UTI_mail = $UTI_mail;
+		$utilisateur->UTI_mail = $UTI_mail;
 		$utilisateur->UTI_dateEmbauche = $UTI_dateEmbauche;
 		$utilisateur->UTI_dateAjout = $UTI_dateAjout;
 		$utilisateur->UTI_dateSupression = null;
@@ -77,7 +84,7 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		}
 	}
 	
-	public function modifierPilote($id, $pilote) {
+	public function modifierPilote($idPilote, array $pilote) {
 // 		Tableau a envoyer
 // 				$p["UTI_nom"] = "GUN";
 // 				$p["UTI_prenom"] = "TOP";
@@ -85,12 +92,12 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 // 				$p["UTI_password"] = "top";
 // 				$p["UTI_dateEmbauche"] = "2012-11-28";
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
-		$tableUtilisateur->modifierUtilisateur($this->find($id)->current()->UTI_id, $pilote);
+		$tableUtilisateur->modifierUtilisateur($this->find($idPilote)->current()->UTI_id, $pilote);
 	} 
 	
 	public function supprimerPilote($id) {
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
-		$tableUtilisateur->supprimerUtilisateur($this->find($id)->current()->UTI_id);
+		$tableUtilisateur->supprimerUtilisateur($id);
 // 		$tableUtilisateur->delete('UTI_id =' . $this->find($id)->current()->UTI_id);
 	} 
 }
