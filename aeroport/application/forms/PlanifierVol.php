@@ -46,7 +46,6 @@ class Application_Form_PlanifierVol extends Zend_Form {
 		$ePilote = new Zend_Form_Element_Select('pilote');
 		$ePilote->setLabel("Pilote");
 		$ePilote->setRequired(true);
-		var_dump($pilotes->afficherListePilotesDisponibles()); exit;
 		$ePilote->options = $pilotes->afficherListePilotesDisponibles();
 		
 		// Liste des Copilotes
@@ -68,7 +67,7 @@ class Application_Form_PlanifierVol extends Zend_Form {
 		$ePlanifier->setAttrib('id', 'boutonAjouter');
 
 		// ajout des elements au formulaire
-		$this->addElements(array($eIdVol, $eIdLigne, $eAeroportDepart, $eAeroportArrivee, $eHeureDepart, $eHeureArrivee, $eAvion, $ePlanifier));
+		$this->addElements(array($eIdVol, $eIdLigne, $eAeroportDepart, $eAeroportArrivee, $eHeureDepart, $eHeureArrivee, $eAvion, $ePilote, $eCopilote, $ePlanifier));
 
 	}
 

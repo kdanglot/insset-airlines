@@ -62,9 +62,8 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		$i = 0;
 		
 		foreach ($piloteListe as $pilote) {
-			$piloteTab[$i]["id"] = $pilote->PIL_id;
 			$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
-			$piloteTab[$i]["nom"] = $utilisateur->UTI_prenom . ' ' . $utilisateur->UTI_nom;
+			$piloteTab[$pilote->PIL_id] = $utilisateur->UTI_prenom . ' ' . $utilisateur->UTI_nom;
 			$i++;
 		}
 		
