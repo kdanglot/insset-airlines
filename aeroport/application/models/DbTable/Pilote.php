@@ -12,6 +12,11 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 							'refTableClass' => 'Application_Model_DbTable_Utilisateur'
 						)
 			);
+	public function afficherPilote($idPilote) {
+		$pilote = $this->find($idPilote)->current();
+		$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
+		return $utilisateur;
+	}
 	
 	public function afficherLesPilotes() {
 		$piloteListe = $this->fetchAll();
@@ -44,7 +49,7 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		return $piloteTab;
 	}
 	
-	public function ajouterPilote($UTI_nom, $UTI_prenom, $UTI_login, $UTI_password, $UTI_dateEmbauche, $UTI_dateAjout, $idBrevets) {
+	public function ajouterPilote($UTI_nom, $UTI_prenom, $UTI_login, $UTI_password, $UTI_mail, $UTI_dateEmbauche, $UTI_dateAjout, array $idBrevets) {
 		$tableTypeUtilisateur = new Application_Model_DbTable_TypeUtilisateur();
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
 		$utilisateur = $tableUtilisateur->createRow();
@@ -53,6 +58,7 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		$utilisateur->UTI_prenom	= $UTI_prenom;
 		$utilisateur->UTI_login = $UTI_login;
 		$utilisateur->UTI_password = $UTI_password;
+		$utilisateurs->UTI_mail = $UTI_mail;
 		$utilisateur->UTI_dateEmbauche = $UTI_dateEmbauche;
 		$utilisateur->UTI_dateAjout = $UTI_dateAjout;
 		$utilisateur->UTI_dateSupression = null;

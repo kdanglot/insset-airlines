@@ -39,29 +39,22 @@ class IndexController extends Zend_Controller_Action
             		$res = $auth->authenticate($dbAdapter);
           
             		if($res->isValid($formData)) {
+					
             			// on récupère les infos de la personne après authentification
     					$dataUser = $dbAdapter->getResultRowObject(null, 'UTI_password');
+						
     					// on stocke les données dans la session
     					$auth->getStorage()->write($dataUser);
+						
     					// on récupère l'id de l'utilisateur
     					$idTypeUtilisateur = $dataUser->TUTI_id;
-    					// on récupère le type de l'utilisateur
-    					$utilisateur = new Application_Model_DbTable_Utilisateur();
-    					$typeUtilisateur = $utilisateur->typeUtilisateur($idTypeUtilisateur);
-    					$typeUtilisateur = $typeUtilisateur[0]['TUTI_libelle'];
-    					var_dump($typeUtilisateur);
-    					// redirection différente selon le type de l'utiliateur
-    					switch ($typeUtilisateur) {
-    						case 'administrateur':
-    							$this->_redirect('/administrateur/index/');
-    						break;
-    						case 'drh':
-    							$this->_redirect('/drh/index/');
-    						break;
-    						case 'direction stratégique':
-    							$this->_redirect('/directionstrategique/index/');
-    						break;
-    					}
+    					
+						// on récupère l'alias de l'utilisateur
+    					$infosUser = new Application_Model_DbTable_TypeUtilisateur();
+    					$infosType = $infosUser->getTypeUtilisateur($idTypeUtilisateur);
+						
+						// Redirection
+						$this->_redirect('/' . $infosType->TUTI_alias . '/index');
     	  
             		}
             		else {
@@ -70,8 +63,8 @@ class IndexController extends Zend_Controller_Action
         	} 
 		}
        
-    } // indexAction()
-    
+    }
+	
     public function deconnexionAction() {
     	$auth = Zend_Auth::getInstance();
     	$auth->clearIdentity();
@@ -81,6 +74,3 @@ class IndexController extends Zend_Controller_Action
     public function testAction() {}
     
 }
-
-
-
