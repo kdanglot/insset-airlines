@@ -13,7 +13,8 @@ class PlanningController extends Zend_Controller_Action
     }
 
     public function indexAction() {
-    	
+    	$vols = new Application_Model_DbTable_Vol();
+		$this->view->vols = $vols->getVols();
     }
 
 	public function planifierAction() {
@@ -47,32 +48,49 @@ class PlanningController extends Zend_Controller_Action
 				
 				// Si le vol existe on le modifie
 				if(isset($idVol)){
-				
+					$vol->modifier($idVol, $ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
 				}
+				
+				// S'il n'existe pas on le créé avec ces données
+				else{
+					$vol->creer($ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
+				}
+				
+				// Après les modifications faites on revient à l'index
+				$this->_helper->redirector('index');
 			}
 			
-			// Sinon on affiche le formulaire avec les données
+			// sinon on le réaffiche avec les données
 			else{
-				
-				$idVol = $this->_getParam('idVol', 0);
-				$ligne = $this->_getParam('ligne', 0);
-				$aeroportDepart = $this->_getParam('aeroportDepart', 0);
-				$aeroportArrivee = $this->_getParam('aeroportArrivee', 0);
-				
-				$vol = new Application_Model_DbTable_Vol();
-				
-				// Si le vol existe on affiche ses données
-				if(isset($idVol)){
-					
-				}
-				
-				// Sinon on le créé avec des données générées
-				else{
-					
-				}
-				
+				$formPlanifier->populate($formData);
 			}
 		
+		}
+		
+		// Sinon on affiche le formulaire avec les données
+		else{
+			
+			$idVol = $this->_getParam('idVol', 0);
+			$ligne = $this->_getParam('ligne', 0);
+			$aeroportDepart = $this->_getParam('aeroportDepart', 0);
+			$aeroportArrivee = $this->_getParam('aeroportArrivee', 0);
+			
+			
+			// Si le vol existe on affiche ses données
+			if(isset($idVol)){
+				
+				// Récupérer les données
+				$vol = new Application_Model_DbTable_Vol();
+				$vol->getVol($idVol);
+				$formPlanifier->populate($vol);
+				
+			}
+			
+			// Sinon on le créé avec des données générées
+			else{
+				
+			}
+
 		}
 		
 	}
