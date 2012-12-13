@@ -1,21 +1,24 @@
 <?php 
 	$auth = Zend_Auth::getInstance();
 	$identity = $auth->getIdentity();
-	echo 'Bienvenue ' . $identity->UTI_login;
 ?>
-<?php var_dump($this->listePilote);?>
-<div>
+<div id='identification'>
+<a href="/index/deconnexion">Deconnexion</a>
+<?php echo 'Bienvenue ' . $identity->UTI_login . ' ';?>
+</div>
+<div class="action_page">
 	<a href=<?php echo $this->url(array('controller' => 'drh', 'action' => 'ajouterutilisateur'));?>>Ajouter un pilote</a>
 </div>
-<table>
+<br/><br/><br/><div class="titre_page">Listes des lignes</div><br/>
+<table class="table_type1">
 	<tr>
 		<th>Nom</th>
 		<th>Prénom</th>
 		<th>Login</th>
 		<th>Brevet(s)</th>
 		<th>Date Embauche</th>
-		<th></th>
-		<th></th>
+		<th>Modifier/supprimer</th>
+	
 	</tr>
 	<?php foreach($this->listePilote as $pilote) :?>
 	<tr>
@@ -29,8 +32,14 @@
 		<?php endfor;?>
 		</select></td>
 		<td><?php echo $pilote['utilisateur']['UTI_dateEmbauche'];?></td>
-		<td><a href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'modifierpilote', 'id'=>$pilote['PIL_id']));?>>Modifier un pilote</a></td>
-		<td><a href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerpilote'));?>>Supprimer un pilote</a></td>		
+		<td  class="btnGestion" >
+			
+			<a  href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'modifierpilote', 'id'=>$pilote['PIL_id']));?>><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/modifier.png" border="0" title="Modifer" alt ="Modifier"/></a>
+
+			<a  href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerpilote'));?>><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/supprimer.png" border="0" title="Supprimer" alt ="Supprimer"/></a>
+
+		</td>
+		
 		
 	</tr>
 	<?php endforeach;?>
