@@ -1,7 +1,10 @@
 <?php
 class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 
-	protected $_name = 'lignes';
+	protected $_name = 'lignes';	
+	protected $primary = 'LIG_id';
+	
+    protected $_dependentTables = 'Application_Model_DbTable_Vol';
 	
 	public function getLigneById($id){
 	

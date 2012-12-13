@@ -1,6 +1,8 @@
 <?php
 class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 	protected $_name = 'aeroports';
+	protected $primary = 'AER_id';
+    protected $_dependentTables = 'Application_Model_DbTable_Vol';
 	
 	public function afficherLesAeroports() {
 		$db = Zend_Registry::get('db');
