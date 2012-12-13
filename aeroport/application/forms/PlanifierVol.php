@@ -46,6 +46,7 @@ class Application_Form_PlanifierVol extends Zend_Form {
 		$ePilote = new Zend_Form_Element_Select('pilote');
 		$ePilote->setLabel("Pilote");
 		$ePilote->setRequired(true);
+		var_dump($pilotes->afficherListePilotesDisponibles()); exit;
 		$ePilote->options = $pilotes->afficherListePilotesDisponibles();
 		
 		// Liste des Copilotes
