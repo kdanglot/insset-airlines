@@ -56,6 +56,21 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		return $piloteTab;
 	}
 	
+	public function afficherListePilotesDisponibles() {
+		$piloteListe = $this->fetchAll();
+		$piloteTab = array ();
+		$i = 0;
+		
+		foreach ($piloteListe as $pilote) {
+			$piloteTab[$i]["id"] = $pilote->PIL_id;
+			$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
+			$piloteTab[$i]["nom"] = $utilisateur->UTI_prenom . ' ' . $utilisateur->UTI_nom;
+			$i++;
+		}
+		
+		return $piloteTab;
+	}
+	
 	public function ajouterPilote($UTI_nom, $UTI_prenom, $UTI_login, $UTI_password, $UTI_mail, $UTI_dateEmbauche, $UTI_dateAjout, array $idBrevets) {
 		$tableTypeUtilisateur = new Application_Model_DbTable_TypeUtilisateur();
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
