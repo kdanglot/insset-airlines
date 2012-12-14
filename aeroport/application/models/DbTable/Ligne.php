@@ -5,6 +5,14 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 	protected $primary = 'LIG_id';
 	
     protected $_dependentTables = 'Application_Model_DbTable_Vol';
+    
+    protected $_referenceMap = array (
+    		'TypePeriodicite' => array(
+    				'columns' => 'TPER_id',
+    				'refColumns' => 'TPER_id',
+    				'refTableClass' => 'Application_Model_DbTable_TypePeriodicite'
+    		)
+    );
 	
 	public function getLigneById($id){
 	
