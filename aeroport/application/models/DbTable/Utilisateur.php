@@ -27,7 +27,7 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 		$utilisateurBDD->save();
 	}
 	
-	public function modifierUtilisateur($idUtilisateur, $utilisateur) {
+	public function modifierUtilisateur($idUtilisateur, array $utilisateur) {
 		$utilisateurBDD = $this->find($idUtilisateur)->current();
 		
 		$utilisateurBDD->UTI_nom = $utilisateur["UTI_nom"];
