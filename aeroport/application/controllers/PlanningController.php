@@ -14,7 +14,7 @@ class PlanningController extends Zend_Controller_Action
 
     public function indexAction() {
     	$vols = new Application_Model_DbTable_Vol();
-		// $this->view->vols = $vols->afficherVolPlanning();
+		$this->view->vols = $vols->afficherVolPlanning();
     }
 
 	public function planifierAction() {
