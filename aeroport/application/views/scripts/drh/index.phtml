@@ -30,7 +30,8 @@
 		</select></td>
 		<td><?php echo $pilote['utilisateur']['UTI_dateEmbauche'];?></td>
 		<td><a href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'modifierpilote', 'id'=>$pilote['PIL_id']));?>>Modifier un pilote</a></td>
-		<td><a href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerpilote'));?>>Supprimer un pilote</a></td>		
+		<td><a href="javascript:if(confirm('Etes vous sur ?')) document.location.href='<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerpilote', 'id'=>$pilote['utilisateur']['UTI_id']));?>'">Supprimer pilote</a></td>
+				
 		
 	</tr>
 	<?php endforeach;?>

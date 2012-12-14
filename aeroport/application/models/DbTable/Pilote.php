@@ -22,6 +22,13 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		$tabPilote[0]['utilisateur']['UTI_login'] = $utilisateur->UTI_login;
 		$tabPilote[0]['utilisateur']['UTI_mail'] = $utilisateur->UTI_mail;
 		$tabPilote[0]['utilisateur']['UTI_dateEmbauche'] = $utilisateur->UTI_dateEmbauche;
+		$j = 0;
+		foreach ($listeBrevets as $brevet) {
+			$tabPilote[0]['brevets'][$j]['TRBE_id'] = $brevet->TBRE_id;
+			$tabPilote[0]['brevets'][$j]['TRBE_nom'] = $brevet->TBRE_nom;
+			$tabPilote[0]["brevets"][$j]["BRE_dateAjout"] = $brevet->TBRE_dateAjout;
+			$j++;
+		}
 		return $tabPilote;
 	}
 	

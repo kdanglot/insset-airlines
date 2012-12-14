@@ -4,10 +4,7 @@ class Application_Form_AjouterPilote extends Zend_Form {
 	public function init() {
 		$typeBrevet = new Application_Model_DbTable_TypesBrevet();
 		$lesTypesBrevets = $typeBrevet->afficherLesBrevets();
-		// var_dump($res);
 		
-		$prenomDoesntExist = new Zend_Validate_Db_NoRecordExists('utilisateurs', 'UTI_prenom');
-		$nomDoesntExist = new Zend_Validate_Db_NoRecordExists('utilisateurs', 'UTI_nom');
 		$loginDoesntExist = new Zend_Validate_Db_NoRecordExists('utilisateurs', 'UTI_login');
 		$mailDoesntExist = new Zend_Validate_Db_NoRecordExists('utilisateurs', 'UTI_mail');
 		$mailFormat = new Zend_Validate_EmailAddress();
@@ -19,20 +16,21 @@ class Application_Form_AjouterPilote extends Zend_Form {
 		$ePrenom->setAttrib('id', 'prenom');
 		$ePrenom->setLabel('Prénom :');
 		$ePrenom->setRequired(true);
+		$ePrenom->addFilter('Alnum');
 		$ePrenom->addValidator('NotEmpty');
-		$ePrenom->addValidator($prenomDoesntExist);
 		
 		$eNom = new Zend_Form_Element_Text('nom');
 		$eNom->setAttrib('id', 'nom');
 		$eNom->setLabel('Nom :');
 		$eNom->setRequired(true);
+		$eNom->addFilter('Alnum');
 		$eNom->addValidator('NotEmpty');
-		$eNom->addValidator($nomDoesntExist);
 		
 		$eLogin = new Zend_Form_Element_Text('login');
 		$eLogin->setAttrib('id', 'login,');
 		$eLogin->setLabel('Login :');
 		$eLogin->setRequired(true);
+		$eLogin->addFilter('Alnum');
 		$eLogin->addValidator('NotEmpty');
 		$eLogin->addValidator($loginDoesntExist);
 		

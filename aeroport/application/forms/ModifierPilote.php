@@ -5,7 +5,7 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$this->setMethod('POST');
 		$this->setAttrib('id', 'modifierPilote');
 		
-		$eId = new Zend_Form_Element_Text('id');
+		$eId = new Zend_Form_Element_Hidden('id');
 		$eId->setAttrib('id', 'id');
 				
 		$ePrenom = new Zend_Form_Element_Text('prenom');

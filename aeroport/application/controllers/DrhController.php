@@ -22,13 +22,14 @@ class DrhController extends Zend_Controller_Action {
 				$login = $formAjout->getValue('login');
 				$mdp = $formAjout->getValue('mdp');
 				$mdp = hash('sha256', $mdp);
+				$mail = $formAjout->getValue('email');
 				$idBrevets = $formAjout->getValue('typeBrevet');
 				$dateEmbauche = $formAjout->getValue('dateEmbauche');
 				$dateAjout = date('Y-m-d');
 
 				$db = Zend_Registry::get('db');
 				$pilote = new Application_Model_DbTable_Pilote();
-				$pilote->ajouterPilote($nom, $prenom, $login, $mdp, $dateEmbauche, $dateAjout, $idBrevets);
+				$pilote->ajouterPilote($nom, $prenom, $login, $mdp, $mail, $dateEmbauche, $dateAjout, $idBrevets);
 			}
 		}
 	}
@@ -37,15 +38,18 @@ class DrhController extends Zend_Controller_Action {
 		$id = $this->_request->getParam('id');
 		$pilote = new Application_Model_DbTable_Pilote();
 		$res = $pilote->afficherPilote($id);
-		echo $res->UTI_id;
-		$tab = array(
-				'id'=>$res->UTI_id,
-				'nom'=>$res->UTI_nom,
+		var_dump($res);
+		/*$tab = array(
+				'id'=>$id,
+				'nom'=>$res['UTI_nom'],
 				'prenom'=>$res->UTI_prenom,
 				'login'=>$res->UTI_login,
 				'email'=>$res->UTI_mail,
-				'dateEmbauche'=>$res->UTI_dateEmbauche);
-		
+				'dateEmbauche'=>$res->UTI_dateEmbauche,
+				array(
+					'listeBrevet'=>$res[1]));*/
+		//var_dump($tab);
+		/*
 		$formModification = new Application_Form_ModifierPilote();
 		$formModification->populate($tab);
 		$this->view->formModification = $formModification;
@@ -57,11 +61,11 @@ class DrhController extends Zend_Controller_Action {
 				$prenom = $formModification->getValue('prenom');
 				$nom = $formModification->getValue('nom');
 				$login = $formModification->getValue('login');
-				$mdp = $formModification->getValue('mdp');
-				//$mdp = hash('sha256', $mdp);
-				//$idBrevets = $formAjout->getValue('typeBrevet');
+				$mdp = 'testMdp';
+				$mdp = hash('sha256', $mdp);
+				$idBrevets = $formAjout->getValue('typeBrevet');
 				$dateEmbauche = $formModification->getValue('dateEmbauche');
-				$dateAjout = date('Y-m-d');
+				//$dateAjout = date('Y-m-d');
 				
 				$tabRes = array (
 						'UTI_nom'=>$nom,
@@ -69,16 +73,21 @@ class DrhController extends Zend_Controller_Action {
 						'UTI_login'=>$login,
 						'UTI_password'=>$mdp,
 						'UTI_dateEmbauche'=>$dateEmbauche);
-				echo $id;
-				var_dump($tabRes);
-				/*$db = Zend_Registry::get('db');
+				
+				$db = Zend_Registry::get('db');
 				$pilote = new Application_Model_DbTable_Pilote();
-				$pilote->modifierPilote($id);*/
+				$pilote->modifierPilote($id, $tabRes);
 			}
-		}
+		}*/
 	}
 
 	
-	public function supprimer_utilisateurAction() {}
+	public function supprimerpiloteAction() {
+		$id = $this->_request->getParam('id');
+		$pilote = new Application_Model_DbTable_Pilote();
+		$pilote->supprimerPilote($id);
+		echo $id;
+		// $this->_redirect('/drh/index/');
+	}
 	
 }
