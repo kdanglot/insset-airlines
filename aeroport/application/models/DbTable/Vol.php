@@ -32,12 +32,12 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 				$date = new DateTime(date('Y-m-d'));
 				$dateJour = $date->sub(new DateInterval('P'.($date->format('N')-1).'D'));
 				for ($i = 0; $i < 35; $i++) {
-					$calendrierVol[$i]["vol"][$tableauNbVolParJour[$i]]["ligne"]["LIG_id"] = $ligne->LIG_id;
+					$calendrierVol[$i][$tableauNbVolParJour[$i]]["ligne"]["LIG_id"] = $ligne->LIG_id;
 					
 					foreach ($vols as $vol){
 						$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
 						if($dateJour->format('Y-m-d') == $dateDepart->format('Y-m-d')){
-							$calendrierVol[$i]["vol"][$tableauNbVolParJour[$i]] = $this->remplirVolTab($vol);
+							$calendrierVol[$i][$tableauNbVolParJour[$i]] = $this->remplirVolTab($vol);
 						}
 					}
 					
@@ -49,7 +49,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 				$dateJour = $date->sub(new DateInterval('P'.($date->format('N')-1).'D'));
 				for ($i = 0; $i < 5; $i++) {
 					for ($j = 0; $j < 7; $j++) {
-						$calendrierVol[($i*7)+$j]["vol"][$tableauNbVolParJour[($i*7)+$j]]["ligne"]["LIG_id"] = $ligne->LIG_id;
+						$calendrierVol[($i*7)+$j][$tableauNbVolParJour[($i*7)+$j]]["ligne"]["LIG_id"] = $ligne->LIG_id;
 						$tableauNbVolParJour[($i*7)+$j]++;
 					}
 					
@@ -59,12 +59,12 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 						if($dateJour->format('W') == $dateDepart->format('W') && $dateJour->format('Y') == $dateDepart->format('Y')){
 							$jour = $i*7+($dateDepart->format('N')-1);
 							for ($j = 0; $j < 7; $j++) {
-								$calendrierVol[($i*7)+$j]["vol"][$tableauNbVolParJour[($i*7)+$j]] = null;
+								$calendrierVol[($i*7)+$j][$tableauNbVolParJour[($i*7)+$j]] = null;
 								$tableauNbVolParJour[($i*7)+$j]--;
 							}
-							$calendrierVol[$jour]["vol"][$tableauNbVolParJour[$jour]]["ligne"]["LIG_id"] = $ligne->LIG_id;
+							$calendrierVol[$jour][$tableauNbVolParJour[$jour]]["ligne"]["LIG_id"] = $ligne->LIG_id;
 							$tableauNbVolParJour[$jour]++;
-							$calendrierVol[$jour]["vol"][$tableauNbVolParJour[$jour]] = $this->remplirVolTab($vol);
+							$calendrierVol[$jour][$tableauNbVolParJour[$jour]] = $this->remplirVolTab($vol);
 							$tableauNbVolParJour[$jour]++;
 						}
 					}
@@ -113,13 +113,18 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	
 	
 	
-	public function getVol(){
+	public function getVol($idVol){
+		$vol = $this->find($idVol)->current();
+		$volTab = $this->remplirVolTab($vol);
+		
+		return $volTab;
+	}
+	
+	public function ajoutVol($idLigne, $dateDepart, $idAeroportDepart, $dateArrivee, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
 		
 	}
 
 // 	creer($ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
 
 // 	modifier($idVol, $ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
-
-// getVols() : Parametre par defaut vide
 }
