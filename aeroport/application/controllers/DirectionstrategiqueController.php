@@ -92,8 +92,4 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 			}
 		}
 	}
-	
-	public function testAction() {}
-	
-	
 }
