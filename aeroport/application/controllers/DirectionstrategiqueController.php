@@ -20,6 +20,12 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 	}
 	
 	public function ajouterligneAction() {
+		/*$aeroport = new Application_Model_DbTable_Aeroport();
+		$list = $aeroport->aeroportPays($idPays);
+		var_dump($list);*/
+		
+		
+		
 		$formAjouterLigne = new Application_Form_AjouterModifierLigne();
 		$this->view->formAjouterLigne = $formAjouterLigne;
 		
@@ -86,6 +92,4 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 			}
 		}
 	}
-	
-	
 }

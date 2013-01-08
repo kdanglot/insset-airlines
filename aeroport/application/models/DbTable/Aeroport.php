@@ -20,7 +20,7 @@ class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 				AND av.VIL_id = v.VIL_id 
 				AND v.PAY_id = p.PAY_id 
 				AND p.PAY_id ='.$idPays.';';
-		$result = $db->fetchAll($sql);		
-		return $result;
+		return $rows = $db->fetchAll($sql);		
+	
 	}
 }

@@ -1,3 +1,46 @@
+<<<<<<< HEAD
+<?php 
+	$this->headTitle()->SetSeparator(' - ');
+	$this->headTitle('INSSET Airlines');
+	echo $this->doctype('HTML5');
+?>
+<!DOCTYPE html>
+<html lang="fr" >
+	<head>
+		<meta charset="utf-8" /> 
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/reset.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/stylegeneral.css" />
+		<!--[if IE]>
+			<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/ie.css" />
+		<![endif]-->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+		<script src="<?php echo $this->baseUrl();?>/js/fonction.js"></script>
+		<?php echo $this->headTitle() ?>
+		
+	</head>
+	<body>
+		<div id="bodyPage">
+		
+			
+				<!-- HEADER -->	
+				<header>
+					<img src="<?php echo $this->baseUrl(); ?>/img/logo.jpg" alt="Logo Insset Airlines" />
+					<h1>INSSET Airlines</h1>
+				</header>
+					
+				<!-- CONTAINER -->			
+				<?php echo $this->layout()->content; ?>
+					
+				<!-- FOOTER -->
+				<footer>
+				</footer>
+				
+		</div>
+	</body>
+</html>
+
+
+=======
 <?php 
 	$this->headTitle()->SetSeparator(' - ');
 	$this->headTitle('INSSET Airlines');
@@ -40,3 +83,4 @@
 </html>
 
 
+>>>>>>> branch 'master' of https://github.com/kdanglot/insset-airlines.git
