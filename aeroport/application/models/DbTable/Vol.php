@@ -18,10 +18,15 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 			)
 	);
 	
+	// $date : objet DateTime 
+	// Format de $nbSemaine : int
 	public function afficherVolPlanning($date, $nbSemaine){
 // 		Recuperation des lignes.
 		$tabLignes = new Application_Model_DbTable_Ligne();
 		$lignes = $tabLignes->fetchAll();
+		
+		// Travailler sur une copie de l'objet
+		$date = clone $date;
 		
 		//Création du calendrier des vols
 		$calendrierVol = array();
@@ -118,7 +123,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$j=0;
 			
 		$aeroport = new Application_Model_DbTable_Aeroport();
-		
+		$ligneCalendrier = array();
 		foreach ($trajets as $trajet){
 			if ($j==0) {
 				$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_id_depart"] = $trajet->AER_id;

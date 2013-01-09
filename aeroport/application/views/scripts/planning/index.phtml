@@ -1,1 +1,28 @@
-<?php echo '<pre>'; print_r($this->vols);
+<?php 
+	
+	// Parcourir le planning
+	echo<<<TABLESTART
+	<table class="table_type1" >
+		<thead>
+			<tr>
+				<th>Départ</th>
+				<th>Aéroport</th>
+				<th>Arrivée</th>
+				<th>Aéroport</th>
+				<th>Avion</th>
+				<th>Ligne</th>
+				<th>Pilote</th>
+				<th>Copilote</th>
+			</tr>
+		</thead>
+		<tbody>
+TABLESTART;
+
+	
+	
+	echo<<<TABLEEND
+		</tbody>
+	</table>
+TABLEEND;
+	
+?>
