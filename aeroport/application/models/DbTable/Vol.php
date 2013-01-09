@@ -173,7 +173,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$pilote = $pilotes->find($vol->PIL_id_copilote)->current();
 			$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
 			$volTab["coPilote"]["utilisateur"]["idUtilisateur"] = $utilisateur->UTI_id;
-			$volTab["copilote"]["utilisateur"]["UTI_nom"] = $utilisateur->UTI_nom;
+			$volTab["coPilote"]["utilisateur"]["UTI_nom"] = $utilisateur->UTI_nom;
 			$volTab["coPilote"]["utilisateur"]["UTI_prenom"] = $utilisateur->UTI_prenom;
 			$volTab["coPilote"]["utilisateur"]["UTI_mail"] = $utilisateur->UTI_mail;  
 			

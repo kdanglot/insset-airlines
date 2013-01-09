@@ -54,14 +54,81 @@ class PlanningController extends Zend_Controller_Action
 				// Parcourir les vols
 				foreach($vols as $vol){
 					
+					// Formater la date de départ si elle existe
+					if(isset($vol['VOL_dateDepartEffective'])){
+						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartEffective']);
+						$dateDepartVol = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' '. date_format($dateDepartVol, 'H:i');	
+						$class = 'planfie';
+					}
+					else{
+						$dateDepartVol = $tabNomJours[$jourSemaine] . ' ' . $dayVol;
+						$class = 'non-planifie';
+					}
+					
+					// Formater la date d'arrivée si elle existe
+					if(isset($vol['VOL_dateArriveeEffective'])){ 
+						$dateArrivee = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateArriveeEffective']);
+						$dateArrivee = $tabNomJours[intval(date_format($dateArrivee, 'N')) - 1] . ' ' . date_format($dateArrivee, 'd') . ' '. date_format($dateArrivee, 'H:i');					
+					}
+					else{
+						$dateArrivee = '';
+					}
+					
+					// Créer un avion vide s'il n'y en a pas
+					if(!isset($vol['avion'])){
+						$vol['avion'] = array(
+							'AVI_id' => '',
+							'AVI_immatriculation' => ''
+						);
+					}
+					
+					// Créer un pilote vide s'il n'y en a pas
+					if(!isset($vol['pilote'])){
+						$pilote = array(
+							'id' => '',
+							'nom' => ''
+						);
+					}
+					else{
+						$pilote = array(
+							'id' => $vol['pilote']['PIL_id'],
+							'nom' => $vol['pilote']['utilisateur']['UTI_nom'] . ' ' . $vol['pilote']['utilisateur']['UTI_prenom']
+						);
+					}
+					
+					// Créer un copilote vide s'il n'y en a pas
+					if(!isset($vol['coPilote'])){
+						$copilote = array(
+							'id' => '',
+							'nom' => ''
+						);
+					}
+					else{
+						$copilote = array(
+							'id' => $vol['coPilote']['PIL_id'],
+							'nom' => $vol['coPilote']['utilisateur']['UTI_nom'] . ' ' . $vol['coPilote']['utilisateur']['UTI_prenom']
+						);
+					}
+					
 					$planning[] = array(
-						'depart' => $tabNomJours[$jourSemaine] . ' ' . $dayVol,
-						'arrivee' => '',
-						'idAeroportDepart' => intval($vol['aeroportDepart']['AER_id_depart']),
-						'nomAeroportDepart' => $vol['aeroportDepart']['AER_nom'],
-						'idAeroportArrivee' => intval($vol['aeroportArrivee']['AER_id_arrivee']),
-						'nomAeroportArrivee' => $vol['aeroportArrivee']['AER_nom'],
-						'ligne' => $ligne
+						'class' => $class,
+						'depart' => array(
+							'date' => $dateDepartVol,
+							'idAeroport' => intval($vol['aeroportDepart']['AER_id_depart']),
+							'nomAeroport' => $vol['aeroportDepart']['AER_nom']
+						),
+						'arrivee' => array(
+							'date' => $dateArrivee,
+							'idAeroport' => intval($vol['aeroportArrivee']['AER_id_arrivee']),
+							'nomAeroport' => $vol['aeroportArrivee']['AER_nom']
+						),
+						'ligne' => $ligne,
+						'avion' => array(
+							'id' => $vol['avion']['AVI_id'],
+							'immatriculation' => $vol['avion']['AVI_immatriculation']
+						),
+						'pilote' => $pilote,
+						'copilote' => $copilote
 					);
 					
 				}

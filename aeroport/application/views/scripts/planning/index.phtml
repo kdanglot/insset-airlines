@@ -20,15 +20,15 @@ TABLESTART;
 
 		foreach($this->planning as $vol){
 			echo<<<TABLEROW
-			<tr>
-				<td>$vol[depart]</td>
-				<td>$vol[nomAeroportDepart]</td>
-				<td>$vol[arrivee]</td>
-				<td>$vol[nomAeroportArrivee]</td>
-				<td></td>
-				<td>$vol[ligne]</td>
-				<td></td>
-				<td></td>
+			<tr class="{$vol['class']}" >
+				<td>{$vol['depart']['date']}</td>
+				<td>{$vol['depart']['nomAeroport']}</td>
+				<td>{$vol['arrivee']['date']}</td>
+				<td>{$vol['arrivee']['nomAeroport']}</td>
+				<td>{$vol['avion']['immatriculation']}</td>
+				<td>{$vol['ligne']}</td>
+				<td>{$vol['pilote']['nom']}</td>
+				<td>{$vol['copilote']['nom']}</td>
 			</tr>
 TABLEROW;
 		}
