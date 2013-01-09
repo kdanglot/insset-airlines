@@ -18,7 +18,20 @@
 		<tbody>
 TABLESTART;
 
-	
+		foreach($this->planning as $vol){
+			echo<<<TABLEROW
+			<tr>
+				<td>$vol[depart]</td>
+				<td>$vol[nomAeroportDepart]</td>
+				<td>$vol[arrivee]</td>
+				<td>$vol[nomAeroportArrivee]</td>
+				<td></td>
+				<td>$vol[ligne]</td>
+				<td></td>
+				<td></td>
+			</tr>
+TABLEROW;
+		}
 	
 	echo<<<TABLEEND
 		</tbody>

@@ -13,32 +13,36 @@ class PlanningController extends Zend_Controller_Action
     }
 
     public function indexAction() {
-    	$vols = new Application_Model_DbTable_Vol();
+    	
+		$vols = new Application_Model_DbTable_Vol();
 		
 		$dateDepart = new DateTime();
 		// $dateDepart = $dateDepart->sub(new DateInterval('P1W'));
 		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, 1);
-		
+		// echo '<pre>'; var_dump($volsListeBrute); exit;
 		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
-		
-		$tabJours = array();
+		$planning = array();
 		
 		// Parcourir les jours
 		$jourSemaine = 0;
-		foreach($this->planning as $jour => $lignes){
+		foreach($volsListeBrute as $jour => $lignes){
 			
 			$jour ++; // Le tableau des jours commence à l'index 0. On le fais donc commencer à l'index 1.
-			$dayVol = $this->dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
-			$dayStart = intval($this->dateDepart->format('w')); // Le numéro du jour de départ de l'affichage
+			$dayVol = $dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
+			$dayStart = intval($dateDepart->format('w')); // Le numéro du jour de départ de l'affichage
 			
-			// Si c'est un jour passé (ex : $dayStart = 
+			// Comme la méthode renvoie la semaine complète
+			// Si on envoie un Jeudi en jour de départ
+			// Le tableau renvoyé correspondra à un mardi
+			// Il faut donc comparer le jour d'aujourd'hui et le tableau des jours renvoyé par la méthode (qui commence à 1) pour résoudre le numéro véritable des jours.
+			// Si c'est un jour passé
 			if($dayStart > $jour){ 
-				// Retire le nombre de jour nécessaire au DateTime en partant de la date d'aujourd'hui
+				// Retire le nombre de jour nécessaire
 				$dayVol->sub(new DateInterval('P' . ($dayStart - $jour) . 'D'));
 			}
 			// Sinon c'est un jour futur
 			else {
-				// Donc on ajoute les jours nécessaires
+				// ajoute les jours nécessaires
 				$dayVol->add(new DateInterval('P' . ($jour - $dayStart) . 'D'));
 			}
 			
@@ -50,8 +54,14 @@ class PlanningController extends Zend_Controller_Action
 				// Parcourir les vols
 				foreach($vols as $vol){
 					
-					$tabJours[$dayVol] = array(
-						'dayComplete' = $tabNomJours[$jourSemaine] . ' ' . $dayVol;
+					$planning[] = array(
+						'depart' => $tabNomJours[$jourSemaine] . ' ' . $dayVol,
+						'arrivee' => '',
+						'idAeroportDepart' => intval($vol['aeroportDepart']['AER_id_depart']),
+						'nomAeroportDepart' => $vol['aeroportDepart']['AER_nom'],
+						'idAeroportArrivee' => intval($vol['aeroportArrivee']['AER_id_arrivee']),
+						'nomAeroportArrivee' => $vol['aeroportArrivee']['AER_nom'],
+						'ligne' => $ligne
 					);
 					
 				}
@@ -61,8 +71,8 @@ class PlanningController extends Zend_Controller_Action
 			if($jourSemaine == 7) { $jourSemaine = 0; }
 			
 		}
-		
-		$this->view->dateDepart = $dateDepart;
+		// echo '<pre>'; var_dump($planning); exit;
+		$this->view->planning = $planning;
     }
 
 	public function planifierAction() {
