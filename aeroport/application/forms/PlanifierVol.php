@@ -12,26 +12,26 @@ class Application_Form_PlanifierVol extends Zend_Form {
 		$this->setAttrib('id', 'planifierVolForm');
 		
 		// element hidden idVol
-		$eIdVol = new Zend_Form_Element_Hidden('idVol');
+		$eIdVol = new Zend_Form_Element_Hidden('id');
         $eIdVol->addFilter('Int');
 		
 		// element hidden idLigne
-		$eIdLigne = new Zend_Form_Element_Hidden('idLigne');
+		$eIdLigne = new Zend_Form_Element_Hidden('ligne');
         $eIdLigne->addFilter('Int');
 		 
 		// element Text heure de depart + attributs
-		$eHeureDepart = new Zend_Form_Element_Text('heureDepart');
-		$eHeureDepart->setAttrib('placeholder', 'heureDepart');
+		$eHeureDepart = new Zend_Form_Element_Text('dateDepart');
+		$eHeureDepart->setAttrib('placeholder', 'Date de départ');
 		$eHeureDepart->setAttrib('autofocus', 'autofocus');
-		$eHeureDepart->setLabel('Heure de départ : ');
+		$eHeureDepart->setLabel('Date de départ : ');
 		$eHeureDepart->setRequired(true);
 		$eHeureDepart->addFilter('StringTrim');
 		$eHeureDepart->addValidator('NotEmpty');
 
 		// element Text heure d'arrive + attributs
-		$eHeureArrivee = new Zend_Form_Element_Text('heureArrivee');
-		$eHeureArrivee->setAttrib('placeholder', "Heure d'arrivée");
-		$eHeureArrivee->setLabel("Heure d'arrivée");
+		$eHeureArrivee = new Zend_Form_Element_Text('dateArrivee');
+		$eHeureArrivee->setAttrib('placeholder', "Date d'arrivée");
+		$eHeureArrivee->setLabel("Date d'arrivée");
 		$eHeureArrivee->setRequired(true);
 		$eHeureArrivee->addFilter('StringTrim');
 		$eHeureArrivee->addValidator('NotEmpty');

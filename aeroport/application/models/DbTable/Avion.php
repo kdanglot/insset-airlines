@@ -44,7 +44,7 @@ class Application_Model_DbTable_Avion extends Zend_Db_Table_Abstract {
 		$avionTab = array ();
 		
 		foreach ($avionListe as $avion) {
-			$avionTab[$avion->AVI_immatriculation] = $avion->AVI_immatriculation;
+			$avionTab[$avion->AVI_id] = $avion->AVI_immatriculation;
 		}
 		
 		return $avionTab;
