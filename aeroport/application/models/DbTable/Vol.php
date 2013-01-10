@@ -149,8 +149,9 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	}
 	
 	public function remplirVolTab($vol){
+	
 		$volTab["VOL_id"] = $vol->VOL_id;
-		
+		$volTab['LIG_id'] = $vol->LIG_id;
 		$aeroport = new Application_Model_DbTable_Aeroport();
 		$volTab["aeroportDepart"]["AER_id_depart"] = $vol->AER_id_depart;
 		$volTab["aeroportDepart"]["AER_nom"] = $aeroport->find($vol->AER_id_depart)->current()->AER_nom;
@@ -173,7 +174,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$pilote = $pilotes->find($vol->PIL_id_copilote)->current();
 			$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
 			$volTab["coPilote"]["utilisateur"]["idUtilisateur"] = $utilisateur->UTI_id;
-			$volTab["copilote"]["utilisateur"]["UTI_nom"] = $utilisateur->UTI_nom;
+			$volTab["coPilote"]["utilisateur"]["UTI_nom"] = $utilisateur->UTI_nom;
 			$volTab["coPilote"]["utilisateur"]["UTI_prenom"] = $utilisateur->UTI_prenom;
 			$volTab["coPilote"]["utilisateur"]["UTI_mail"] = $utilisateur->UTI_mail;  
 			
@@ -211,7 +212,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		
 	}
 
-	public function modifierVol($idVol, $idLigne, $dateDepart, $idAeroportDepart, $dateArrivee, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
+	public function modifierVol($idVol, $dateDepart, $idAeroportDepart, $dateArrivee, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
 	
@@ -220,7 +221,6 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$vol->UTI_id_servicePlanning = $identity->UTI_id;
 		$vol->AER_id_depart	= $idAeroportDepart;
 		$vol->AER_id_arrivee = $idAeroportArrivee;
-		$vol->LIG_id = $idLigne;
 		$vol->AVI_id = $idAvion;
 		$vol->PIL_id = $idPilote;
 		$vol->PIL_id_copilote = $idCopilote;
