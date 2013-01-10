@@ -3,7 +3,7 @@ class Application_Model_DbTable_Avion extends Zend_Db_Table_Abstract {
 
 	protected $_name = 'avions';
 	protected $primary = 'AVI_id';
-    protected $_dependentTables = 'Application_Model_DbTable_Vol';
+    protected $_dependentTables = array('Application_Model_DbTable_Vol', 'Application_Model_DbTable_Maintenances');
 	
 	protected $_referenceMap = array (
 		'TypeAvion' => array(
@@ -12,6 +12,48 @@ class Application_Model_DbTable_Avion extends Zend_Db_Table_Abstract {
 			'refTableClass' => 'Application_Model_DbTable_TypesAvion'
 		)
 	);
+	
+	public function getAvionsDisponibilite() {		
+		$avionListe = $this->fetchAll();
+		$avionTab = array ();
+		$i = 0;
+		
+		foreach ($avionListe as $avion) {
+			$avionTab[$i]["AVI_id"] = $avion->AVI_id;
+			$avionTab[$i]["AVI_immatriculation"] = $avion->AVI_immatriculation;
+			$avionTab[$i]["AVI_heureDeVol"] = $avion->AVI_heureDeVol;
+			$avionTab[$i]["AVI_heureDeVolsDepuisPetiteMaintenance"] = $avion->AVI_heureDeVolsDepuisPetiteMaintenance;
+			$avionTab[$i]["AVI_heureDeVolsDepuisGrandeMaintenance"] = $avion->AVI_heureDeVolsDepuisGrandeMaintenance;
+			$typesAvion = $avion->findParentApplication_Model_DbTable_TypesAvion();
+			$avionTab[$i]["typesAvion"]["TAVI_id"] = $typesAvion->TAVI_id;
+			$avionTab[$i]["typesAvion"]["TAVI_nom"] = $typesAvion->TAVI_nom;
+			$avionTab[$i]["typesAvion"]["TAVI_periodicitePetiteMaintenance"] = $typesAvion->TAVI_periodicitePetiteMaintenance;
+			$avionTab[$i]["typesAvion"]["TAVI_periodiciteGrandeMaintenance"] = $typesAvion->TAVI_periodiciteGrandeMaintenance;
+			$maintenances = $avion->findApplication_Model_DbTable_Maintenances();
+			$avionTab[$i]["maintenanceType"] = "";
+			$avionTab[$i]["disponibilite"] = "disponible";
+			$avionTab[$i]["maintenance"]["dateDebut"] = "";
+			foreach ($maintenances as $maintenance){
+				if ($maintenance->MAI_dateDebutEffective == "") {
+					$avionTab[$i]["disponibilite"] = "planifier";
+					$avionTab[$i]["maintenance"]["dateDebut"] = $maintenance->MAI_dateDebutPrevue;
+				}else{
+					if ($maintenance->MAI_dateFinEffective == "") {
+						$avionTab[$i]["disponibilite"] = "encours";
+						$avionTab[$i]["maintenance"]["dateDebut"] = $maintenance->MAI_dateDebutEffective;
+					}
+				}
+			}
+			if ($avion->AVI_heureDeVolsDepuisPetiteMaintenance >= $typesAvion->TAVI_periodicitePetiteMaintenance) {
+				$avionTab[$i]["maintenanceType"] = "petiteMaintenance";
+			}
+			if ($avion->AVI_heureDeVolsDepuisGrandeMaintenance >= $typesAvion->TAVI_periodiciteGrandeMaintenance) {
+				$avionTab[$i]["maintenanceType"] = "grandeMaintenance";
+			}
+			$i++;
+		}
+		return $avionTab;
+	}
 	
 	public function afficherLesAvions() {
 	
