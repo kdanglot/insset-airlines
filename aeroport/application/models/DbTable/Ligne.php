@@ -8,9 +8,10 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
     
     protected $_referenceMap = array (
     		'TypePeriodicite' => array(
-    				'columns' => 'TPER_id',
-    				'refColumns' => 'TPER_id',
-    				'refTableClass' => 'Application_Model_DbTable_TypePeriodicite'
+    				'columns' => array('TPER_id'),
+    				'refTableClass' => 'Application_Model_DbTable_TypePeriodicite',
+    				'refColumns' => array('TPER_id'),
+    				'onUpdate' => self::CASCADE
     		)
     );
 	
@@ -21,18 +22,19 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 		$db = Zend_Registry::get('db');
 		
 		$infosLigne = <<<REQUETE
-			SELECT LIG_heureDepart heureDepart, LIG_heureArrivee heureArrivee, LIG_typePeriodicite periodicite 
+			SELECT LIG_heureDepart heureDepart, LIG_heureArrivee heureArrivee, TPER_id periodicite 
 			FROM lignes
 			WHERE LIG_id = :id
 REQUETE;
 
 		$infosTrajets = <<<REQUETE
-			SELECT TRA_ordre, AER_id, AER_nom, VIL_nom
+			SELECT TRA_ordre, AER_id, AER_nom, VIL_nom, PAY_nom, PAY_id
 			FROM lignes
 			NATURAL JOIN trajets
 			NATURAL JOIN aeroports
 			NATURAL JOIN aeroportsappartiennentvilles
 			NATURAL JOIN villes
+			NATURAL JOIN pays
 			WHERE LIG_id = :id
 			ORDER BY TRA_ordre ASC
 REQUETE;
@@ -50,8 +52,8 @@ REQUETE;
 		$getInfosTrajets->bindValue('id', $id, PDO::PARAM_INT);
 		$getInfosTrajets->execute();
 		
-		// return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
-		return $getInfosLigne->fetch();
+		return array($getInfosLigne->fetch(), $getInfosTrajets->fetchAll());
+		//return $getInfosLigne->fetch();
 	}
 	
 	public function afficherLesLignes() {
@@ -131,17 +133,60 @@ REQUETE;
 		
 	} // ajouterLigne()
 	
-	public function modifierLigne($id, $heureDepart, $duree, $periodicite) {
-		$data = array(
-				'heureDepart' => $heureDepart,
-				'duree' => $duree,
-				'typePeriodicite' => $periodicite
+	public function modifierLigne($id, $heureDepart, $heureArrivee, $aeroportDepart, $aeroportArrive, $periodicite) {
+		$dataLigne = array(
+				'LIG_heureDepart' => $heureDepart,
+				'LIG_heureArrivee' => $heureArrivee,
+				'TPER_id' => $periodicite
 		);
-		$this->update($data, 'id = '. (int)$id);
+		$this->update($dataLigne, 'LIG_id = '. (int)$id);
+		$dataDepart = array (
+				'AER_id' => $aeroportDepart,
+				'TRA_ordre' => 0
+				);
+		
+		$dataArrivee = array (
+				'AER_id' => $aeroportArrive,
+				'TRA_ordre' => 1
+				);
+		
+		$trajet = new Application_Model_DbTable_Trajet();
+		$where = $trajet->getAdapter()->quoteInto('LIG_id = ?', $id);
+		
+		$trajet->update($dataDepart, $where);
+		//$trajet->update($dataDepart, 'LIG_id = '.$id);
+		//$trajet->update($dataArrivee, 'LIG_id = '.$id);
+		
 	} // modifierLigne()
 	
 	public function supprimerLigne($id) {
 		$this->delete('id =' . (int)$id);
 	} // supprimerLigne()
+	
+	public function insertLigne($idUtilisateur, $heureDepart, $heureArrivee, $paysDepart, $aeroportDepart,
+			 $paysArrive, $aeroportArrive, $periodicite) {
+		$dataLigne = array(
+			'UTI_id_directionStrategique' => $idUtilisateur,
+			'LIG_heureDepart' => $heureDepart,
+			'LIG_heureArrivee' => $heureArrivee,
+			'TPER_id' => $periodicite,
+			'LIG_dateAjout' => 'NOW()'			
+		);
+		$idLigne = $this->insert($dataLigne);
+		$dataDepart = array (
+				'LIG_id' => $idLigne,
+				'AER_id' => $aeroportDepart, 
+				'TRA_ordre' => 0);
+		
+		$dataArrivee = array (
+				'LIG_id' => $idLigne,
+				'AER_id' => $aeroportArrive, 
+				'TRA_ordre' => 1);		
+		
+		$trajet = new Application_Model_DbTable_Trajet();
+		$trajet->insert($dataDepart);
+		$trajet->insert($dataArrivee);
+		
+	}
 
 } // Applicaion_Model_DbTable_Ligne
