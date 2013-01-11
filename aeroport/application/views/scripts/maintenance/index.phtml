@@ -1,0 +1,61 @@
+<script type="text/javascript">
+	var urlTerminer= "<?php echo $this->baseUrl("maintenance/terminer");?>";
+	var urlTerminer= "<?php echo $this->baseUrl("maintenance/terminer");?>";
+</script>
+<?php 
+$avionsDisponibilite = $this->avionsDisponibilite;
+?>
+<table>
+	<thead>
+		<th>Immatriculation</th>
+		<th>Types d'avion</th>
+		<th>Petitte maintenance</th>
+		<th>Grande maintenance</th>
+		<th>Date de début</th>
+		<th>Disponibilité</th>
+	</thead>
+<?php
+foreach ($avionsDisponibilite as $avion){
+?>
+	<tr>
+		<td>
+<?php
+			echo $avion["AVI_immatriculation"];
+?>
+		</td>
+		<td>
+<?php
+			echo $avion["typesAvion"]["TAVI_nom"];
+?>
+		</td>
+		<td class="<?php echo $avion["maintenanceType"];?>">
+<?php
+			echo $avion["AVI_heureDeVolsDepuisPetiteMaintenance"]."/".$avion["typesAvion"]["TAVI_periodicitePetiteMaintenance"];
+?>
+		</td>
+		<td class="<?php echo $avion["maintenanceType"];?>">
+<?php
+			echo $avion["AVI_heureDeVolsDepuisGrandeMaintenance"]."/".$avion["typesAvion"]["TAVI_periodiciteGrandeMaintenance"];
+?>
+		</td>
+		<td class="<?php echo $avion["maintenanceType"];?>">
+<?php
+			echo $avion["maintenance"]["dateDebut"];
+?>
+		</td>
+		<td>
+<?php
+			if ($avion["action"] == "disponible") {
+				echo "Disponible";
+			}else{
+?>
+				<button class="<?php echo $avion["action"]." ".$avion["maintenanceType"];?>" ><?php echo $avion["actionLabel"];?></button>
+<?php 
+			}
+?>
+		</td>
+	</tr>
+<?php
+}
+?>
+</table>

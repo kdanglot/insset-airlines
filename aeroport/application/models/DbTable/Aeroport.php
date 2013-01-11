@@ -2,7 +2,7 @@
 class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 	protected $_name = 'aeroports';
 	protected $primary = 'AER_id';
-    protected $_dependentTables = 'Application_Model_DbTable_Vol';
+    protected $_dependentTables = array('Application_Model_DbTable_Vol', 'Application_Model_DbTable_Trajet');
 	
 	public function afficherLesAeroports() {
 		$db = Zend_Registry::get('db');
@@ -20,7 +20,7 @@ class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 				AND av.VIL_id = v.VIL_id 
 				AND v.PAY_id = p.PAY_id 
 				AND p.PAY_id ='.$idPays.';';
-		$result = $db->fetchAll($sql);		
-		return $result;
+		return $rows = $db->fetchAll($sql);		
+	
 	}
 }

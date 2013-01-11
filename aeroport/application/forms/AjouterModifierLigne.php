@@ -41,14 +41,13 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Select pays de depart + attributs
 		$ePaysDepart = new Zend_Form_Element_Select('paysDepart');
 		$ePaysDepart->setLabel("Pays de départ :");
-		$ePaysDepart->setAttrib('id', 'p1');
-		$ePaysDepart->setAttrib('name', 'p1');		
-		$ePaysDepart->setAttrib('onChange', 'go();');
+		$ePaysDepart->setAttrib('id', 'pays-depart');
+		$ePaysDepart->setAttrib('name', 'pays-depart');
+		$ePaysDepart->setAttrib('onchange', 'remplirSelect(this)');	
 		$ePaysDepart->addMultiOption('-1', 'Choisissez un pays');
 		foreach($lesPays as $p) {
 			$ePaysDepart->addMultiOption($p['PAY_id'], $p['PAY_nom']);
 		}
-
 
 		// $ePaysDepart->setRequired(true);
 
@@ -56,8 +55,8 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Text aeroport de depart + attributs
 		$eAeroportDepart = new Zend_Form_Element_Select('aeroportDepart');
 		$eAeroportDepart->setLabel("Aéroport de départ :");
-		$eAeroportDepart->setAttrib('id', 'a2');
-		$eAeroportDepart->setAttrib('name', 'a2');
+		$eAeroportDepart->setAttrib('id', 'aeroport-depart');
+		$eAeroportDepart->setAttrib('name', 'aeroport-depart');
 		$eAeroportDepart->addMultiOption('-1', 'Choisissez un aeroport');
 		/*foreach($aeroports as $a) {
 			$eAeroportDepart->addMultiOption($a['AER_id'], $a['AER_nom']);
@@ -69,6 +68,10 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Select pays d'arrivé + attributs
 		$ePaysArrive = new Zend_Form_Element_Select('paysArrive');
 		$ePaysArrive->setLabel("Pays d'arrivé :");
+		$ePaysArrive->setAttrib('name', 'pays-arrive');
+		$ePaysArrive->setAttrib('id', 'pays-arrive');
+		$ePaysArrive->setAttrib('onchange', 'remplirSelect(this)');
+		$ePaysArrive->addMultiOption('-1', 'Choisissez un pays');
 		foreach($lesPays as $p) {
 		 $ePaysArrive->addMultiOption($p['PAY_id'], $p['PAY_nom']);
 		}
@@ -80,9 +83,12 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Text aeroport d'arrive + attributs
 		$eAeroportArrive = new Zend_Form_Element_Select('aeroportArrive');
 		$eAeroportArrive->setLabel("Aéroport d'arrivé :");
-		foreach($aeroports as $a) {
+		$eAeroportArrive->setAttrib('name', 'aeroport-arrive');
+		$eAeroportArrive->setAttrib('id', 'aeroport-arrive');
+		$eAeroportArrive->addMultiOption('-1', 'Choisissez un aeroport');
+		/*foreach($aeroports as $a) {
 			$eAeroportArrive->addMultiOption($a['AER_id'], $a['AER_nom']);
-		}
+		}*/
 
 		// $eAeroportArrive->setRequired(true);
 

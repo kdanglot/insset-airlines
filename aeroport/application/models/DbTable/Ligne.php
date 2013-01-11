@@ -4,7 +4,7 @@ class Application_Model_DbTable_Ligne extends Zend_Db_Table_Abstract {
 	protected $_name = 'lignes';	
 	protected $primary = 'LIG_id';
 	
-    protected $_dependentTables = 'Application_Model_DbTable_Vol';
+    protected $_dependentTables = array('Application_Model_DbTable_Vol', 'Application_Model_DbTable_Trajet');
     
     protected $_referenceMap = array (
     		'TypePeriodicite' => array(
