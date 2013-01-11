@@ -1,8 +1,0 @@
-# PLANNING
-- Classer les vols par heure croissante pour chaque jour
-
-# DIMITRY
-- Lui faire fermer sa gueule
-
-# MODEL VOL
-- Dans la méthode ajoutVol : vérifier qu'un vol doit bien être planifié à cette date pour cette ligne, etc, vérifier qu'il en existe pas déjà un

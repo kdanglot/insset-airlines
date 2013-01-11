@@ -221,7 +221,7 @@ class PlanningController extends Zend_Controller_Action
 				);
 				$formPlanifier->getElement('avion')->setValue($dataVol['avion']['AVI_id']);
 				$formPlanifier->populate($dataPopulate);
-				
+				$this->view->ligne = $dataVol['LIG_id'];
 			}
 			
 			// Sinon on le créé avec des données générées
@@ -229,7 +229,7 @@ class PlanningController extends Zend_Controller_Action
 			
 				// Récupérer les données
 				$vol = new Application_Model_DbTable_Vol();
-				// $vol->getVolFictif($ligne, $aeroportDepart);
+				// $vol->getVolFictif($ligne, $date);
 				// $formPlanifier->populate($vol);
 			}
 
@@ -238,4 +238,3 @@ class PlanningController extends Zend_Controller_Action
 	}
 	
 }
-
