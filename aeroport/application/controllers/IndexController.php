@@ -65,12 +65,13 @@ class IndexController extends Zend_Controller_Action
        
     }
 	
-    public function deconnexionAction() {
+    public function deconnexionAction() 
+    {
     	$auth = Zend_Auth::getInstance();
     	$auth->clearIdentity();
     	$this->_redirect('/index/index');
     }
     
-    public function testAction() {}
+
     
 }

@@ -13,7 +13,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	}
 	
 	protected function _initSession() {
-		
 		$session = new Zend_Session_Namespace('projetAeroport', true);
 		return $session;
 		
