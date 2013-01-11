@@ -13,12 +13,34 @@
 				<th>Ligne</th>
 				<th>Pilote</th>
 				<th>Copilote</th>
+				<th>Modifier</th>
 			</tr>
 		</thead>
 		<tbody>
 TABLESTART;
 
-	
+		foreach($this->planning as $vol){
+		
+			if($vol['id'] > 0){
+				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'id' => $vol['id']), null, true);
+			}
+			else{
+				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'ligne' => $vol['ligne'], 'trajet' => $vol['trajet'], 'date' => $vol['date']), null, true);
+			}
+			echo<<<TABLEROW
+			<tr class="{$vol['class']}" >
+				<td>{$vol['depart']['date']}</td>
+				<td>{$vol['depart']['nomAeroport']}</td>
+				<td>{$vol['arrivee']['date']}</td>
+				<td>{$vol['arrivee']['nomAeroport']}</td>
+				<td>{$vol['avion']['immatriculation']}</td>
+				<td>{$vol['ligne']}</td>
+				<td>{$vol['pilote']['nom']}</td>
+				<td>{$vol['copilote']['nom']}</td>
+				<td><a href="$urlPlanifier" >Planifier</a></td>
+			</tr>
+TABLEROW;
+		}
 	
 	echo<<<TABLEEND
 		</tbody>

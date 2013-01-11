@@ -2,7 +2,7 @@
 
 class PlanningController extends Zend_Controller_Action
 {
-    public function init() {
+ public function init() {
     	$auth = Zend_Auth::getInstance();
     	$identity = $auth->getIdentity();
     	// $typeUtilisateur = $identity->UTI_typeEmploye;
@@ -17,24 +17,15 @@ class PlanningController extends Zend_Controller_Action
 		
 		$dateDepart = new DateTime();
 		// $dateDepart = $dateDepart->sub(new DateInterval('P1W'));
-		// relever le point de départ
-		$timestart=microtime(true);
-		
-		
-		
-		
 		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, 1);
-		//Fin du code PHP
-		$timeend=microtime(true);
-		echo $timeend-$timestart;
-	
+		
 		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
 		
 		$tabJours = array();
 		
 		// Parcourir les jours
 		$jourSemaine = 0;
-		/*foreach($this->planning as $jour => $lignes){
+		foreach($this->planning as $jour => $lignes){
 			
 			$jour ++; // Le tableau des jours commence à l'index 0. On le fais donc commencer à l'index 1.
 			$dayVol = $this->dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
@@ -54,13 +45,13 @@ class PlanningController extends Zend_Controller_Action
 			$dayVol = $dayVol->format('d');
 			
 			// Parcourir les lignes
-			/*foreach($lignes as $ligne => $vols){
+			foreach($lignes as $ligne => $vols){
 				
 				// Parcourir les vols
 				foreach($vols as $vol){
 					
 					$tabJours[$dayVol] = array(
-						'dayComplete' => $tabNomJours[$jourSemaine] . ' ' . $dayVol;
+						'dayComplete' = $tabNomJours[$jourSemaine] . ' ' . $dayVol;
 					);
 					
 				}
@@ -69,7 +60,7 @@ class PlanningController extends Zend_Controller_Action
 			$jourSemaine++;
 			if($jourSemaine == 7) { $jourSemaine = 0; }
 			
-		}*/
+		}
 		
 		$this->view->dateDepart = $dateDepart;
     }
@@ -156,4 +147,3 @@ class PlanningController extends Zend_Controller_Action
 	}
 	
 }
-

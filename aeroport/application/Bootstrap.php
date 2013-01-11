@@ -9,11 +9,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	protected function _initConfig() {
 		
 		Zend_Registry::set('configs', new Zend_Config($this->getOptions()));
+		date_default_timezone_set ("Europe/Paris");
 		
 	}
 	
 	protected function _initSession() {
-		
 		$session = new Zend_Session_Namespace('projetAeroport', true);
 		return $session;
 		
