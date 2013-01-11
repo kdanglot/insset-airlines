@@ -10,7 +10,7 @@
 <br />	
 <br />
 <div class="action_page">
-	<a href="/directionstrategique/ajouterligne">Ajouter une lignes</a>
+	<a href="/directionstrategique/ajouterligne">Ajouter une ligne</a>
 </div>
 
 <br /><br />
@@ -35,9 +35,9 @@
 		<td><?php echo $ligne['nomAeroportArrivee'];?></td>
 		<td class="btnGestion" ><span>
 
-		<a href="/directionstrategique/modifierligne"><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/modifier.png" border="0" title="Modifier" alt ="Modifier"/></a>  
+		<a href="/directionstrategique/modifierligne/idLigne/<?php echo $ligne['id'];?>"><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/modifier.png" border="0" title="Modifier" alt ="Modifier"/></a>  
 
-		<a href="/directionstrategique/supprimerligne"><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/supprimer.png" border="0" title="Supprimer" alt ="Supprimer"/></a>
+		<a href="/directionstrategique/supprimerligne/idLigne<?php echo $ligne['id'];?>"><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/supprimer.png" border="0" title="Supprimer" alt ="Supprimer"/></a>
 
 	</span></td>
 	</tr>
