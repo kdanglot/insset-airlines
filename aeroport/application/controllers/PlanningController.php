@@ -51,7 +51,7 @@ class PlanningController extends Zend_Controller_Action
 				foreach($vols as $vol){
 					
 					$tabJours[$dayVol] = array(
-						'dayComplete' = $tabNomJours[$jourSemaine] . ' ' . $dayVol;
+						'dayComplete' => $tabNomJours[$jourSemaine] . ' ' . $dayVol
 					);
 					
 				}
