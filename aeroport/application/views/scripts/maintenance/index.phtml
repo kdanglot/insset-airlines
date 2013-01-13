@@ -1,6 +1,10 @@
 <script type="text/javascript">
-	var urlTerminer= "<?php echo $this->baseUrl("maintenance/terminer");?>";
-	var urlTerminer= "<?php echo $this->baseUrl("maintenance/terminer");?>";
+	jQuery(function($){
+		urlTerminer = "http://projetaeroport/maintenance/terminer";
+		urlCommencer = "http://projetaeroport/maintenance/commencer";
+		$("#dateDebutMaintenance").datepicker({ autoSize: true, dateFormat: "yy-mm-dd" });
+		$("#dialog").dialog({autoOpen: false , width: 400});
+	});
 </script>
 <?php 
 $avionsDisponibilite = $this->avionsDisponibilite;
@@ -49,7 +53,7 @@ foreach ($avionsDisponibilite as $avion){
 				echo "Disponible";
 			}else{
 ?>
-				<button class="<?php echo $avion["action"]." ".$avion["maintenanceType"];?>" ><?php echo $avion["actionLabel"];?></button>
+				<button id="<?php echo $avion["AVI_id"];?>" class="<?php echo $avion["action"]." ".$avion["maintenanceType"];?>" ><?php echo $avion["actionLabel"];?></button>
 <?php 
 			}
 ?>
@@ -59,3 +63,9 @@ foreach ($avionsDisponibilite as $avion){
 }
 ?>
 </table>
+ 
+<div id="dialog" title="Creation maintenance">
+<?php 
+		echo $this->ajouterMaintenanceForm;
+?>
+</div>

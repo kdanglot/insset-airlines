@@ -47,8 +47,31 @@ jQuery(function($){
 	} // function test
 	
 	$(".terminerMaintenance").click(function(){		
-		if($(this).hasClass("grandeMaintenance")){
-			alert(urlTerminer);
+		var typeMaintenance;
+        if ($(this).hasClass("grandeMaintenance")) {
+        	typeMaintenance = "Grande";
+		} else {
+			typeMaintenance = "Petitte";
 		}
+		document.location.href= urlTerminer+'/idAvion/'+$(this).attr("id")+'/typeMaintenance/'+typeMaintenance;
+	});
+	
+	$(".commencerMaintenance").click(function(){		
+		document.location.href= urlCommencer+'/idAvion/'+$(this).attr("id");
+	});
+	
+	$(".creerMaintenance").click(function(){	
+        $("#idAvionMaintenance").val($(this).attr("id"));
+        if ($(this).hasClass("grandeMaintenance")) {
+            $("#typeMaintenance").val("Grande");
+		} else {
+            $("#typeMaintenance").val("Petitte");
+		}
+        
+        $("#dateDebutMaintenance").datepicker("disable");
+        $("#dialog").dialog("open");
+        $("#dateDebutMaintenance").datepicker("enable");
+        return false;
+
 	});
 });
