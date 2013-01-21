@@ -84,5 +84,30 @@ class MaintenanceController extends Zend_Controller_Action
     	$redirector = $this->_helper->redirector;
     	$redirector->goToUrl("maintenance/index");
     }
+
+    public function avionlibreAction() {
+		$avion = new Application_Model_DbTable_Avion();
+		$avionsDisponibilite = $avion->getAvionsDisponibilite();
+		$avionsDisponible = array();
+		$i = 0;
+		
+		foreach ($avionsDisponibilite as $avion){
+			if ($avion["disponibilite"] == "disponible") {
+				$avionsDisponible[$i] = $avion;
+				$i++;
+			}
+		}
+
+		$this->view->avionsDisponible = $avionsDisponible;
+    }
+
+    public function enregistreravionAction() {
+    	$flashmessenger = $this->_helper->FlashMessenger;
+    	$flashmessenger->addMessage($this->getParam("idAvion"));
+    	
+    	//Redirection à définir par antoine K
+    	$redirector = $this->_helper->redirector;
+    	$redirector->goToUrl("maintenance/index");
+    }
 }
 

@@ -74,4 +74,8 @@ jQuery(function($){
         return false;
 
 	});
+	
+	$(".ligneAvionDisponible").click(function(){		
+		document.location.href= urlEnregistrementAvionDisponible+'/idAvion/'+$(this).attr("idAvion");
+	});
 });
