@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	jQuery(function($){
+		urlEnregistrementAvionDisponible = "<?php echo $this->baseUrl('maintenance/enregistreravion')?>";
+	});
+</script>
+<?php 
+$avionsDisponible = $this->avionsDisponible;
+?>
+<table>
+	<thead>
+		<th>Immatriculation</th>
+		<th>Types d'avion</th>
+	</thead>
+	<tbody>
+<?php
+foreach ($avionsDisponible as $avion){
+?>
+		<tr class="ligneAvionDisponible" idAvion="<?php echo $avion["AVI_id"];?>">
+			<td>
+<?php
+				echo $avion["AVI_immatriculation"];
+?>
+			</td>
+			<td>
+<?php
+				echo $avion["typesAvion"]["TAVI_nom"];
+?>
+			</td>
+		</tr>
+<?php
+}
+?>
+	</tbody>
+</table>

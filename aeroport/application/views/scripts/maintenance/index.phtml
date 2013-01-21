@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	jQuery(function($){
-		urlTerminer = "<?php echo $_SERVER['HTTP_HOST'];?>/maintenance/terminer";
-		urlCommencer = "<?php echo $_SERVER['HTTP_HOST'];?>/maintenance/commencer";
+		urlTerminer = "<?php echo $this->baseUrl('maintenance/terminer')?>";
+		urlCommencer = "<?php echo $this->baseUrl('maintenance/commencer')?>";
 		$("#dateDebutMaintenance").datepicker({ autoSize: true, dateFormat: "yy-mm-dd" });
 		$("#dialog").dialog({autoOpen: false , width: 400});
 	});
