@@ -15,8 +15,16 @@ class PlanningController extends Zend_Controller_Action
     public function indexAction() {
     	
 		$vols = new Application_Model_DbTable_Vol();
-
-		$dateDepart = new DateTime();
+		
+		if($this->_getParam('date') != ''){
+			$dateDepart = DateTime::createFromFormat('YmdHis', $this->_getParam('date'));
+		}
+		else{
+			$dateDepart = new DateTime();
+		}
+		if($dateDepart == false){
+			$dateDepart = new DateTime();
+		}
 		$dateDepart = $dateDepart->sub(new DateInterval('P2W'));
 		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, 1);
 		// echo '<pre>'; var_dump($volsListeBrute); exit;
@@ -165,6 +173,7 @@ class PlanningController extends Zend_Controller_Action
 				// Récupérer les données
 				$ligne = $formCreer->getValue('ligne');
 				$dateDepart = $formCreer->getValue('dateDepart');
+				$heureDepart = $formCreer->getValue('heureDepartPrevue');
 				$aeroportDepart = $formCreer->getValue('aeroportDepart');
 				$aeroportArrivee = $formCreer->getValue('aeroportArrivee');
 				$avion = $formCreer->getValue('avion');
@@ -172,7 +181,7 @@ class PlanningController extends Zend_Controller_Action
 				$copilote = $formCreer->getValue('copilote');
 			
 				$vol = new Application_Model_DbTable_Vol();
-				$vol->ajoutVol($ligne, $dateDepart, $aeroportDepart, '', $aeroportArrivee, $avion, $pilote, $copilote);
+				$vol->ajoutVol($ligne, $dateDepart . ' ' . $heureDepart, $aeroportDepart, '', $aeroportArrivee, $avion, $pilote, $copilote);
 				
 				// Après les modifications faites on revient à l'index
 				$this->_helper->redirector('index');
@@ -180,10 +189,10 @@ class PlanningController extends Zend_Controller_Action
 			
 			// sinon on le réaffiche avec les données
 			else{
-				$ligne = $this->_getParam('ligne', 0);
-				$dateDepart = $this->_getParam('date');
-				$aeroportDepart = $this->_getParam('aeroportDepart');
-				$aeroportArrivee = $this->_getParam('aeroportArrivee');
+				$ligne = $formCreer->getValue('ligne');
+				$dateDepart = $formCreer->getValue('date');
+				$aeroportDepart = $formCreer->getValue('aeroportDepart');
+				$aeroportArrivee = $formCreer->getValue('aeroportArrivee');
 				
 				// Récupérer les données
 				$aeroports = new Application_Model_DbTable_Aeroport();
@@ -211,10 +220,10 @@ class PlanningController extends Zend_Controller_Action
 		// Sinon on affiche le formulaire avec les données de la BDD
 		else{
 			
-			$ligne = $formCreer->getValue('ligne');
-			$dateDepart = $formCreer->getValue('date');
-			$aeroportDepart = $formCreer->getValue('aeroportDepart');
-			$aeroportArrivee = $formCreer->getValue('aeroportArrivee');
+			$ligne = $this->_getParam('ligne', 0);
+			$dateDepart = $this->_getParam('date');
+			$aeroportDepart = $this->_getParam('aeroportDepart');
+			$aeroportArrivee = $this->_getParam('aeroportArrivee');
 			
 			// Récupérer les données
 			$aeroports = new Application_Model_DbTable_Aeroport();
@@ -236,9 +245,9 @@ class PlanningController extends Zend_Controller_Action
 			$this->view->datePrevue = $dateDepart;
 			$this->view->dateDepart = $dateDepart;
 			
-			$formPlanifier->getElement('avion')->setValue($formCreer->getValue('avion'));
-			$formPlanifier->getElement('pilote')->setValue($formCreer->getValue('pilote'));
-			$formPlanifier->getElement('copilote')->setValue($formCreer->getValue('copilote'));
+			$formCreer->getElement('avion')->setValue($formCreer->getValue('avion'));
+			$formCreer->getElement('pilote')->setValue($formCreer->getValue('pilote'));
+			$formCreer->getElement('copilote')->setValue($formCreer->getValue('copilote'));
 			
 		}
 		
@@ -261,8 +270,7 @@ class PlanningController extends Zend_Controller_Action
 			if($formPlanifier->isValid($formData)) {
 			
 				// Récupérer les données
-				$idVol = $formPlanifier->getValue('idVol');
-				$ligne = $formPlanifier->getValue('idLigne');
+				$idVol = $formPlanifier->getValue('id');
 				$dateDepart = $formPlanifier->getValue('dateDepart');
 				$aeroportDepart = $formPlanifier->getValue('aeroportDepart');
 				$dateArrivee = $formPlanifier->getValue('dateArrivee');
@@ -272,7 +280,7 @@ class PlanningController extends Zend_Controller_Action
 				$copilote = $formPlanifier->getValue('copilote');
 			
 				$vol = new Application_Model_DbTable_Vol();
-				$vol->modifier($idVol, $ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
+				$vol->modifierVol($idVol, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
 				
 				// Après les modifications faites on revient à l'index
 				$this->_helper->redirector('index');
