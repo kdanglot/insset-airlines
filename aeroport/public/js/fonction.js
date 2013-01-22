@@ -10,7 +10,7 @@ jQuery(function($){
 		document.location.href= urlTerminer+'/idAvion/'+$(this).attr("id")+'/typeMaintenance/'+typeMaintenance;
 	});
 	
-	$(".commencerMaintenance").click(function(){		
+	$(".commencerMaintenance").click(function(){	
 		document.location.href= urlCommencer+'/idAvion/'+$(this).attr("id");
 	});
 	

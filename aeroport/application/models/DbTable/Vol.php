@@ -56,7 +56,11 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 					foreach ($vols as $vol){
 
 // 						Mise en forme de la date de debut du vol
-						$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
+						if($vol->VOL_dateDepartEffective==""){
+							$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartPrevue);
+						}else{
+							$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
+						}
 
 // 						Comparaison avec le jour en question.
 						if($dateJour->format('Y-m-d') == $dateDepart->format('Y-m-d')){
@@ -87,7 +91,11 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 					foreach ($vols as $vol){
 						
 // 						Mise en forme de la date de debut du vol.
-						$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
+						if($vol->VOL_dateDepartEffective==""){
+							$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartPrevue);
+						}else{
+							$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
+						}
 						
 // 						Comparaison avec la semaine en question.
 						if($dateJour->format('W') == $dateDepart->format('W') && $dateJour->format('Y') == $dateDepart->format('Y')){
@@ -178,6 +186,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 			$volTab["coPilote"]["utilisateur"]["UTI_prenom"] = $utilisateur->UTI_prenom;
 			$volTab["coPilote"]["utilisateur"]["UTI_mail"] = $utilisateur->UTI_mail;  
 			
+		$volTab["VOL_dateDepartPrevue"] = $vol->VOL_dateDepartPrevue;
 		$volTab["VOL_dateDepartEffective"] = $vol->VOL_dateDepartEffective;
 		$volTab["VOL_dateArriveeEffective"] = $vol->VOL_dateArriveeEffective;	
 
@@ -191,7 +200,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		return $volTab;
 	}
 	
-	public function ajoutVol($idLigne, $dateDepart, $idAeroportDepart, $dateArrivee, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
+	public function ajoutVol($idLigne, $dateDepart, $idAeroportDepart, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
 		
@@ -204,8 +213,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$vol->AVI_id = $idAvion;
 		$vol->PIL_id = $idPilote;
 		$vol->PIL_id_copilote = $idCopilote;
-		$vol->VOL_dateDepartEffective = $dateDepart;
-		$vol->VOL_dateArriveeEffective = $dateArrivee;
+		$vol->VOL_dateDepartPrevue = $dateDepart;
 		$vol->VOL_dateAjout = date("Y-m-d H:i:s");
 		$vol->VOL_dateSupression = null;
 		$idUtilisateur = $vol->save();
@@ -217,7 +225,6 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$identity = $auth->getIdentity();
 	
 		$vol= $this->find($idVol)->current();
-		
 		$vol->UTI_id_servicePlanning = $identity->UTI_id;
 		$vol->AER_id_depart	= $idAeroportDepart;
 		$vol->AER_id_arrivee = $idAeroportArrivee;
