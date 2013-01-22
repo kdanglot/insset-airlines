@@ -1,7 +1,27 @@
 <?php 
+	$tabNomJours = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche');
+	$tabNomMois = array('janvier', 'février', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+	$today = new DateTime();
+	$todayFr = $tabNomJours[($today->format('N') - 1)];
+	$todayNumber = $today->format('d');
+	$todayMois = $tabNomMois[$today->format('n')];
+	$todayWeek = $today->format('W');
 	
-	// Parcourir le planning
 	echo<<<TABLESTART
+	<div id="today" >
+		<div class="head" >Aujourd'hui</div>
+		<div class="body" >
+			<p>
+				<span>$todayFr</span>
+				<br />
+				<span>$todayNumber</span>
+				<br />
+				<span>$todayMois</span>
+				<br />
+				<span>semaine $todayWeek</span>
+			</p>
+		</div>
+	</div>
 	<table class="table_type1" >
 		<thead>
 			<tr>
@@ -18,14 +38,16 @@
 		</thead>
 		<tbody>
 TABLESTART;
-
+// Parcourir le planning
 		foreach($this->planning as $vol){
 		
 			if($vol['id'] > 0){
 				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'id' => $vol['id']), null, true);
+				$label = 'Modifier';
 			}
 			else{
 				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'creer', 'ligne' => $vol['ligne'], 'aeroportDepart' => $vol['depart']['idAeroport'], 'aeroportArrivee' => $vol['arrivee']['idAeroport'], 'date' => $vol['depart']['prevu']), null, true);
+				$label = 'Planifier';
 			}
 			echo<<<TABLEROW
 			<tr class="{$vol['class']}" >
@@ -37,7 +59,7 @@ TABLESTART;
 				<td>{$vol['ligne']}</td>
 				<td>{$vol['pilote']['nom']}</td>
 				<td>{$vol['copilote']['nom']}</td>
-				<td><a href="$urlPlanifier" >Planifier</a></td>
+				<td><a href="$urlPlanifier" >$label</a></td>
 			</tr>
 TABLEROW;
 		}

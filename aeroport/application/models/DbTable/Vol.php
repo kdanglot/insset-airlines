@@ -226,7 +226,6 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$identity = $auth->getIdentity();
 	
 		$vol= $this->find($idVol)->current();
-		
 		$vol->UTI_id_servicePlanning = $identity->UTI_id;
 		$vol->AER_id_depart	= $idAeroportDepart;
 		$vol->AER_id_arrivee = $idAeroportArrivee;
