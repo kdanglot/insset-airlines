@@ -10,6 +10,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 	
 	// améliorer l'affichage des erreurs
 	public function ajouterligneAction() {
+		$aeroport = new Application_Model_DbTable_Aeroport();
 		$formAjouterLigne = new Application_Form_AjouterModifierLigne();
 		$this->view->formAjouterLigne = $formAjouterLigne;
 		
@@ -23,10 +24,26 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 				$heureDepart = $formData['heureDepart'];
 				$heureArrivee = $formData['heureArrivee'];
 				$paysDepart = $formData['pays-depart'];
-				echo $aeroportDepart = $formData['aeroport-depart'];
+				$aeroportDepart = $formData['aeroport-depart'];
 				$paysArrive = $formData['pays-arrive'];
-				echo $aeroportArrive = $formData['aeroport-arrive'];
+				$aeroportArrive = $formData['aeroport-arrive'];
 				$periodicite = $formData['periodicite'];
+				
+				$formAjouterLigne->getELement('periodicite')->setValue($periodicite);
+				$formAjouterLigne->getElement('paysDepart')->setValue($paysDepart);
+				
+				$list = $aeroport->aeroportPays($paysDepart);
+				foreach ($list as $a) {
+					$formAjouterLigne->getElement('aeroportDepart')->addMultiOption($a['AER_id'], $a['AER_nom']);
+				}
+				$formAjouterLigne->getElement('aeroportDepart')->setValue($aeroportDepart);
+				$formAjouterLigne->getElement('paysArrive')->setValue($paysArrive);
+				
+				$list = $aeroport->aeroportPays($paysArrive);
+				foreach ($list as $a) {
+					$formAjouterLigne->getElement('aeroportArrive')->addMultiOption($a['AER_id'], $a['AER_nom']);
+				}
+				$formAjouterLigne->getElement('aeroportArrive')->setValue($aeroportArrive);
 				
 				// Vérification des listes déroulantes
 				if ($paysDepart == '-1') {
@@ -45,9 +62,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 						$aeroportDepart, $paysArrive, $aeroportArrive, $periodicite);	
 						$this->_helper->redirector('index');
 				}
-			} else {
-				$formAjouterLigne->populate($formData);
-			}
+			} 
 		}
 
 	}
@@ -98,25 +113,21 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 				$ligne = new Application_Model_DbTable_Ligne();
 				$ligne->modifierLigne($id, $heureDepart, $heureArrivee, $aeroportDepart, $aeroportArrivee, $periodicite);
 
-				//$this->_helper->redirector('index');
+				// $this->_helper->redirector('index');
 			} 
 			else {
 				$form->populate($formData);
 			}
 		} 
-		/*else {
-			$id = $this->_getParam('id', 0);
-			if ($id > 0) {
-				$lignes = new Application_Model_DbTable_Ligne();
-				$thisLigne = $lignes->getLigneById($id);
-				
-				// Si on veut enlever les secondes
-				$thisLigne['heureDepart'] = substr($thisLigne['heureDepart'], 0, -3);
-				$thisLigne['heureArrivee'] = substr($thisLigne['heureArrivee'], 0, -3);
-				
-				$form->populate($thisLigne);
-				
-			}
-		}*/
+	}
+	
+	public function deleteAction() {
+		$idLigne = $this->_request->getParam('idLigne');
+		
+		$ligne = new Application_Model_DbTable_Ligne();
+		$res = $ligne->supprimerLigne($idLigne);
+		
+		$this->_helper->redirector('index');
+		
 	}
 }
