@@ -200,7 +200,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		return $volTab;
 	}
 	
-	public function ajoutVol($idLigne, $dateDepart, $idAeroportDepart, $dateArrivee, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
+	public function ajoutVol($idLigne, $dateDepart, $idAeroportDepart, $idAeroportArrivee, $idAvion, $idPilote, $idCopilote){
 		$auth = Zend_Auth::getInstance();
 		$identity = $auth->getIdentity();
 		
@@ -213,8 +213,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$vol->AVI_id = $idAvion;
 		$vol->PIL_id = $idPilote;
 		$vol->PIL_id_copilote = $idCopilote;
-		$vol->VOL_dateDepartEffective = $dateDepart;
-		$vol->VOL_dateArriveeEffective = $dateArrivee;
+		$vol->VOL_dateDepartPrevue = $dateDepart;
 		$vol->VOL_dateAjout = date("Y-m-d H:i:s");
 		$vol->VOL_dateSupression = null;
 		$idUtilisateur = $vol->save();
