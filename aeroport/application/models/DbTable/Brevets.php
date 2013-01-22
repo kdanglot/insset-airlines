@@ -16,4 +16,10 @@ class Application_Model_DbTable_Brevets extends Zend_Db_Table_Abstract {
 						)
 			);
 	
+	public function getBrevetsByPilote($idPilote) {
+		$select = $this->select()->where('PIL_id ='.$idPilote);
+		$rows = $this->fetchAll($select);
+		return $rows;
+	}
+	
 }
