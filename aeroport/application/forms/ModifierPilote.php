@@ -2,6 +2,10 @@
 class Application_Form_ModifierPilote extends Zend_Form {
 
 	public function init() {
+		$typeBrevet = new Application_Model_DbTable_TypesBrevet();
+		$typesBrevets = $typeBrevet->afficherLesBrevets();
+		
+	//	var_dump($typesBrevets);
 		$this->setMethod('POST');
 		$this->setAttrib('id', 'modifierPilote');
 		
@@ -21,7 +25,7 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$eNom->addValidator('NotEmpty');
 		
 		$eLogin = new Zend_Form_Element_Text('login');
-		$eLogin->setAttrib('id', 'login,');
+		$eLogin->setAttrib('id', 'login');
 		$eLogin->setLabel('Login :');
 		$eLogin->setRequired(true);
 		$eLogin->addValidator('NotEmpty');
@@ -37,7 +41,17 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$eDateEmbauche->setLabel('Date embauche');
 		$eDateEmbauche->setRequired(true);
 		
-		$eAncienMdp = new Zend_Form_Element_Password('ancienMdp');
+		$eBrevet = new Zend_Form_Element_Checkbox('brevets');
+		$eBrevet->setLabel('Brevets : ');
+		
+		
+		$eBrevet->setChecked(true);
+		
+		/*foreach ($typesBrevets as $tb) {
+			$eBrevet->addElements($tb['TBRE_id'], $tb['TBRE_nom']);
+		}*/
+		
+		/*$eAncienMdp = new Zend_Form_Element_Password('ancienMdp');
 		$eAncienMdp->setAttrib('id', 'ancienMdp');
 		$eAncienMdp->setLabel('Ancien mdp :');
 		
@@ -47,11 +61,11 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		
 		$eConfirmeMdp = new Zend_Form_Element_Password('ConfirmeMdp');
 		$eConfirmeMdp->setAttrib('id', 'mdp');
-		$eConfirmeMdp->setLabel('Confirme mdp :');
+		$eConfirmeMdp->setLabel('Confirme mdp :');*/
 		
 		$eModifier = new Zend_Form_Element_Submit('modifier');
 		$eModifier->setAttrib('id', 'boutonModifier');
 		
-		$this->addElements(array($eId, $eNom, $ePrenom, $eLogin, $eMail, $eDateEmbauche, $eAncienMdp, $eNouveauMdp, $eConfirmeMdp, $eModifier));
+		$this->addElements(array($eId, $eNom, $ePrenom, $eLogin, $eMail, $eDateEmbauche, $eBrevet, $eModifier));
 	}
 }
