@@ -178,6 +178,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 			$volTab["coPilote"]["utilisateur"]["UTI_prenom"] = $utilisateur->UTI_prenom;
 			$volTab["coPilote"]["utilisateur"]["UTI_mail"] = $utilisateur->UTI_mail;  
 			
+		$volTab["VOL_dateDepartPrevue"] = $vol->VOL_dateDepartPrevue;
 		$volTab["VOL_dateDepartEffective"] = $vol->VOL_dateDepartEffective;
 		$volTab["VOL_dateArriveeEffective"] = $vol->VOL_dateArriveeEffective;	
 

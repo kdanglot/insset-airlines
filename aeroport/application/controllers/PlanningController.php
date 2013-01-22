@@ -128,8 +128,22 @@ class PlanningController extends Zend_Controller_Action
 			
 				// Récupérer les données
 				$vol = new Application_Model_DbTable_Vol();
-				$vol->getVol($idVol);
-				$formPlanifier->populate($vol);
+				
+				$dataVol = $vol->getVol($idVol);var_dump($dataVol);
+				$dataPopulate = array(
+					'id' => $dataVol['VOL_id'],
+					'ligne' => $dataVol['LIG_id'],
+					'dateDepart' => $dataVol['VOL_dateDepartEffective'],
+					'dateArrivee' => $dataVol['VOL_dateArriveeEffective'],
+					'aeroportDepart' => $dataVol['aeroportDepart']['AER_id_depart'],
+					'aeroportArrivee' => $dataVol['aeroportArrivee']['AER_id_arrivee']
+				);
+				$formPlanifier->getElement('avion')->setValue($dataVol['avion']['AVI_id']);
+				$formPlanifier->populate($dataPopulate);
+				$this->view->ligne = $dataVol['LIG_id'];
+				$this->view->aeroportDepart = $dataVol['aeroportDepart']['AER_nom'];
+				$this->view->aeroportArrivee = $dataVol['aeroportArrivee']['AER_nom'];
+				$this->view->datePrevue = $dataVol['VOL_dateDepartPrevue'];
 				
 			}
 			
