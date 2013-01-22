@@ -160,7 +160,7 @@ REQUETE;
 	} // modifierLigne()
 	
 	public function supprimerLigne($id) {
-		$this->delete('id =' . (int)$id);
+		$this->delete('LIG_id =' . (int)$id);
 	} // supprimerLigne()
 	
 	public function insertLigne($idUtilisateur, $heureDepart, $heureArrivee, $paysDepart, $aeroportDepart,
