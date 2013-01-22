@@ -25,7 +25,7 @@ TABLESTART;
 				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'id' => $vol['id']), null, true);
 			}
 			else{
-				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'ligne' => $vol['ligne'], 'trajet' => $vol['trajet'], 'date' => $vol['depart']['date']), null, true);
+				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'creer', 'ligne' => $vol['ligne'], 'aeroportDepart' => $vol['depart']['idAeroport'], 'aeroportArrivee' => $vol['arrivee']['idAeroport'], 'date' => $vol['depart']['prevu']), null, true);
 			}
 			echo<<<TABLEROW
 			<tr class="{$vol['class']}" >
