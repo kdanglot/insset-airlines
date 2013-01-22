@@ -13,56 +13,139 @@ class PlanningController extends Zend_Controller_Action
     }
 
     public function indexAction() {
-    	$vols = new Application_Model_DbTable_Vol();
-		
+    	
+		$vols = new Application_Model_DbTable_Vol();
+
 		$dateDepart = new DateTime();
 		// $dateDepart = $dateDepart->sub(new DateInterval('P1W'));
 		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, 1);
-		
+		// echo '<pre>'; var_dump($volsListeBrute); exit;
 		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
-		
-		$tabJours = array();
-		
+		$planning = array();
+
 		// Parcourir les jours
 		$jourSemaine = 0;
-		foreach($this->planning as $jour => $lignes){
-			
+		foreach($volsListeBrute as $jour => $lignes){
+
 			$jour ++; // Le tableau des jours commence à l'index 0. On le fais donc commencer à l'index 1.
-			$dayVol = $this->dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
-			$dayStart = intval($this->dateDepart->format('w')); // Le numéro du jour de départ de l'affichage
-			
-			// Si c'est un jour passé (ex : $dayStart = 
+			$dayVol = $dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
+			$dayStart = intval($dateDepart->format('w')); // Le numéro du jour de départ de l'affichage
+
+			// Comme la méthode renvoie la semaine complète
+			// Si on envoie un Jeudi en jour de départ
+			// Le tableau renvoyé correspondra à un mardi
+			// Il faut donc comparer le jour d'aujourd'hui et le tableau des jours renvoyé par la méthode (qui commence à 1) pour résoudre le numéro véritable des jours.
+			// Si c'est un jour passé
 			if($dayStart > $jour){ 
-				// Retire le nombre de jour nécessaire au DateTime en partant de la date d'aujourd'hui
+				// Retire le nombre de jour nécessaire
 				$dayVol->sub(new DateInterval('P' . ($dayStart - $jour) . 'D'));
 			}
 			// Sinon c'est un jour futur
 			else {
-				// Donc on ajoute les jours nécessaires
+				// ajoute les jours nécessaires
 				$dayVol->add(new DateInterval('P' . ($jour - $dayStart) . 'D'));
 			}
-			
+
 			$dayVol = $dayVol->format('d');
-			
+
 			// Parcourir les lignes
 			foreach($lignes as $ligne => $vols){
-				
+
 				// Parcourir les vols
-				foreach($vols as $vol){
-					
-					$tabJours[$dayVol] = array(
-						'dayComplete' => $tabNomJours[$jourSemaine] . ' ' . $dayVol
+				foreach($vols as $trajet => $vol){
+
+					if(!isset($vol['VOL_id'])){
+						$vol['VOL_id'] = 0;
+					}
+
+					// Formater la date de départ si elle existe
+					if(isset($vol['VOL_dateDepartEffective'])){
+						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartEffective']);
+						$dateDepartVol = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' '. date_format($dateDepartVol, 'H:i');	
+						$class = 'planfie';
+					}
+					else{
+						$dateDepartVol = $tabNomJours[$jourSemaine] . ' ' . $dayVol;
+						$class = 'non-planifie';
+					}
+
+					// Formater la date d'arrivée si elle existe
+					if(isset($vol['VOL_dateArriveeEffective'])){ 
+						$dateArrivee = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateArriveeEffective']);
+						$dateArrivee = $tabNomJours[intval(date_format($dateArrivee, 'N')) - 1] . ' ' . date_format($dateArrivee, 'd') . ' '. date_format($dateArrivee, 'H:i');					
+					}
+					else{
+						$dateArrivee = '';
+					}
+
+					// Créer un avion vide s'il n'y en a pas
+					if(!isset($vol['avion'])){
+						$vol['avion'] = array(
+							'AVI_id' => '',
+							'AVI_immatriculation' => ''
+						);
+					}
+
+					// Créer un pilote vide s'il n'y en a pas
+					if(!isset($vol['pilote'])){
+						$pilote = array(
+							'id' => '',
+							'nom' => ''
+						);
+					}
+					else{
+						$pilote = array(
+							'id' => $vol['pilote']['PIL_id'],
+							'nom' => $vol['pilote']['utilisateur']['UTI_nom'] . ' ' . $vol['pilote']['utilisateur']['UTI_prenom']
+						);
+					}
+
+					// Créer un copilote vide s'il n'y en a pas
+					if(!isset($vol['coPilote'])){
+						$copilote = array(
+							'id' => '',
+							'nom' => ''
+						);
+					}
+					else{
+						$copilote = array(
+							'id' => $vol['coPilote']['PIL_id'],
+							'nom' => $vol['coPilote']['utilisateur']['UTI_nom'] . ' ' . $vol['coPilote']['utilisateur']['UTI_prenom']
+						);
+					}
+
+					$planning[] = array(
+						'id' => $vol['VOL_id'],
+						'class' => $class,
+						'trajet' => $trajet,
+						'depart' => array(
+							'date' => $dateDepartVol,
+							'idAeroport' => intval($vol['aeroportDepart']['AER_id_depart']),
+							'nomAeroport' => $vol['aeroportDepart']['AER_nom']
+						),
+						'arrivee' => array(
+							'date' => $dateArrivee,
+							'idAeroport' => intval($vol['aeroportArrivee']['AER_id_arrivee']),
+							'nomAeroport' => $vol['aeroportArrivee']['AER_nom']
+						),
+						'ligne' => $ligne,
+						'avion' => array(
+							'id' => $vol['avion']['AVI_id'],
+							'immatriculation' => $vol['avion']['AVI_immatriculation']
+						),
+						'pilote' => $pilote,
+						'copilote' => $copilote
 					);
-					
+
 				}
 			}
-			
+
 			$jourSemaine++;
 			if($jourSemaine == 7) { $jourSemaine = 0; }
-			
+
 		}
-		
-		$this->view->dateDepart = $dateDepart;
+		// echo '<pre>'; var_dump($planning); exit;
+		$this->view->planning = $planning;
     }
 
 	public function planifierAction() {
