@@ -35,10 +35,21 @@ class DrhController extends Zend_Controller_Action {
 	}
 	
 	public function modifierpiloteAction() {
-		$id = $this->_request->getParam('id');
+		$idPilote = $this->_request->getParam('idPilote');
 		$pilote = new Application_Model_DbTable_Pilote();
-		$res = $pilote->afficherPilote($id);
-		var_dump($res);
+		$res = $pilote->afficherPilote($idPilote);
+		$brevet = new Application_Model_DbTable_Brevets();
+		$brevetsByPilotes = $brevet->getBrevetsByPilote($idPilote);
+		
+		$formModifierPilote = new Application_Form_ModifierPilote();
+		
+		foreach ($brevetsByPilotes as $b) {
+			echo $b['TBRE_id'];
+			echo '<br />';
+			//var_dump($formModifierPilote->getElement('brevets')->addMultiOption('1', 'test'));
+		}
+		
+		//var_dump($res);
 		/*$tab = array(
 				'id'=>$id,
 				'nom'=>$res['UTI_nom'],
@@ -46,13 +57,18 @@ class DrhController extends Zend_Controller_Action {
 				'login'=>$res->UTI_login,
 				'email'=>$res->UTI_mail,
 				'dateEmbauche'=>$res->UTI_dateEmbauche,
-				array(
-					'listeBrevet'=>$res[1]));*/
+				);*/
 		//var_dump($tab);
 		/*
-		$formModification = new Application_Form_ModifierPilote();
-		$formModification->populate($tab);
-		$this->view->formModification = $formModification;
+		$formModification = new Application_Form_ModifierPilote();*/
+		//$formModifierPilote->populate($tab);
+		$formModifierPilote->getElement('nom')->setValue($res[0]['utilisateur']['UTI_nom']);
+		$formModifierPilote->getElement('prenom')->setValue($res[0]['utilisateur']['UTI_prenom']);		
+		$formModifierPilote->getELement('login')->setValue($res[0]['utilisateur']['UTI_login']);
+		$formModifierPilote->getELement('email')->setValue($res[0]['utilisateur']['UTI_mail']);
+		$formModifierPilote->getElement('dateEmbauche')->setValue($res[0]['utilisateur']['UTI_dateEmbauche']);
+		$this->view->formModifierPilote = $formModifierPilote;
+		/*$this->view->formModification = $formModification;
 		
 		if($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
@@ -80,14 +96,12 @@ class DrhController extends Zend_Controller_Action {
 			}
 		}*/
 	}
-
 	
 	public function supprimerpiloteAction() {
-		$id = $this->_request->getParam('id');
+		$idPilote = $this->_request->getParam('idPilote');
 		$pilote = new Application_Model_DbTable_Pilote();
-		$pilote->supprimerPilote($id);
-		echo $id;
-		// $this->_redirect('/drh/index/');
+		$res = $pilote->supprimerPilote($idPilote);
+		$this->_redirect('/drh/index/');
 	}
 	
 }

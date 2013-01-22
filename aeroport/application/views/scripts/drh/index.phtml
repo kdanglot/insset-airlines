@@ -6,6 +6,7 @@
 <a href="/index/deconnexion">Deconnexion</a>
 <?php echo 'Bienvenue ' . $identity->UTI_login . ' ';?>
 </div>
+<?php var_dump($this->listePilote);?>
 <div class="action_page">
 	<a href=<?php echo $this->url(array('controller' => 'drh', 'action' => 'ajouterutilisateur'));?>>Ajouter un pilote</a>
 </div>
@@ -34,9 +35,9 @@
 		<td><?php echo $pilote['utilisateur']['UTI_dateEmbauche'];?></td>
 		<td  class="btnGestion" >
 			
-			<a  href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'modifierpilote', 'id'=>$pilote['PIL_id']));?>><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/modifier.png" border="0" title="Modifer" alt ="Modifier"/></a>
+			<a  href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'modifierpilote', 'idPilote'=>$pilote['PIL_id']));?>><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/modifier.png" border="0" title="Modifer" alt ="Modifier"/></a>
 
-			<a  href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerpilote'));?>><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/supprimer.png" border="0" title="Supprimer" alt ="Supprimer"/></a>
+			<a  href=<?php echo $this->url(array('controller'=>'drh', 'action'=>'supprimerpilote', 'idPilote'=>$pilote['utilisateur']['UTI_id']));?>><img class="modSupp" src= "<?php echo $this->baseUrl(); ?>/img/supprimer.png" border="0" title="Supprimer" alt ="Supprimer"/></a>
 
 		</td>
 		
