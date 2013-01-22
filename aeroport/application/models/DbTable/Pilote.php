@@ -118,7 +118,8 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 	
 	public function supprimerPilote($id) {
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
-		$tableUtilisateur->supprimerUtilisateur($id);
+		$res = $tableUtilisateur->supprimerUtilisateur($id);
+		return $res;
 // 		$tableUtilisateur->delete('UTI_id =' . $this->find($id)->current()->UTI_id);
 	} 
 }

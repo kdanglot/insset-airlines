@@ -40,6 +40,6 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 	}
 	
 	public function supprimerUtilisateur($idUtilisateur) {
-		$this->find($idUtilisateur)->current()->delete();
+		return $this->delete('UTI_id =' . (int)$idUtilisateur);
 	}
 } // Applicaion_Model_DbTable_User
