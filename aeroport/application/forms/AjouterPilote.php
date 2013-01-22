@@ -18,7 +18,7 @@ class Application_Form_AjouterPilote extends Zend_Form {
 		$ePrenom->setRequired(true);
 		$ePrenom->addFilter('Alnum');
 		$ePrenom->addValidator('NotEmpty');
-		
+
 		$eNom = new Zend_Form_Element_Text('nom');
 		$eNom->setAttrib('id', 'nom');
 		$eNom->setLabel('Nom :');
