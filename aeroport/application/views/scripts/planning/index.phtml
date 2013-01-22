@@ -4,7 +4,7 @@
 	$today = new DateTime();
 	$todayFr = $tabNomJours[($today->format('N') - 1)];
 	$todayNumber = $today->format('d');
-	$todayMois = $tabNomMois[$today->format('n')];
+	$todayMois = $tabNomMois[($today->format('n') - 1)];
 	$todayWeek = $today->format('W');
 	
 	echo<<<TABLESTART

@@ -25,9 +25,8 @@ class PlanningController extends Zend_Controller_Action
 		if($dateDepart == false){
 			$dateDepart = new DateTime();
 		}
-		$dateDepart = $dateDepart->sub(new DateInterval('P2W'));
-		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, 1);
-		// echo '<pre>'; var_dump($volsListeBrute); exit;
+		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, $this->_getParam('week', 1));
+		// var_dump($volsListeBrute);exit;
 		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
 		$planning = array();
 
@@ -36,15 +35,16 @@ class PlanningController extends Zend_Controller_Action
 		foreach($volsListeBrute as $jour => $lignes){
 
 			$jour ++; // Le tableau des jours commence à l'index 0. On le fais donc commencer à l'index 1.
-			$dayVol = $dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
-			$dayStart = intval($dateDepart->format('w')); // Le numéro du jour de départ de l'affichage
+			$dayVol = clone $dateDepart; // Le jour véritable du vol (ex : 08, 14, 31, ...)
+			$dayStart = intval($dayVol->format('w')); // Le numéro du jour de départ de l'affichage
 
 			// Comme la méthode renvoie la semaine complète
 			// Si on envoie un Jeudi en jour de départ
 			// Le tableau renvoyé correspondra à un mardi
 			// Il faut donc comparer le jour d'aujourd'hui et le tableau des jours renvoyé par la méthode (qui commence à 1) pour résoudre le numéro véritable des jours.
 			// Si c'est un jour passé
-			if($dayStart > $jour){ 
+			
+			if($dayStart > $jour){
 				// Retire le nombre de jour nécessaire
 				$dayVol->sub(new DateInterval('P' . ($dayStart - $jour) . 'D'));
 			}
