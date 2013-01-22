@@ -17,7 +17,7 @@ class PlanningController extends Zend_Controller_Action
 		$vols = new Application_Model_DbTable_Vol();
 
 		$dateDepart = new DateTime();
-		// $dateDepart = $dateDepart->sub(new DateInterval('P1W'));
+		$dateDepart = $dateDepart->sub(new DateInterval('P2W'));
 		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, 1);
 		// echo '<pre>'; var_dump($volsListeBrute); exit;
 		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
@@ -46,8 +46,6 @@ class PlanningController extends Zend_Controller_Action
 				$dayVol->add(new DateInterval('P' . ($jour - $dayStart) . 'D'));
 			}
 
-			$dayVol = $dayVol->format('d');
-
 			// Parcourir les lignes
 			foreach($lignes as $ligne => $vols){
 
@@ -63,12 +61,15 @@ class PlanningController extends Zend_Controller_Action
 						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartEffective']);
 						$dateDepartVol = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' '. date_format($dateDepartVol, 'H:i');	
 						$class = 'planfie';
+						$dateDepartPrevue = $vol['VOL_dateDepartPrevue'];
 					}
 					else{
-						$dateDepartVol = $tabNomJours[$jourSemaine] . ' ' . $dayVol;
+						$dateDepartVol = $tabNomJours[$jourSemaine] . ' ' . $dayVol->format('d');
+						$dateDepartPrevue = $dayVol->format('Y-m-d');
 						$class = 'non-planifie';
 					}
-
+					
+					
 					// Formater la date d'arrivée si elle existe
 					if(isset($vol['VOL_dateArriveeEffective'])){ 
 						$dateArrivee = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateArriveeEffective']);
@@ -117,9 +118,9 @@ class PlanningController extends Zend_Controller_Action
 					$planning[] = array(
 						'id' => $vol['VOL_id'],
 						'class' => $class,
-						'trajet' => $trajet,
 						'depart' => array(
 							'date' => $dateDepartVol,
+							'prevu' => $dateDepartPrevue,
 							'idAeroport' => intval($vol['aeroportDepart']['AER_id_depart']),
 							'nomAeroport' => $vol['aeroportDepart']['AER_nom']
 						),
@@ -147,7 +148,102 @@ class PlanningController extends Zend_Controller_Action
 		// echo '<pre>'; var_dump($planning); exit;
 		$this->view->planning = $planning;
     }
-
+	
+	public function creerAction() {
+		
+		$formCreer = new Application_Form_CreerVol();
+		$this->view->formCreer = $formCreer;
+		
+		// Si on a reçu une requête avec des données POST
+		if($this->getRequest()->isPost()) {
+		
+			$formData = $this->getRequest()->getPost();
+			
+			// Si les données reçues sont valides pour ce formulaire
+			if($formCreer->isValid($formData)) {
+			
+				// Récupérer les données
+				$ligne = $formCreer->getValue('ligne');
+				$dateDepart = $formCreer->getValue('dateDepart');
+				$aeroportDepart = $formCreer->getValue('aeroportDepart');
+				$aeroportArrivee = $formCreer->getValue('aeroportArrivee');
+				$avion = $formCreer->getValue('avion');
+				$pilote = $formCreer->getValue('pilote');
+				$copilote = $formCreer->getValue('copilote');
+			
+				$vol = new Application_Model_DbTable_Vol();
+				$vol->ajoutVol($ligne, $dateDepart, $aeroportDepart, '', $aeroportArrivee, $avion, $pilote, $copilote);
+				
+				// Après les modifications faites on revient à l'index
+				$this->_helper->redirector('index');
+			}
+			
+			// sinon on le réaffiche avec les données
+			else{
+				$ligne = $this->_getParam('ligne', 0);
+				$dateDepart = $this->_getParam('date');
+				$aeroportDepart = $this->_getParam('aeroportDepart');
+				$aeroportArrivee = $this->_getParam('aeroportArrivee');
+				
+				// Récupérer les données
+				$aeroports = new Application_Model_DbTable_Aeroport();
+				$aeroportDepart = $aeroports->find($aeroportDepart)->current();
+				$aeroportArrivee = $aeroports->find($aeroportArrivee)->current();
+				
+				$dataPopulate = array(
+					'ligne' => $ligne,
+					'dateDepart' => $dateDepart,
+					'aeroportDepart' => $aeroportDepart->AER_id,
+					'aeroportArrivee' => $aeroportArrivee->AER_id
+				);
+				
+				$formCreer->populate($dataPopulate);
+				
+				$this->view->ligne = $ligne;
+				$this->view->aeroportDepart = $aeroportDepart->AER_nom;
+				$this->view->aeroportArrivee = $aeroportArrivee->AER_nom;
+				$this->view->datePrevue = $dateDepart;
+				$this->view->dateDepart = $dateDepart;
+			}
+		
+		}
+		
+		// Sinon on affiche le formulaire avec les données de la BDD
+		else{
+			
+			$ligne = $formCreer->getValue('ligne');
+			$dateDepart = $formCreer->getValue('date');
+			$aeroportDepart = $formCreer->getValue('aeroportDepart');
+			$aeroportArrivee = $formCreer->getValue('aeroportArrivee');
+			
+			// Récupérer les données
+			$aeroports = new Application_Model_DbTable_Aeroport();
+			$aeroportDepart = $aeroports->find($aeroportDepart)->current();
+			$aeroportArrivee = $aeroports->find($aeroportArrivee)->current();
+			
+			$dataPopulate = array(
+				'ligne' => $ligne,
+				'dateDepart' => $dateDepart,
+				'aeroportDepart' => $aeroportDepart->AER_id,
+				'aeroportArrivee' => $aeroportArrivee->AER_id
+			);
+			
+			$formCreer->populate($dataPopulate);
+			
+			$this->view->ligne = $ligne;
+			$this->view->aeroportDepart = $aeroportDepart->AER_nom;
+			$this->view->aeroportArrivee = $aeroportArrivee->AER_nom;
+			$this->view->datePrevue = $dateDepart;
+			$this->view->dateDepart = $dateDepart;
+			
+			$formPlanifier->getElement('avion')->setValue($formCreer->getValue('avion'));
+			$formPlanifier->getElement('pilote')->setValue($formCreer->getValue('pilote'));
+			$formPlanifier->getElement('copilote')->setValue($formCreer->getValue('copilote'));
+			
+		}
+		
+	}
+	
 	public function planifierAction() {
 		
 		// Récupérer le formulaire
@@ -176,16 +272,7 @@ class PlanningController extends Zend_Controller_Action
 				$copilote = $formPlanifier->getValue('copilote');
 			
 				$vol = new Application_Model_DbTable_Vol();
-				
-				// Si le vol existe on le modifie
-				if(isset($idVol)){
-					$vol->modifier($idVol, $ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
-				}
-				
-				// S'il n'existe pas on le créé avec ces données
-				else{
-					$vol->creer($ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
-				}
+				$vol->modifier($idVol, $ligne, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
 				
 				// Après les modifications faites on revient à l'index
 				$this->_helper->redirector('index');
@@ -198,46 +285,33 @@ class PlanningController extends Zend_Controller_Action
 		
 		}
 		
-		// Sinon on affiche le formulaire avec les données
+		// Sinon on affiche le formulaire avec les données de la BDD
 		else{
 			
-			$idVol = $this->_getParam('idVol', 0);
+			$idVol = $this->_getParam('id', 0);
 			$ligne = $this->_getParam('idLigne', 0);
 			$aeroportDepart = $this->_getParam('aeroportDepart', 0);
 			$aeroportArrivee = $this->_getParam('aeroportArrivee', 0);
 			
-			// Si le vol existe on affiche ses données
-			if($idVol){
+			// Récupérer les données
+			$vol = new Application_Model_DbTable_Vol();
 			
-				// Récupérer les données
-				$vol = new Application_Model_DbTable_Vol();
-				
-				$dataVol = $vol->getVol($idVol);var_dump($dataVol);
-				$dataPopulate = array(
-					'id' => $dataVol['VOL_id'],
-					'ligne' => $dataVol['LIG_id'],
-					'dateDepart' => $dataVol['VOL_dateDepartEffective'],
-					'dateArrivee' => $dataVol['VOL_dateArriveeEffective'],
-					'aeroportDepart' => $dataVol['aeroportDepart']['AER_id_depart'],
-					'aeroportArrivee' => $dataVol['aeroportArrivee']['AER_id_arrivee']
-				);
-				$formPlanifier->getElement('avion')->setValue($dataVol['avion']['AVI_id']);
-				$formPlanifier->populate($dataPopulate);
-				$this->view->ligne = $dataVol['LIG_id'];
-				$this->view->aeroportDepart = $dataVol['aeroportDepart']['AER_nom'];
-				$this->view->aeroportArrivee = $dataVol['aeroportArrivee']['AER_nom'];
-				$this->view->datePrevue = $dataVol['VOL_dateDepartPrevue'];
-				
-			}
-			
-			// Sinon on le créé avec des données générées
-			else{
-			
-				// Récupérer les données
-				$vol = new Application_Model_DbTable_Vol();
-				// $vol->getVolFictif($ligne, $aeroportDepart);
-				// $formPlanifier->populate($vol);
-			}
+			$dataVol = $vol->getVol($idVol);
+			// var_dump($dataVol);
+			$dataPopulate = array(
+				'id' => $dataVol['VOL_id'],
+				'ligne' => $dataVol['LIG_id'],
+				'dateDepart' => $dataVol['VOL_dateDepartEffective'],
+				'dateArrivee' => $dataVol['VOL_dateArriveeEffective'],
+				'aeroportDepart' => $dataVol['aeroportDepart']['AER_id_depart'],
+				'aeroportArrivee' => $dataVol['aeroportArrivee']['AER_id_arrivee']
+			);
+			$formPlanifier->getElement('avion')->setValue($dataVol['avion']['AVI_id']);
+			$formPlanifier->populate($dataPopulate);
+			$this->view->ligne = $dataVol['LIG_id'];
+			$this->view->aeroportDepart = $dataVol['aeroportDepart']['AER_nom'];
+			$this->view->aeroportArrivee = $dataVol['aeroportArrivee']['AER_nom'];
+			$this->view->datePrevue = $dataVol['VOL_dateDepartPrevue'];
 
 		}
 		
