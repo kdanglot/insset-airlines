@@ -17,6 +17,7 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
 		$listeBrevets = $pilote->findApplication_Model_DbTable_TypesBrevetViaApplication_Model_DbTable_Brevets();
 		$tabPilote = array();
+		$tabPilote[0]['utilisateur']['UTI_id'] = $utilisateur->UTI_id;
 		$tabPilote[0]['utilisateur']['UTI_nom'] = $utilisateur->UTI_nom;
 		$tabPilote[0]['utilisateur']['UTI_prenom'] = $utilisateur->UTI_prenom;
 		$tabPilote[0]['utilisateur']['UTI_login'] = $utilisateur->UTI_login;
@@ -105,15 +106,13 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 		}
 	}
 	
-	public function modifierPilote($idPilote, array $pilote) {
-// 		Tableau a envoyer
-// 				$p["UTI_nom"] = "GUN";
-// 				$p["UTI_prenom"] = "TOP";
-// 				$p["UTI_login"] = "top";
-// 				$p["UTI_password"] = "top";
-// 				$p["UTI_dateEmbauche"] = "2012-11-28";
+	public function modifierPilote($idPilote, array $pilote, array $brevets) {
+	
 		$tableUtilisateur = new Application_Model_DbTable_Utilisateur();
+		$tableBrevet = new Application_Model_DbTable_Brevets();
+		
 		$tableUtilisateur->modifierUtilisateur($this->find($idPilote)->current()->UTI_id, $pilote);
+		$tableBrevet->updateByPilote($idPilote, $brevets);
 	} 
 	
 	public function supprimerPilote($id) {
