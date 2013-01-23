@@ -35,66 +35,67 @@ class DrhController extends Zend_Controller_Action {
 	}
 	
 	public function modifierpiloteAction() {
+		// permet de récupérer l'ID du pilote
 		$idPilote = $this->_request->getParam('idPilote');
+		// on instancie un objet PILOTE
 		$pilote = new Application_Model_DbTable_Pilote();
-		$res = $pilote->afficherPilote($idPilote);
+		// on récupère les infos du pilote
+		$infosPilote = $pilote->afficherPilote($idPilote);
+		// var_dump($infosPilote);
+		// on instancie un objet BREVETS
 		$brevet = new Application_Model_DbTable_Brevets();
+		// on récupère les brevets d'un pilote
 		$brevetsByPilotes = $brevet->getBrevetsByPilote($idPilote);
-		
+		// on instancie un objet ModifierPilote => formulaire
 		$formModifierPilote = new Application_Form_ModifierPilote();
 		
+		// tableau contenant les ID des brevets du pilote
+		$checked = array();
 		foreach ($brevetsByPilotes as $b) {
-			echo $b['TBRE_id'];
-			echo '<br />';
-			//var_dump($formModifierPilote->getElement('brevets')->addMultiOption('1', 'test'));
+			$checked[] = $b['TBRE_id'];
 		}
-		
-		//var_dump($res);
-		/*$tab = array(
-				'id'=>$id,
-				'nom'=>$res['UTI_nom'],
-				'prenom'=>$res->UTI_prenom,
-				'login'=>$res->UTI_login,
-				'email'=>$res->UTI_mail,
-				'dateEmbauche'=>$res->UTI_dateEmbauche,
-				);*/
-		//var_dump($tab);
-		/*
-		$formModification = new Application_Form_ModifierPilote();*/
-		//$formModifierPilote->populate($tab);
-		$formModifierPilote->getElement('nom')->setValue($res[0]['utilisateur']['UTI_nom']);
-		$formModifierPilote->getElement('prenom')->setValue($res[0]['utilisateur']['UTI_prenom']);		
-		$formModifierPilote->getELement('login')->setValue($res[0]['utilisateur']['UTI_login']);
-		$formModifierPilote->getELement('email')->setValue($res[0]['utilisateur']['UTI_mail']);
-		$formModifierPilote->getElement('dateEmbauche')->setValue($res[0]['utilisateur']['UTI_dateEmbauche']);
+		// permet de checker les valeurs
+		$formModifierPilote->getElement('brevets')->setValue($checked);
+		$formModifierPilote->getElement('nom')->setValue($infosPilote[0]['utilisateur']['UTI_nom']);
+		$formModifierPilote->getElement('prenom')->setValue($infosPilote[0]['utilisateur']['UTI_prenom']);		
+		$formModifierPilote->getELement('login')->setValue($infosPilote[0]['utilisateur']['UTI_login']);
+		$formModifierPilote->getELement('email')->setValue($infosPilote[0]['utilisateur']['UTI_mail']);
+		$formModifierPilote->getElement('dateEmbauche')->setValue($infosPilote[0]['utilisateur']['UTI_dateEmbauche']);
 		$this->view->formModifierPilote = $formModifierPilote;
-		/*$this->view->formModification = $formModification;
-		
+				
 		if($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
-			if($formModification->isValid($formData)) {
-				$id = $formModification->getValue('id');
-				$prenom = $formModification->getValue('prenom');
-				$nom = $formModification->getValue('nom');
-				$login = $formModification->getValue('login');
-				$mdp = 'testMdp';
-				$mdp = hash('sha256', $mdp);
-				$idBrevets = $formAjout->getValue('typeBrevet');
-				$dateEmbauche = $formModification->getValue('dateEmbauche');
+			if($formModifierPilote->isValid($formData)) {
+				// var_dump($formModifierPilote);
+				$prenom = $formModifierPilote->getValue('prenom');
+				$nom = $formModifierPilote->getValue('nom');
+				$login = $formModifierPilote->getValue('login');
+				$brevets = $formModifierPilote->getValue('brevets');
+				$dateEmbauche = $formModifierPilote->getValue('dateEmbauche');
 				//$dateAjout = date('Y-m-d');
+				// var_dump($brevets);
+				$tabBrevets = array();
+				foreach ($brevets as $b) {
+					//var_dump($b);
+					$tabBrevets[] = array (
+							'PIL_id' => $idPilote,
+							'TBRE_id' => $b,
+							'BRE_dateFin' => '00'
+					);
+				}
 				
-				$tabRes = array (
+				var_dump($tabBrevets);
+				$tabInfos = array (
 						'UTI_nom'=>$nom,
 						'UTI_prenom'=>$prenom,
 						'UTI_login'=>$login,
-						'UTI_password'=>$mdp,
 						'UTI_dateEmbauche'=>$dateEmbauche);
 				
-				$db = Zend_Registry::get('db');
-				$pilote = new Application_Model_DbTable_Pilote();
-				$pilote->modifierPilote($id, $tabRes);
+				// on modifie les valeurs du pilote
+				$res = $pilote->modifierPilote($idPilote, $tabInfos, $tabBrevets);
+				//var_dump($res);
 			}
-		}*/
+		}
 	}
 	
 	public function supprimerpiloteAction() {
