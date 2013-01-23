@@ -41,15 +41,11 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$eDateEmbauche->setLabel('Date embauche');
 		$eDateEmbauche->setRequired(true);
 		
-		$eBrevet = new Zend_Form_Element_Checkbox('brevets');
-		$eBrevet->setLabel('Brevets : ');
+		$eBrevet = new Zend_Form_Element_MultiCheckbox('brevets');		
+		foreach ($typesBrevets as $tb) {
+			$eBrevet->addMultiOption($tb['TBRE_id'], $tb['TBRE_nom']);
+		}
 		
-		
-		$eBrevet->setChecked(true);
-		
-		/*foreach ($typesBrevets as $tb) {
-			$eBrevet->addElements($tb['TBRE_id'], $tb['TBRE_nom']);
-		}*/
 		
 		/*$eAncienMdp = new Zend_Form_Element_Password('ancienMdp');
 		$eAncienMdp->setAttrib('id', 'ancienMdp');
