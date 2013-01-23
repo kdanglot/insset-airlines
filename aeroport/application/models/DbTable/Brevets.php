@@ -22,4 +22,15 @@ class Application_Model_DbTable_Brevets extends Zend_Db_Table_Abstract {
 		return $rows;
 	}
 	
+	public function updateByPilote($idPilote, array $brevets) {
+		$this->delete('PIL_id =' . (int)$idPilote);
+		foreach ($brevets as $brevet) {
+			$p['PIL_id'] = $brevet['PIL_id'];
+			$p['TBRE_id'] = $brevet['TBRE_id'];
+			$p['BRE_dateFin'] = $brevet['BRE_dateFin'];
+			$this->insert($p);
+		}
+		//$this->insert($brevets);
+	}
+	
 }
