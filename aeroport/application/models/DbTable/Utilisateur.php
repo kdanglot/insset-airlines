@@ -33,10 +33,10 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 		$utilisateurBDD->UTI_nom = $utilisateur["UTI_nom"];
 		$utilisateurBDD->UTI_prenom = $utilisateur["UTI_prenom"];
 		$utilisateurBDD->UTI_login = $utilisateur["UTI_login"];
-		$utilisateurBDD->UTI_password = $utilisateur["UTI_password"];
-		$utilisateurBDD->UTI_dateEmbauche = $utilisateur["UTI_dateEmbauche"];
+		// $utilisateurBDD->UTI_password = $utilisateur["UTI_password"];
+		// $utilisateurBDD->UTI_dateEmbauche = $utilisateur["UTI_dateEmbauche"];
 		
-		$utilisateurBDD->save();
+		return $utilisateurBDD->save();
 	}
 	
 	public function supprimerUtilisateur($idUtilisateur) {
