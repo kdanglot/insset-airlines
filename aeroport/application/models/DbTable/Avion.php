@@ -33,6 +33,7 @@ class Application_Model_DbTable_Avion extends Zend_Db_Table_Abstract {
 			$typeAvion = $avion->findParentApplication_Model_DbTable_TypesAvion();
 			
 			$volListe = $avion->findApplication_Model_DbTable_Vol();
+			$disponible = true;
 			foreach ($volListe as $vol){
 				//On ne fouille les vols déja effectués.
 				if ($vol->VOL_dateDepartEffective == "") {
@@ -60,15 +61,16 @@ class Application_Model_DbTable_Avion extends Zend_Db_Table_Abstract {
 					$dateArriveeVoulue = $dateDepartVoulueClone->add(new DateInterval('PT'.round($tempsTrajetEnSecondeVoulue, 0, PHP_ROUND_HALF_DOWN).'S'));
 					
 					if($dateDepartPrevue < $dateArriveeVoulue  && $dateArriveePrevue > $dateDepartVoulue){
-						
-					}else{
-						$avionTab[$i]["AVI_id"] = $avion->AVI_id;
-						$avionTab[$i]["AVI_immatriculation"] = $avion->AVI_immatriculation;
-						$avionTab[$i]["TAVI_nom"] = $typeAvion->TAVI_nom;
-						$avionTab[$i]["TAVI_nombrePlaces"] = $typeAvion->TAVI_nombrePlaces;
-						$i++;
+						$disponible = false;
 					}
 				}
+			}
+			if ($disponible) {
+				$avionTab[$i]["AVI_id"] = $avion->AVI_id;
+				$avionTab[$i]["AVI_immatriculation"] = $avion->AVI_immatriculation;
+				$avionTab[$i]["TAVI_nom"] = $typeAvion->TAVI_nom;
+				$avionTab[$i]["TAVI_nombrePlaces"] = $typeAvion->TAVI_nombrePlaces;
+				$i++;
 			}
 		}
 		
