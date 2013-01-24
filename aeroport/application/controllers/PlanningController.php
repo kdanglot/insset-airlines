@@ -16,6 +16,43 @@ class PlanningController extends Zend_Controller_Action
     	
 		$vols = new Application_Model_DbTable_Vol();
 		
+		
+		// Récupérer les semaines du premier vol jusqu'à aujourd'hui
+		$tabJours = array();
+		$dernierVol = new DateTime();
+		$premierVol = new DateTime($vols->getFirstDateDepart());
+		
+		$premierVol->sub(new DateInterval('P' . (intval($premierVol->format('w')) - 1) . 'D'));
+		$dernierVol->add(new DateInterval('P' . (intval($dernierVol->format('w')) - 1) . 'D'));
+		$dernierVol->add(new DateInterval('P4W'));
+		
+		$dernierVolStr = $dernierVol->format('Y-W');
+		
+		$semainePre = 0;
+		$anneePre = 0;
+		
+		while($premierVol->format('Y-W') <= $dernierVolStr){
+			
+			$annee = intval($premierVol->format('Y'));
+			$semaine = intval($premierVol->format('W'));
+			$jour = intval($premierVol->format('d'));
+			
+			
+			if($semaine == $semainePre and $annee != $anneePre){
+				$annee = $anneePre;
+			}
+			if(!isset($tabJours[$annee . '-' . $semaine])){
+				$tabJours[$annee . '-' . $semaine] = array();
+			}
+			$tabJours[$annee . '-' . $semaine][] = $jour;
+			
+			$premierVol->add(new DateInterval('P1D'));
+			$semainePre = $semaine;
+			$anneePre = $annee;
+		}
+		// var_dump($tabJours);exit;
+		$this->view->panel = $tabJours;
+		
 		if($this->_getParam('date') != ''){
 			$dateDepart = DateTime::createFromFormat('YmdHis', $this->_getParam('date'));
 		}
@@ -25,9 +62,10 @@ class PlanningController extends Zend_Controller_Action
 		if($dateDepart == false){
 			$dateDepart = new DateTime();
 		}
-		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, $this->_getParam('week', 1));
+		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, $this->_getParam('week', 5));
 		// var_dump($volsListeBrute);exit;
 		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
+		$tabNomMois = array('jan', 'fév', 'mar', 'avri', 'juin', 'juil', 'août', 'sep', 'oct', 'nov', 'déc');
 		$planning = array();
 
 		// Parcourir les jours
@@ -67,16 +105,23 @@ class PlanningController extends Zend_Controller_Action
 					// Formater la date de départ si elle existe
 					if(isset($vol['VOL_dateDepartEffective'])){
 						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartEffective']);
-						$dateDepartVol = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' '. date_format($dateDepartVol, 'H:i');	
+						$dateDepartEff = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' ' . $tabNomMois[($dayVol->format('n') - 1)] . ' '. date_format($dateDepartVol, 'H:i');	
 						$class = 'planfie';
-						$dateDepartPrevue = $vol['VOL_dateDepartPrevue'];
 					}
 					else{
-						$dateDepartVol = $tabNomJours[$jourSemaine] . ' ' . $dayVol->format('d');
-						$dateDepartPrevue = $dayVol->format('Y-m-d');
+						$dateDepartEff = '-';
 						$class = 'non-planifie';
 					}
 					
+					// Formater la date de départ prévue si elle existe
+					if(isset($vol['VOL_dateDepartEffective'])){
+						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartPrevue']);
+						$dateDepartPrevu = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' ' . $tabNomMois[($dayVol->format('n') - 1)] . ' '. date_format($dateDepartVol, 'H:i');	
+					}
+					else{
+						$dateDepartPrevu = $tabNomJours[$jourSemaine] . ' ' . $dayVol->format('d') . ' ' . $tabNomMois[($dayVol->format('n') - 1)];
+					}
+					$dateDepartUrl = $dayVol->format('Ymd');
 					
 					// Formater la date d'arrivée si elle existe
 					if(isset($vol['VOL_dateArriveeEffective'])){ 
@@ -84,22 +129,22 @@ class PlanningController extends Zend_Controller_Action
 						$dateArrivee = $tabNomJours[intval(date_format($dateArrivee, 'N')) - 1] . ' ' . date_format($dateArrivee, 'd') . ' '. date_format($dateArrivee, 'H:i');					
 					}
 					else{
-						$dateArrivee = '';
+						$dateArrivee = '-';
 					}
 
 					// Créer un avion vide s'il n'y en a pas
 					if(!isset($vol['avion'])){
 						$vol['avion'] = array(
-							'AVI_id' => '',
-							'AVI_immatriculation' => ''
+							'AVI_id' => '-',
+							'AVI_immatriculation' => '-'
 						);
 					}
 
 					// Créer un pilote vide s'il n'y en a pas
 					if(!isset($vol['pilote'])){
 						$pilote = array(
-							'id' => '',
-							'nom' => ''
+							'id' => '-',
+							'nom' => '-'
 						);
 					}
 					else{
@@ -112,8 +157,8 @@ class PlanningController extends Zend_Controller_Action
 					// Créer un copilote vide s'il n'y en a pas
 					if(!isset($vol['coPilote'])){
 						$copilote = array(
-							'id' => '',
-							'nom' => ''
+							'id' => '-',
+							'nom' => '-'
 						);
 					}
 					else{
@@ -127,8 +172,9 @@ class PlanningController extends Zend_Controller_Action
 						'id' => $vol['VOL_id'],
 						'class' => $class,
 						'depart' => array(
-							'date' => $dateDepartVol,
-							'prevu' => $dateDepartPrevue,
+							'date' => $dateDepartEff,
+							'prevu' => $dateDepartPrevu,
+							'dateurl' => $dateDepartUrl,
 							'idAeroport' => intval($vol['aeroportDepart']['AER_id_depart']),
 							'nomAeroport' => $vol['aeroportDepart']['AER_nom']
 						),
@@ -181,7 +227,8 @@ class PlanningController extends Zend_Controller_Action
 				$copilote = $formCreer->getValue('copilote');
 			
 				$vol = new Application_Model_DbTable_Vol();
-				$vol->ajoutVol($ligne, $dateDepart . ' ' . $heureDepart, $aeroportDepart, '', $aeroportArrivee, $avion, $pilote, $copilote);
+				$dateComposee = DateTime::createFromFormat('YmdH:i', ($dateDepart . $heureDepart));
+				$vol->ajoutVol($ligne, $dateComposee->format('Y-m-d H:i:s'), $aeroportDepart, $aeroportArrivee, $avion, $pilote, $copilote);
 				
 				// Après les modifications faites on revient à l'index
 				$this->_helper->redirector('index');
@@ -278,6 +325,9 @@ class PlanningController extends Zend_Controller_Action
 				$avion = $formPlanifier->getValue('avion');
 				$pilote = $formPlanifier->getValue('pilote');
 				$copilote = $formPlanifier->getValue('copilote');
+			
+				if($dateDepart == ''){ $dateDepart = null; }
+				if($dateArrivee == ''){ $dateArrivee = null; }
 			
 				$vol = new Application_Model_DbTable_Vol();
 				$vol->modifierVol($idVol, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);

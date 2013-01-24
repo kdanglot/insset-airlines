@@ -19,9 +19,7 @@ class Application_Form_CreerVol extends Zend_Form {
 		$eHeureDepart = new Zend_Form_Element_Text('heureDepartPrevue');
 		$eHeureDepart->setAttrib('placeholder', 'Heure de départ Prévue');
 		$eHeureDepart->setLabel('Heure de départ Prévue : ');
-		$eHeureDepart->setRequired(true);
 		$eHeureDepart->addFilter('StringTrim');
-		$eHeureDepart->addValidator('NotEmpty');
 		
 		// Liste des Avions
 		$eAvion = new Zend_Form_Element_Select('avion');
