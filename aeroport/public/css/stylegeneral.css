@@ -32,7 +32,7 @@ header img{
 	width:453px;
 	height:170px;
 }
-.test{margin-left: auto;margin-right: auto}
+.centre{margin-left: auto;margin-right: auto}
 tr {margin-top: 12px;margin-bottom: 12px}
 select {
 	width: 150px;
@@ -170,7 +170,61 @@ table.table_type1 td {
 table.table_type1 td:first-child { 
 	border-left: none; width:88px; background:#f9f9f9; padding-left:0px; padding-right:0px;}
 
+/* ajouté par antoine 
+	Abdallah : tu peux modifier l'apparence, mais attention à ne pas trop modifier 
+	car il y a du jquery qui fonctionne avec
+	c'est pour le panneau de contrôle dans la page d'index du planning ;)
+*/
+div#panel{
+	width:50%;
+	overflow:hidden;
+	background-color:green;
+	position:relative;
+	height:150px;
+}
+div#panel button{
+	cursor:pointer;
+	margin:0;
+	width:100%;
+	padding:0;
+	height:50px;
+	border:1px solid lightgrey;
+}
+div#panel button.actif{
+	background-color:lightblue;
+}
+div#panel button.cinqSemaines{
+	width:100%;
+}
+div#panel div.semaines{
+	overflow-x:scroll;
+	overflow-y:hidden;
+	background-color:red;
+	height:100px;
+	white-space:nowrap;
+	position:relative;
+	font-size:0; /* PAS TOUCHER !! Correction pour espace blanc indésirable */
+}
+div#panel div.semaine{
+	display:inline-block;
+	width:148px;
+	height:100%;
+	background-color:yellow;
+}
+div#panel div.semaines button{
+	height:50%;
+}
+div#panel div.semaines div.jours{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+div#panel div.semaine div.jour{
+	width:14.28%;
+	float:left;
+}
 
+/* fin de ajouté par antoine */
 /* POLICES */
 @font-face {
     font-family: 'sansationregular';
