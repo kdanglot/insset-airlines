@@ -23,7 +23,6 @@ class Application_Form_AjouterPilote extends Zend_Form {
 
 		$this->setMethod('POST');
 		$this->setAttrib('id', 'ajouterPilote');
-		$this->setAttrib('class', 'centre');
 		$this->setDecorators(
 			array(
         	'FormElements',
