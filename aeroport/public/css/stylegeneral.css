@@ -32,6 +32,8 @@ header img{
 	width:453px;
 	height:170px;
 }
+.test{margin-left: auto;margin-right: auto}
+tr {margin-top: 12px;margin-bottom: 12px}
 select {
 	width: 150px;
 	height: 26px;
@@ -45,6 +47,7 @@ select {
 
 input[type=text], input[type=password]{
 	padding:6px;
+	margin: 2px;
 	border:none;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;

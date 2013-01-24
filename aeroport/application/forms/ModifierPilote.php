@@ -4,10 +4,27 @@ class Application_Form_ModifierPilote extends Zend_Form {
 	public function init() {
 		$typeBrevet = new Application_Model_DbTable_TypesBrevet();
 		$typesBrevets = $typeBrevet->afficherLesBrevets();
+		$Decorator = array(
+    				'ViewHelper',
+    				'Errors',
+    				array('Description', array('tag' => 'p', 'class' => 'description')),
+    				array('HtmlTag', array('tag' => 'td')),
+    				array(array('tr' => 'HtmlTag'), array('tag' => 'tr')));
+
+		$DecoratorSubmit = array(
+            'ViewHelper',
+            array(array('td' => 'HtmlTag'), array('tag' => 'td', 'colspan' => 2)),
+            array(array('tr' => 'HtmlTag'), array('tag' => 'tr')));
+	
 		
 	//	var_dump($typesBrevets);
 		$this->setMethod('POST');
 		$this->setAttrib('id', 'modifierPilote');
+		$this->setDecorators(
+			array(
+        	'FormElements',
+        	array('HtmlTag', array('tag' => 'table')),
+        	'Form'));
 		
 		$eId = new Zend_Form_Element_Hidden('id');
 		$eId->setAttrib('id', 'id');
