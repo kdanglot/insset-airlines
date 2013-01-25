@@ -30,6 +30,8 @@ class DrhController extends Zend_Controller_Action {
 				$db = Zend_Registry::get('db');
 				$pilote = new Application_Model_DbTable_Pilote();
 				$pilote->ajouterPilote($nom, $prenom, $login, $mdp, $mail, $dateEmbauche, $dateAjout, $idBrevets);
+				
+				$this->_redirect('drh');
 			}
 		}
 	}
@@ -93,7 +95,8 @@ class DrhController extends Zend_Controller_Action {
 				
 				// on modifie les valeurs du pilote
 				$res = $pilote->modifierPilote($idPilote, $tabInfos, $tabBrevets);
-				//var_dump($res);
+				
+				$this->_redirect('drh');
 			}
 		}
 	}
