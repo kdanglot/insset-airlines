@@ -216,12 +216,16 @@ div#panel div.semaines button{
 }
 div#panel div.semaines div.jours{
 	width:100%;
-	height:100%;
+	height:50%;
 	position:relative;
 }
 div#panel div.semaine div.jour{
 	width:14.28%;
 	float:left;
+	height:100%;
+}
+div#panel div.semaine div.jour button{
+	height:100%;
 }
 
 /* fin de ajouté par antoine */
