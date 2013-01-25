@@ -1,8 +1,15 @@
 <?php
-echo<<<LIGNE
+
+$date = DateTime::createFromFormat('Ymd', $this->datePrevue);
+$date = $date->format('Y-m-d');
+$urlRetour = $this->url(array('controller' => 'planning', 'action' => 'index'), null, true);
+echo<<<VOL
+<h2>Planifier un vol</h2>
+<a href="$urlRetour" >Retour au planning</a>
+<br />
 <span>Ligne : $this->ligne</span><br />
 <span>Aéroport de Départ : $this->aeroportDepart</span><br />
 <span>Aéroport d'Arrivée : $this->aeroportArrivee</span><br />
-<span>Date de départ : $this->datePrevue</span><br />
+<span>Date de départ : $date</span><br />
 $this->formCreer
-LIGNE;
+VOL;

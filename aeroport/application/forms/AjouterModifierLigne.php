@@ -8,9 +8,27 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$aeroports = $aeroport->afficherLesAeroports();
 		$pays = new Application_Model_DbTable_Pays();
 		$lesPays = $pays->afficherLesPays();
+		$Decorator = array(
+    				'ViewHelper',
+    				'Errors',
+    				array('Description', array('tag' => 'p', 'class' => 'description')),
+    				array('HtmlTag', array('tag' => 'td')),
+    				array(array('tr' => 'HtmlTag'), array('tag' => 'tr')));
+
+		$DecoratorSubmit = array(
+            'ViewHelper',
+            array(array('td' => 'HtmlTag'), array('tag' => 'td', 'colspan' => 2)),
+            array(array('tr' => 'HtmlTag'), array('tag' => 'tr')));
 			 
 		$this->setMethod('post');
 		$this->setAttrib('id', 'ajouterLigneFormulaire');
+
+		$this->setDecorators(
+			array(
+        	'FormElements',
+        	array('HtmlTag', array('tag' => 'table','class'=>'center')),
+        	'Form'));
+
 		
 		// element hidden id
 		$eIdLigne = new Zend_Form_Element_Hidden('id');
@@ -24,6 +42,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eHeureDepart->setRequired(true);
 		$eHeureDepart->addFilter('StringTrim');
 		$eHeureDepart->addValidator('NotEmpty');
+		$eHeureDepart->setDecorators($Decorator);
 
 		// element Text heure d'arrive + attributs
 		$eHeureArrivee = new Zend_Form_Element_Text('heureArrivee');
@@ -32,12 +51,16 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eHeureArrivee->setRequired(true);
 		$eHeureArrivee->addFilter('StringTrim');
 		$eHeureArrivee->addValidator('NotEmpty');
+		$eHeureArrivee->setDecorators($Decorator);
+
 		
 		// element Select pays de depart + attributs
 		$ePaysDepart = new Zend_Form_Element_Select('paysDepart');
 		$ePaysDepart->setLabel("Pays de départ :");
 		$ePaysDepart->setAttrib('id', 'pays-depart');
 		$ePaysDepart->setAttrib('name', 'pays-depart');
+		$ePaysDepart->setDecorators($Decorator);
+
 		$ePaysDepart->setAttrib('onchange', 'remplirSelect(this)');	
 		$ePaysDepart->addMultiOption('-1', 'Choisissez un pays');
 		foreach($lesPays as $p) {
@@ -48,6 +71,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eAeroportDepart = new Zend_Form_Element_Select('aeroportDepart');
 		$eAeroportDepart->setLabel("Aéroport de départ :");
 		$eAeroportDepart->setAttrib('id', 'aeroport-depart');
+		$eAeroportDepart->setDecorators($Decorator);
 		$eAeroportDepart->setAttrib('name', 'aeroport-depart');
 		$eAeroportDepart->addMultiOption('-1', 'Choisissez un aeroport');
 	//	$eAeroportDepart->setRequired(true);	
@@ -57,6 +81,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$ePaysArrive->setLabel("Pays d'arrivé :");
 		$ePaysArrive->setAttrib('name', 'pays-arrive');
 		$ePaysArrive->setAttrib('id', 'pays-arrive');
+		$ePaysArrive->setDecorators($Decorator);
 		$ePaysArrive->setAttrib('onchange', 'remplirSelect(this)');
 		$ePaysArrive->addMultiOption('-1', 'Choisissez un pays');
 		foreach($lesPays as $p) {
@@ -67,6 +92,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Text aeroport d'arrive + attributs
 		$eAeroportArrive = new Zend_Form_Element_Select('aeroportArrive');
 		$eAeroportArrive->setLabel("Aéroport d'arrivé :");
+		$eAeroportArrive->setDecorators($Decorator);
 		$eAeroportArrive->setAttrib('name', 'aeroport-arrive');
 		$eAeroportArrive->setAttrib('id', 'aeroport-arrive');
 		$eAeroportArrive->addMultiOption('-1', 'Choisissez un aeroport');
@@ -75,15 +101,18 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// element Select periodicite + attributs
 		$ePeriodicite = new Zend_Form_Element_Select('periodicite');
 		$ePeriodicite->setLabel('Periodicite : ');
+		$ePeriodicite->setDecorators($Decorator);
 		$ePeriodicite->addMultiOptions(array('1'=>'unique','2'=>'journalier','3'=>'hebdomadaire','4'=>'mensuel','5'=>'annuel'));
 		$ePeriodicite->setRequired(true);		
 
 		// element Submit connexion + attributs
 		$eAjouter = new Zend_Form_Element_Submit('ajouter');
 		$eAjouter->setAttrib('id', 'boutonAjouter');
+		$eAjouter->setDecorators($Decorator);
+
 
 		// ajout des elements au formulaire
-		$this->addElements(array($eHeureDepart, $eHeureArrivee, $ePeriodicite, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAjouter));
+		$this->addElements(array($ePeriodicite, $eHeureDepart, $eHeureArrivee, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAjouter));
 
 	} // init()
 

@@ -7,6 +7,44 @@
 	$todayMois = $tabNomMois[($today->format('n') - 1)];
 	$todayWeek = $today->format('W');
 	
+	// PANNEAU DE CONTROLE D'AFFICHAGE
+	echo<<<PANEL
+	<div id="panel" >
+		<button class="cinqSemaines actif" >
+			<span>Cette semaine + les 4 prochaines</span>
+		</button>
+		<div class="semaines" >
+PANEL;
+		$numSemaine = 0;
+		foreach($this->panel as $label => $semaine){
+			$left = (($numSemaine ) * 148);
+			echo<<<SEMAINE
+			<div class="semaine" style="left:{$left}px;">
+				<button>semaine $label</button>
+				<div class="jours">
+SEMAINE;
+				$numJour = 0;
+				foreach($semaine as $jour){
+					$left = ($numJour * 20) . 'px';
+					echo<<<JOUR
+					<div class="jour" style="left:$left;">
+						<button>$jour</button>
+					</div>
+JOUR;
+					$numJour++;
+				}
+	
+			echo<<<SEMAINE
+				</div>
+			</div>
+SEMAINE;
+			$numSemaine++;
+		}
+		echo<<<PANEL
+		</div>
+	</div>
+PANEL;
+	
 	echo<<<TABLESTART
 	<div id="today" >
 		<div class="head" >Aujourd'hui</div>
@@ -25,7 +63,8 @@
 	<table class="table_type1" >
 		<thead>
 			<tr>
-				<th>Départ</th>
+				<th>Départ Prévu</th>
+				<th>Départ Effectif</th>
 				<th>Aéroport</th>
 				<th>Arrivée</th>
 				<th>Aéroport</th>
@@ -46,11 +85,12 @@ TABLESTART;
 				$label = 'Modifier';
 			}
 			else{
-				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'creer', 'ligne' => $vol['ligne'], 'aeroportDepart' => $vol['depart']['idAeroport'], 'aeroportArrivee' => $vol['arrivee']['idAeroport'], 'date' => $vol['depart']['prevu']), null, true);
+				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'creer', 'ligne' => $vol['ligne'], 'aeroportDepart' => $vol['depart']['idAeroport'], 'aeroportArrivee' => $vol['arrivee']['idAeroport'], 'date' => $vol['depart']['dateurl']), null, true);
 				$label = 'Planifier';
 			}
 			echo<<<TABLEROW
 			<tr class="{$vol['class']}" >
+				<td>{$vol['depart']['prevu']}</td>
 				<td>{$vol['depart']['date']}</td>
 				<td>{$vol['depart']['nomAeroport']}</td>
 				<td>{$vol['arrivee']['date']}</td>

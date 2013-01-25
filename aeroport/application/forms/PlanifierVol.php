@@ -23,17 +23,13 @@ class Application_Form_PlanifierVol extends Zend_Form {
 		$eHeureDepart = new Zend_Form_Element_Text('dateDepart');
 		$eHeureDepart->setAttrib('placeholder', 'Date de départ Effective');
 		$eHeureDepart->setLabel('Date de départ Effective : ');
-		$eHeureDepart->setRequired(true);
 		$eHeureDepart->addFilter('StringTrim');
-		$eHeureDepart->addValidator('NotEmpty');
 
 		// element Text heure d'arrive + attributs
 		$eHeureArrivee = new Zend_Form_Element_Text('dateArrivee');
 		$eHeureArrivee->setAttrib('placeholder', "Date d'arrivée Effective");
 		$eHeureArrivee->setLabel("Date d'arrivée Effective : ");
-		$eHeureArrivee->setRequired(true);
 		$eHeureArrivee->addFilter('StringTrim');
-		$eHeureArrivee->addValidator('NotEmpty');
 		
 		// Liste des Avions
 		$eAvion = new Zend_Form_Element_Select('avion');

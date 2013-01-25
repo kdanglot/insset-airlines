@@ -18,6 +18,12 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 			)
 	);
 	
+	// Récupérer la date de départ la plus ancienne
+	public function getFirstDateDepart(){
+		$premierVol = $this->fetchRow($this->select()->from($this->_name, array('MIN(VOL_dateDepartPrevue) AS date')));
+		return $premierVol->date;
+	}
+	
 	// $date : objet DateTime 
 	// Format de $nbSemaine : int
 	public function afficherVolPlanning($date, $nbSemaine){

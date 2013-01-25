@@ -12,6 +12,96 @@ class Application_Model_DbTable_Pilote extends Zend_Db_Table_Abstract {
 							'refTableClass' => 'Application_Model_DbTable_Utilisateur'
 						)
 			);
+	
+	
+	public function getPiloteDisponible($dateDepartVoulue, $idAeroportDepartVoulue, $idAeroportArriveeVoulue){
+		$piloteListe = $this->fetchAll();
+		$piloteTab = array ();
+		$i = 0;
+	
+// 		Recupperation des aéroports.
+		$aeroport = new Application_Model_DbTable_Aeroport();
+		$aeroportDepartVoulue = $aeroport->find($idAeroportDepartVoulue)->current();
+		$aeroportArriveeVoulue = $aeroport->find($idAeroportArriveeVoulue)->current();
+	
+// 		Calcul de la distance entre les aeroports;
+		$distanceAeroportVoulue = $this->calculDistance($aeroportDepartVoulue->AER_longitude, $aeroportDepartVoulue->AER_latitude, $aeroportArriveeVoulue->AER_longitude, $aeroportArriveeVoulue->AER_latitude);
+	
+		foreach ($piloteListe as $pilote){			
+			$vols = new Application_Model_DbTable_Vol();	
+			$volListe = $vols->fetchAll($vols->select()->from(array("vol" => "vols"))->where("vol.PIL_id = ".$pilote->PIL_id)->orWhere("vol.PIL_id_copilote = ".$pilote->PIL_id));
+			$disponible = true;
+			foreach ($volListe as $vol){
+// 				On ne fouille les vols déja effectués.
+				if ($vol->VOL_dateDepartEffective == "") {
+// 					Recuperation de l'avion utilisé
+					$avion = $vol->findParentApplication_Model_DbTable_Avion();
+					
+// 					Recuperation du type de l'avion utilisé
+					$typeAvion = $avion->findParentApplication_Model_DbTable_TypesAvion();
+					
+// 					Creation d'un DateTime basée sur l'heure de depart prévue de l'avion.
+					$dateDepartPrevue =  new DateTime($vol->VOL_dateDepartPrevue);
+						
+// 					Recupperation des aéroports.
+					$aeroportDepart = $aeroport->find($vol->AER_id_depart)->current();
+					$aeroportArrive = $aeroport->find($vol->AER_id_arrivee)->current();
+						
+// 					Calcul de la distance entre les aeroports;
+					$distanceAeroport = $this->calculDistance($aeroportDepart->AER_longitude, $aeroportDepart->AER_latitude, $aeroportArrive->AER_longitude, $aeroportArrive->AER_latitude);
+						
+// 					Calcul du temps de trajets entre les aéroports
+					$tempsTrajetEnSeconde = $this->calculDuree($distanceAeroport, $typeAvion->TAVI_vitessemoyenne);
+						
+// 					Calucul de la date d'arrivé de l'avion.
+					$dateArriveePrevue = $dateDepartPrevue->add(new DateInterval('PT'.round($tempsTrajetEnSeconde, 0, PHP_ROUND_HALF_DOWN).'S'));
+						
+// 					Calcul du temps de trajets entre les aéroports
+					$tempsTrajetEnSecondeVoulue = $this->calculDuree($distanceAeroportVoulue, $typeAvion->TAVI_vitessemoyenne);
+						
+// 					Calucul de la date d'arrivé de l'avion.
+					$dateDepartVoulueClone = clone $dateDepartVoulue;
+					$dateArriveeVoulue = $dateDepartVoulueClone->add(new DateInterval('PT'.round($tempsTrajetEnSecondeVoulue, 0, PHP_ROUND_HALF_DOWN).'S'));
+						
+					if($dateDepartPrevue < $dateArriveeVoulue  && $dateArriveePrevue > $dateDepartVoulue){
+						$disponible = false;
+					}
+				}
+			}
+			if ($disponible) {
+				$piloteTab[$i]["PIL_id"] = $pilote->PIL_id;
+				$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
+				$piloteTab[$i]["UTI_id"] = $utilisateur->UTI_id;
+				$piloteTab[$i]["UTI_nom"] = $utilisateur->UTI_nom;
+				$piloteTab[$i]["UTI_prenom"] = $utilisateur->UTI_prenom;
+				$piloteTab[$i]["UTI_login"] = $utilisateur->UTI_login;
+				$piloteTab[$i]["UTI_mail"] = $utilisateur->UTI_mail;
+				$i++;
+			}
+		}
+		
+		var_dump($piloteTab);
+// 		return $piloteTab;
+	}
+	
+	public function calculDuree($distance, $vitesseMoyenne){
+		return $distance/($vitesseMoyenne/(60*60));
+		
+	}
+	
+	public function calculDistance($lon1, $lat1, $lon2, $lat2){
+		$R = 6371; // km
+		$dLat = deg2rad(($lat2-$lat1));
+		$dLon = deg2rad(($lon2-$lon1));
+		$lat1 = deg2rad($lat1);
+		$lat2 = deg2rad($lat2);
+		
+		$a = sin($dLat/2) * sin($dLat/2) + sin($dLon/2) * sin($dLon/2) * cos($lat1) * cos($lat2);
+		$c = 2 * atan2((sqrt($a)), sqrt(1-$a));
+		$d = $R * $c;
+		return $d;
+	}
+	
 	public function afficherPilote($idPilote) {
 		$pilote = $this->find($idPilote)->current();
 		$utilisateur = $pilote->findParentApplication_Model_DbTable_Utilisateur();
