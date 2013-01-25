@@ -12,7 +12,7 @@ class IndexController extends Zend_Controller_Action
     } // init()
    
     public function indexAction() {
-	
+		echo hash('SHA256', 'antoine');
 		$formConnexion = new Application_Form_Connexion();
 		$this->view->formConnexion = $formConnexion;
 
