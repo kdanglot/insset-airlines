@@ -123,11 +123,16 @@ class PlanningController extends Zend_Controller_Action
 					if(isset($vol['VOL_dateDepartEffective'])){
 						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartEffective']);
 						$dateDepartEff = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' ' . $tabNomMois[($dayVol->format('n') - 1)] . ' '. date_format($dateDepartVol, 'H:i');	
-						$class = 'planfie';
+						$class = 'passe';
 					}
 					else{
 						$dateDepartEff = '-';
-						$class = 'non-planifie';
+						if(isset($vol['VOL_dateDepartPrevue'])){
+							$class = 'planifie';
+						}
+						else{
+							$class = 'non-planifie';
+						}
 					}
 					
 					// Formater la date de départ prévue si elle existe
@@ -219,6 +224,12 @@ class PlanningController extends Zend_Controller_Action
 		// echo '<pre>'; var_dump($planning); exit;
 		$this->view->planning = $planning;
     }
+	
+	public function afficherAction(){
+		$vols = new Application_Model_DbTable_Vol();
+		$thisVol = $vols->getVol($this->_getParam('id'));
+		$this->view->vol = $thisVol;
+	}
 	
 	public function creerAction() {
 		

@@ -6,11 +6,12 @@
 	$todayNumber = $today->format('d');
 	$todayMois = $tabNomMois[($today->format('n') - 1)];
 	$todayWeek = $today->format('W');
+	$url = $this->url(array('controller' => 'planning', 'action' => 'index'), null, true);
 	
 	// PANNEAU DE CONTROLE D'AFFICHAGE
 	echo<<<PANEL
 	<div id="panel" >
-		<button value="$urlPlanning" class="cinqSemaines actif" >
+		<button value="$url" class="cinqSemaines actif" >
 			<span>Cette semaine + les 4 prochaines</span>
 		</button>
 		<div class="semaines" >
@@ -27,9 +28,10 @@ SEMAINE;
 				$numJour = 0;
 				foreach($semaine['jours'] as $jour){
 					$left = ($numJour * 20) . 'px';
+					$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $jour['value'], 'week' => '1'), null, true);
 					echo<<<JOUR
 					<div class="jour" style="left:$left;">
-						<button value="$urlPlanning/$jour[value]" >$jour[label]<br />$jour[num]</button>
+						<button value="$url" >$jour[label]<br />$jour[num]</button>
 					</div>
 JOUR;
 					$numJour++;
@@ -80,15 +82,21 @@ PANEL;
 TABLESTART;
 // Parcourir le planning
 		foreach($this->planning as $vol){
-		
-			if($vol['id'] > 0){
-				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'id' => $vol['id']), null, true);
-				$label = 'Modifier';
+			switch($vol['class']){
+				case 'passe' :
+					$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'afficher', 'id' => $vol['id']), null, true);
+					$label = 'Afficher';
+					break;
+				case 'planifie' : 
+					$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'planifier', 'id' => $vol['id']), null, true);
+					$label = 'Modifier';
+					break;
+				case 'non-planifie' :
+					$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'creer', 'ligne' => $vol['ligne'], 'aeroportDepart' => $vol['depart']['idAeroport'], 'aeroportArrivee' => $vol['arrivee']['idAeroport'], 'date' => $vol['depart']['dateurl']), null, true);
+					$label = 'Planifier';
+					break;
 			}
-			else{
-				$urlPlanifier = $this->url(array('controller' => 'planning', 'action' => 'creer', 'ligne' => $vol['ligne'], 'aeroportDepart' => $vol['depart']['idAeroport'], 'aeroportArrivee' => $vol['arrivee']['idAeroport'], 'date' => $vol['depart']['dateurl']), null, true);
-				$label = 'Planifier';
-			}
+
 			echo<<<TABLEROW
 			<tr class="{$vol['class']}" >
 				<td>{$vol['depart']['prevu']}</td>
