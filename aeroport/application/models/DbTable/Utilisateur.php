@@ -15,6 +15,18 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 					)
 			);
 	
+	public function loginExistant($login){
+		$utilisateurListe = $this->fetchAll();
+		
+		foreach ($utilisateurListe as $utilisateur) {
+			if ($utilisateur->UTI_login == $login) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public function getUtilisateurCourant(){
 		$utilisateurListe = $this->fetchAll();
 		$utilisateurTab = array();
@@ -38,14 +50,16 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 		return $utilisateurTab;
 	}
 	
-	public function ajouterUtilisateur($idUtilisateur, $utilisateur) {
-		$utilisateurBDD = $this->find($idUtilisateur)->current();
+	public function ajouterUtilisateur($prenom, $nom, $login, $mail, $password, $typeUtilisateur, $dateEmbauche) {
+		$utilisateurBDD = $this->createRow();
 		
-		$utilisateurBDD->UTI_nom = $utilisateur["UTI_nom"];
-		$utilisateurBDD->UTI_prenom = $utilisateur["UTI_prenom"];
-		$utilisateurBDD->UTI_login = $utilisateur["UTI_login"];
-		$utilisateurBDD->UTI_password = $utilisateur["UTI_password"];
-		$utilisateurBDD->UTI_dateEmbauche = $utilisateur["UTI_dateEmbauche"];
+		$utilisateurBDD->UTI_nom = $nom;
+		$utilisateurBDD->UTI_prenom = $prenom;
+		$utilisateurBDD->UTI_login = $login;
+		$utilisateurBDD->UTI_mail = $mail;
+		$utilisateurBDD->UTI_password = $password;
+		$utilisateurBDD->TUTI_id = $typeUtilisateur;
+		$utilisateurBDD->UTI_dateEmbauche = $dateEmbauche;
 		
 		$utilisateurBDD->save();
 	}

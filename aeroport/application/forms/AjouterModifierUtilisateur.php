@@ -46,6 +46,7 @@ class Application_Form_AjouterModifierUtilisateur extends Zend_Form {
 		$eMail->setRequired(true);
 		$eMail->addFilter('StringTrim');
 		$eMail->addValidator('NotEmpty');
+		$eMail->addValidator(new Zend_Validate_EmailAddress());
 		
 		//Recuperation des type des utilisateurs
 		$typesUtilisateurTable = new Application_Model_DbTable_TypeUtilisateur();
@@ -66,6 +67,7 @@ class Application_Form_AjouterModifierUtilisateur extends Zend_Form {
 		$eDateEmbauche->setRequired(true);
 		$eDateEmbauche->addFilter('StringTrim');
 		$eDateEmbauche->addValidator('NotEmpty');
+		$eDateEmbauche->addValidator( new Zend_Validate_Date(array('format' => 'yyyy-mm-dd')));
 
 // 		element Submit connexion + attributs
 		$eAjouter = new Zend_Form_Element_Submit('Ajouter');
