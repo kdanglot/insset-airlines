@@ -75,7 +75,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 		$infosLigne = $ligne->getLigneById($idLigne);
 		//print_r($infosLigne);
 		$aeroport = new Application_Model_DbTable_Aeroport();
-		
+		// var_dump($infosLigne);exit;
 		// affichage du formulaire de modification avec les différentes informations 
 		$form = new Application_Form_AjouterModifierLigne();
 		$form->ajouter->setLabel('Modifier');

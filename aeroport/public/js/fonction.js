@@ -43,7 +43,7 @@ function remplirSelect(obj) {
 	    $.ajax({
 	        type: "POST",
 	        // page qui fera le traitement
-	        url: "/ajax/aeroportbypays/idPays/"+idPays,
+	        url: baseUrl + "/ajax/aeroportbypays/idPays/"+idPays,
 	        dataType: "json",
 	        success: function(response){
 	        	// on récupère le résultat du traitement 
