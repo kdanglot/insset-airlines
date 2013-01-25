@@ -46,6 +46,9 @@ class AdministrateurController extends Zend_Controller_Action
     			}			
     		}
     	}
+    	
+    	$redirector = $this->_helper->redirector;
+    	$redirector->goToUrl("administrateur/index");
     }
 
 

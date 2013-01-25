@@ -15,7 +15,7 @@ class MaintenanceController extends Zend_Controller_Action
 
     public function indexAction() {		
 		$avion = new Application_Model_DbTable_Avion();
-		$avionsDisponibilite = $avion->getAvionsDisponibilite();
+		$avionsDisponibilite = $avion->getAvionsInfoMaintenance();
 		
 		foreach ($avionsDisponibilite as $key=>$avion){
 			if ($avion["disponibilite"] == "disponible") {
@@ -70,16 +70,25 @@ class MaintenanceController extends Zend_Controller_Action
     }
 
     public function creerAction() {	
-    	$dateDebutMaintenance = $this->getParam("dateDebutMaintenance");
-    	$idAvionMaintenance = $this->getParam("idAvionMaintenance");
-    	$typeMaintenance = $this->getParam("typeMaintenance");
+    	$formAjouterMaintenance = new Application_Form_AjouterMaintenance();
     	
-    	$auth = Zend_Auth::getInstance();
-    	$identity = $auth->getIdentity();
-    	$idUtilisateur = $identity->UTI_id;
     	
-    	$avions = new Application_Model_DbTable_Avion();
-    	$avions->creerMaintenanceActuel($idAvionMaintenance, $dateDebutMaintenance, $typeMaintenance, $idUtilisateur);
+    	if ($this->getRequest()->isPost()) {
+    		$formData = $this->getRequest()->getPost();
+    		if ($formAjouterMaintenance->isValid($formData)) {
+    		echo "test";
+    			$dateDebutMaintenance = $this->getParam("dateDebutMaintenance");
+    			$idAvionMaintenance = $this->getParam("idAvionMaintenance");
+    			$typeMaintenance = $this->getParam("typeMaintenance");
+    	
+    			$auth = Zend_Auth::getInstance();
+    			$identity = $auth->getIdentity();
+		    	$idUtilisateur = $identity->UTI_id;
+		    	
+		    	$avions = new Application_Model_DbTable_Avion();
+		    	$avions->creerMaintenanceActuel($idAvionMaintenance, $dateDebutMaintenance, $typeMaintenance, $idUtilisateur);
+    		}
+    	}
     	
     	$redirector = $this->_helper->redirector;
     	$redirector->goToUrl("maintenance/index");
