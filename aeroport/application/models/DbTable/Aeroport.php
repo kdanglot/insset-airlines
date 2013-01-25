@@ -4,6 +4,10 @@ class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 	protected $primary = 'AER_id';
     protected $_dependentTables = array('Application_Model_DbTable_Vol', 'Application_Model_DbTable_Trajet');
 	
+    public function getDbAdapter() {
+    	$db = Zend_Registry::get('db');
+    }
+    
 	public function afficherLesAeroports() {
 		$db = Zend_Registry::get('db');
 		$sql = 'SELECT AER_id, AER_nom FROM aeroports;';
@@ -22,5 +26,13 @@ class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 				AND p.PAY_id ='.$idPays.';';
 		return $rows = $db->fetchAll($sql);		
 	
+	}
+	
+	public function getNomAeroportById($idAer) {
+		$db = Zend_Registry::get('db');
+		$sql = 'SELECT AER_nom
+				FROM aeroports 
+				WHERE AER_id ='.$idAer.';';
+			return $rows = $db->fetchAll($sql);	
 	}
 }
