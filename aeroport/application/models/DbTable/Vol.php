@@ -236,4 +236,29 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		
 		$vol->save();
 	}
+	
+	public function getVolsEnCours() {
+		$sql = 'SELECT VOL_id, AER_id_depart, AER_id_arrivee, VOL_dateDepartEffective, VOL_dateArriveeEffective 
+		  		FROM vols 
+		  		WHERE VOL_dateDepartEffective IS NOT NULL';
+		
+		$aeroport = new Application_Model_DbTable_Aeroport();
+	
+		$tabRes = array();
+		$res = $this->getDbAdapter()->fetchAll($sql);
+		$i = 0;
+		foreach ($res as $r) {
+			$tabRes[$i]['VOL_id'] = $r['VOL_id'];
+			$tabRes[$i]['AER_depart'] = ($aeroport->getNomAeroportById($r['AER_id_depart']));
+			$tabRes[$i]['AER_arrivee'] = ($aeroport->getNomAeroportById($r['AER_id_arrivee']));
+			$tabRes[$i]['VOL_dateDepartEffective'] = $r['VOL_dateDepartEffective'];
+			$tabRes[$i]['VOL_dateArriveeEffective'] = $r['VOL_dateArriveeEffective'];	
+			$i++;		
+		}
+		return $tabRes;
+	}
+	
+	public function getDbAdapter() {
+		return Zend_Registry::get('db');
+	}
 }
