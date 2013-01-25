@@ -15,6 +15,11 @@
 		<![endif]-->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 		<script src="<?php echo $this->baseUrl();?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+		
+		<!-- Script qui met à disposition la baseUrl pour les autres scripts JS -->
+		<!-- ça sert par exemple pour l'ajax -->
+		<script>var baseUrl = "<?php echo $this->baseUrl() ?>";</script>
+		
 		<script src="<?php echo $this->baseUrl();?>/js/fonction.js"></script>
 		<?php echo $this->headTitle() ?>
 		

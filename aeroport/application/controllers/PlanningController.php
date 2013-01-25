@@ -16,7 +16,8 @@ class PlanningController extends Zend_Controller_Action
     	
 		$vols = new Application_Model_DbTable_Vol();
 		
-		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
+		$tabNomJours = array('L', 'M', 'M', 'J', 'V', 'S', 'D');
+		$tabNomMois = array('jan', 'fév', 'mar', 'avri', 'mai', 'juin', 'juil', 'août', 'sep', 'oct', 'nov', 'déc');
 		
 		// Récupérer les semaines du premier vol jusqu'à aujourd'hui
 		$tabJours = array();
@@ -31,26 +32,40 @@ class PlanningController extends Zend_Controller_Action
 		
 		$semainePre = 0;
 		$anneePre = 0;
+		$jourSemaine = 0;
 		
 		while($premierVol->format('Y-W') <= $dernierVolStr){
 			
 			$annee = intval($premierVol->format('Y'));
+			$mois = intval($premierVol->format('n')) - 1;
 			$semaine = intval($premierVol->format('W'));
 			$jour = intval($premierVol->format('d'));
-			$numJourSemaine = intval($premierVol->format('w'));
 			
 			
 			if($semaine == $semainePre and $annee != $anneePre){
 				$annee = $anneePre;
 			}
 			if(!isset($tabJours[$annee . '-' . $semaine])){
-				$tabJours[$annee . '-' . $semaine] = array();
+				$tabJours[$annee . '-' . $semaine] = array('semaine' => '', 'value' => '', 'jours' => array());
 			}
-			$tabJours[$annee . '-' . $semaine][] = $tabNomJours[$numJourSemaine] . ' ' . $jour;
+			$tabJours[$annee . '-' . $semaine]['semaine'] = $semaine;
+			$tabJours[$annee . '-' . $semaine]['value'] = $annee . $premierVol->format('md') . '000000';
+			$tabJours[$annee . '-' . $semaine]['jours'][] = array(
+				'label' => $tabNomJours[$jourSemaine], 
+				'num' => $jour, 
+				'mois' => $tabNomMois[$mois], 
+				'annee' => $annee,
+				'value' => $annee . $premierVol->format('m') . $jour . '000000'
+			);
 			
 			$premierVol->add(new DateInterval('P1D'));
 			$semainePre = $semaine;
 			$anneePre = $annee;
+			
+			$jourSemaine++;
+			if($jourSemaine == 7){
+				$jourSemaine = 0;
+			}
 		}
 		// var_dump($tabJours);exit;
 		$this->view->panel = $tabJours;
@@ -67,7 +82,7 @@ class PlanningController extends Zend_Controller_Action
 		$volsListeBrute = $vols->afficherVolPlanning($dateDepart, $this->_getParam('week', 5));
 		// var_dump($volsListeBrute);exit;
 		
-		$tabNomMois = array('jan', 'fév', 'mar', 'avri', 'juin', 'juil', 'août', 'sep', 'oct', 'nov', 'déc');
+		$tabNomJours = array('lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim');
 		$planning = array();
 
 		// Parcourir les jours
@@ -116,7 +131,7 @@ class PlanningController extends Zend_Controller_Action
 					}
 					
 					// Formater la date de départ prévue si elle existe
-					if(isset($vol['VOL_dateDepartEffective'])){
+					if(isset($vol['VOL_dateDepartPrevue'])){
 						$dateDepartVol = DateTime::createFromFormat('Y-m-d H:i:s', $vol['VOL_dateDepartPrevue']);
 						$dateDepartPrevu = $tabNomJours[intval(date_format($dateDepartVol, 'N')) - 1] . ' ' . date_format($dateDepartVol, 'd') . ' ' . $tabNomMois[($dayVol->format('n') - 1)] . ' '. date_format($dateDepartVol, 'H:i');	
 					}
