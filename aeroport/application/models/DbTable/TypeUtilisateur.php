@@ -7,4 +7,18 @@ class Application_Model_DbTable_TypeUtilisateur extends Zend_Db_Table_Abstract {
 	public function getTypeUtilisateur($id){
 		return $this->find($id)->current();
 	}
+	
+	public function getTypesUtilisateurs(){
+		$typesUtilisateursListe = $this->fetchAll();
+		$typesUtilisateursTab = array();
+		$i = 0;
+		
+		foreach ($typesUtilisateursListe as $typeUtilisateur) {
+			$typesUtilisateursTab[$i]["TUTI_id"] = $typeUtilisateur->TUTI_id;
+			$typesUtilisateursTab[$i]["TUTI_label"] = $typeUtilisateur->TUTI_label;
+			$i++;
+		}
+		
+		return $typesUtilisateursTab;
+	}
 }

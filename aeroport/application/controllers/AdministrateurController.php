@@ -14,12 +14,20 @@ class AdministrateurController extends Zend_Controller_Action
     }
 
     public function indexAction() {
-        // action body
-        echo 'administrateur/index';
-        echo '<br />';
-    	$auth = Zend_Auth::getInstance();
-		$identity = $auth->getIdentity();		
-		echo 'Bienvenue ' . $identity->UTI_login;
+    	$utilisateur = new Application_Model_DbTable_Utilisateur();
+    	$utilisateurCourant = $utilisateur->getUtilisateurCourant();
+    	
+    	$this->view->utilisateurCourant = $utilisateurCourant;
+    }
+
+    public function ajoutAction() {
+    	$formUtilisateur = new Application_Form_AjouterModifierUtilisateur();
+    	
+    	$this->view->formUtilisateur = $formUtilisateur;
+    }
+
+    public function creerutilisateurAction() {
+    	
     }
 
 

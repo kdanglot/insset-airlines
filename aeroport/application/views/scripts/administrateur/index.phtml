@@ -1,0 +1,45 @@
+<?php 
+$utilisateurCourant = $this->utilisateurCourant;
+?>
+<table>
+	<thead>
+		<th>Nom</th>
+		<th>Prenom</th>
+		<th>Login</th>
+		<th>Mail</th>
+		<th>Poste</th>
+	</thead>
+<?php
+foreach ($utilisateurCourant as $utilisateur){
+?>
+	<tr>
+		<td>
+<?php
+			echo $utilisateur["UTI_nom"];
+?>
+		</td>
+		<td>
+<?php
+			echo $utilisateur["UTI_prenom"];
+?>
+		</td>
+		<td>
+<?php
+			echo $utilisateur["UTI_login"];
+?>
+		</td>
+		<td>
+<?php
+			echo $utilisateur["UTI_mail"];
+?>
+		</td>
+		<td>
+<?php
+			echo $utilisateur["typeUtilisateur"]["TUTI_label"];
+?>
+		</td>
+	</tr>
+<?php
+}
+?>
+</table>

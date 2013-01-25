@@ -15,6 +15,29 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 					)
 			);
 	
+	public function getUtilisateurCourant(){
+		$utilisateurListe = $this->fetchAll();
+		$utilisateurTab = array();
+		$i = 0;
+		
+		foreach ($utilisateurListe as $utilisateur) {
+			if ($utilisateur->UTI_dateSupression == "") {
+				$utilisateurTab[$i]["UTI_id"] = $utilisateur->UTI_id;
+				$utilisateurTab[$i]["UTI_nom"] = $utilisateur->UTI_nom;
+				$utilisateurTab[$i]["UTI_prenom"] = $utilisateur->UTI_prenom;
+				$utilisateurTab[$i]["UTI_login"] = $utilisateur->UTI_login;
+				$utilisateurTab[$i]["UTI_mail"] = $utilisateur->UTI_mail;
+				$typeUtilisateur = $utilisateur->findParentApplication_Model_DbTable_TypeUtilisateur();
+				$utilisateurTab[$i]["typeUtilisateur"]["TUTI_id"] = $typeUtilisateur->TUTI_id;
+				$utilisateurTab[$i]["typeUtilisateur"]["TUTI_alias"] = $typeUtilisateur->TUTI_alias;
+				$utilisateurTab[$i]["typeUtilisateur"]["TUTI_label"] = $typeUtilisateur->TUTI_label;
+				$i++;
+			}
+		}
+		
+		return $utilisateurTab;
+	}
+	
 	public function ajouterUtilisateur($idUtilisateur, $utilisateur) {
 		$utilisateurBDD = $this->find($idUtilisateur)->current();
 		
