@@ -222,7 +222,17 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$vol->VOL_dateDepartPrevue = $dateDepart;
 		$vol->VOL_dateAjout = date("Y-m-d H:i:s");
 		$vol->VOL_dateSupression = null;
-		$idUtilisateur = $vol->save();
+		$idVol = $vol->save();
+		
+		$avions = new Application_Model_DbTable_Avion();
+		$avion = $avions->find($idAvion)->current();
+		$typeAvion = $avion->findParentApplication_Model_DbTable_TypesAvion();
+		$places = new Application_Model_DbTable_Places();
+		for ($i = 0; $i < $typeAvion->TAVI_nombrePlaces; $i++) {
+			$place = $places->createRow();
+			$place->VOL_id = $idVol;
+			$place->save();
+		}
 		
 	}
 
