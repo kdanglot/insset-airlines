@@ -28,7 +28,7 @@ SEMAINE;
 				$numJour = 0;
 				foreach($semaine['jours'] as $jour){
 					$left = ($numJour * 20) . 'px';
-					$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $jour['value'], 'week' => '1'), null, true);
+					$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $jour['value'], 'week' => '1', 'day' => $jour['jourSemaine']), null, true);
 					echo<<<JOUR
 					<div class="jour" style="left:$left;">
 						<button value="$url" >$jour[label]<br />$jour[num]</button>
@@ -63,7 +63,7 @@ PANEL;
 			</p>
 		</div>
 	</div>
-	<table class="table_type1" >
+	<table id="tableplanning" class="table_type1" >
 		<thead>
 			<tr>
 				<th>Départ Prévu</th>
@@ -121,15 +121,32 @@ TABLEEND;
 ?>
 <script>
 $(document).ready(function() {
-	$('#panel').on('click', 'button', function(event){
-		$.ajax({
-			url: $(this).attr('value')
-		}).done(function (data){
-			
-			console.log('OK');
-			
-			
-		});
+
+	$('#panel .semaines').scrollLeft(9999999);
+	
+	$('#panel').one('click', 'button', function(event){
+		updateButton($(this));
+		updatePlanning($(this).attr('value'));
 	});
+	
+	
+	function updatePlanning(value){
+		$('#tableplanning tbody').html('<tr><td colspan="10"><img src="' + baseUrl + '/img/load.gif" /></td></tr>');
+		$.ajax({
+			url: value
+		}).done(function (data){
+			$('#tableplanning tbody').html(data);	
+			$('#panel').one('click', 'button', function(event){
+				updateButton($(this));
+				updatePlanning($(this).attr('value'));
+			});
+		});
+		
+	}
+	
+	function updateButton(element){
+		$('#panel button').removeClass('actif');
+		element.addClass('actif');
+	}
 });
 </script>
