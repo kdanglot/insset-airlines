@@ -10,25 +10,26 @@
 	// PANNEAU DE CONTROLE D'AFFICHAGE
 	echo<<<PANEL
 	<div id="panel" >
-		<button class="cinqSemaines actif" >
+		<button value="$urlPlanning" class="cinqSemaines actif" >
 			<span>Cette semaine + les 4 prochaines</span>
 		</button>
 		<div class="semaines" >
 PANEL;
 		$numSemaine = 0;
-		foreach($this->panel as $label => $semaine){
+		foreach($this->panel as $semaine){
 			$left = (($numSemaine ) * 148);
+			$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $semaine['value'], 'week' => '1'), null, true);
 			echo<<<SEMAINE
 			<div class="semaine" style="left:{$left}px;">
-				<button>semaine $label</button>
+				<button value="$url" >semaine $semaine[semaine]<br />{$semaine['jours'][0]['num']} {$semaine['jours'][0]['mois']} {$semaine['jours'][0]['annee']} -> {$semaine['jours'][6]['num']} {$semaine['jours'][0]['mois']}</button>
 				<div class="jours">
 SEMAINE;
 				$numJour = 0;
-				foreach($semaine as $jour){
+				foreach($semaine['jours'] as $jour){
 					$left = ($numJour * 20) . 'px';
 					echo<<<JOUR
 					<div class="jour" style="left:$left;">
-						<button>$jour</button>
+						<button value="$urlPlanning/$jour[value]" >$jour[label]<br />$jour[num]</button>
 					</div>
 JOUR;
 					$numJour++;
@@ -110,3 +111,17 @@ TABLEROW;
 TABLEEND;
 	
 ?>
+<script>
+$(document).ready(function() {
+	$('#panel').on('click', 'button', function(event){
+		$.ajax({
+			url: $(this).attr('value')
+		}).done(function (data){
+			
+			console.log('OK');
+			
+			
+		});
+	});
+});
+</script>

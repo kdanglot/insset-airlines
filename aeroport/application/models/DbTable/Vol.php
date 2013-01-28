@@ -62,11 +62,11 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 					foreach ($vols as $vol){
 
 // 						Mise en forme de la date de debut du vol
-						if($vol->VOL_dateDepartEffective==""){
+						// if($vol->VOL_dateDepartEffective==""){
 							$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartPrevue);
-						}else{
-							$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
-						}
+						// }else{
+							// $dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
+						// }
 
 // 						Comparaison avec le jour en question.
 						if($dateJour->format('Y-m-d') == $dateDepart->format('Y-m-d')){

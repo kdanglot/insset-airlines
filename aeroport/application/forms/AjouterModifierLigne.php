@@ -102,7 +102,13 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$ePeriodicite = new Zend_Form_Element_Select('periodicite');
 		$ePeriodicite->setLabel('Periodicite : ');
 		$ePeriodicite->setDecorators($Decorator);
-		$ePeriodicite->addMultiOptions(array('1'=>'unique','2'=>'journalier','3'=>'hebdomadaire','4'=>'mensuel','5'=>'annuel'));
+		$periodicites = new Application_Model_DbTable_TypePeriodicite();
+		// var_dump($periodicites->fetchAll()); exit;
+		$tabPeriodicites = array();
+		foreach($periodicites->fetchAll() as $periodicite){
+			$tabPeriodicites[$periodicite->TPER_id] = $periodicite->TPER_label;
+		}
+		$ePeriodicite->options = $tabPeriodicites;
 		$ePeriodicite->setRequired(true);		
 
 		// element Submit connexion + attributs
