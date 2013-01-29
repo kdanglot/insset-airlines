@@ -275,11 +275,9 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	}
 	
 	public function getVolsToday() {
-		$sql = 'SELECT VOL_dateDepartPrevue FROM vols;';
+		$sql = 'SELECT * FROM vols;';
 		
-		foreach ($sql as $s) {
-			$s['VOL_dateDepartPrevue'] = date("d/m/Y", strotime($s['VOL_dateDepartPrevue']));
-		}
+		
 		return $this->getDbAdapter()->fetchAll($sql);
 	}
 	
