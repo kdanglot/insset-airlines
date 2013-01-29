@@ -13,13 +13,58 @@
 <div class='message'>
 <?php echo $this->message;?>
 </div>
-<h1>Ajouter une ligne</h1>
-<div id="menuDs">
+<h1>Ajouter une ligne </h1>
+<!--
+Enlevé par Abdallah-
+ <div id="menuDs">
 	<ol>
-		<li><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></li>
+		<li><a href="<?php echo  $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></li>
 	</ol>
-</div>
-<?php
-	 echo $this->formAjouterLigne;
+</div> -->
+<?php 
+$formAjouterLigne = $this->formAjouterLigne; 
 
 ?>
+<br/>
+<form 	id="boutonAjouter"  
+		method="<?php echo $formAjouterLigne->getMethod(); ?>" 
+		action="<?php echo $formAjouterLigne->getAction();?>"  >
+
+<table class="center" width="50%" border="0">
+  <tr>
+    <td width="33%">&nbsp;</td>
+    <td width="10%">
+    	Périodicité : <?php echo $this->formAjouterLigne->periodicite->renderViewHelper(); ?>
+    </td>
+    <td width="33%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Départ</td>
+    <td>&nbsp;</td>
+    <td>Arrivée</td>
+  </tr>
+  <tr>
+    <td><?php echo $this->formAjouterLigne->heureDepart->renderViewHelper(); ?> </td>
+    <td>&nbsp;</td>
+    <td><?php echo $this->formAjouterLigne->heureArrivee->renderViewHelper(); ?> </td>
+  </tr>
+  <tr>
+    <td class="right"><?php echo $this->formAjouterLigne->paysDepart->renderViewHelper(); ?> </td>
+    <td>&nbsp;</td>
+    <td class="left" ><?php echo $this->formAjouterLigne->paysArrive->renderViewHelper(); ?> </td>
+  </tr>
+  <tr>
+    <td class="right"><?php echo $this->formAjouterLigne->aeroportDepart->renderViewHelper(); ?> </td>
+
+    <td>&nbsp;</td>
+    <td class="left"  ><?php echo $this->formAjouterLigne->aeroportArrive->renderViewHelper(); ?> </td>
+  </tr>
+    <tr>
+    	<td>&nbsp;</td>
+    <td > <?php  echo $this->formSubmit('boutonAjouter', 'Ajouter') ?> </td>
+    <td><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></td>
+  </tr>
+</table>
+</form>
+
+

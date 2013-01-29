@@ -32,7 +32,7 @@ header img{
 	width:453px;
 	height:170px;
 }
-.centre{margin-left: auto;margin-right: auto}
+/*table.centre{float: right;}*/
 tr {margin-top: 12px;margin-bottom: 12px}
 select {
 	width: 150px;
@@ -73,6 +73,9 @@ input[type=submit]{
 .errors{
 	padding-top:10px;
 }
+.center{margin-left: auto;margin-right: auto;}
+.left{float: left;}
+.right{float: right;} 
 
 section#index #avion{
 	margin:0 auto;

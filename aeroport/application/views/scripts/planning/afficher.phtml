@@ -1,0 +1,23 @@
+<?php
+	$urlRetour = $this->url(array('controller' => 'planning', 'action' => 'index'), null, true);
+	
+	echo<<<VOL
+	<a href="$urlRetour" >Retour</a>
+	<br />
+	<span>Aéroport de Départ : {$this->vol['aeroportDepart']['AER_nom']}</span>
+	<br />
+	<span>Aéroport d'Arrivée : {$this->vol['aeroportArrivee']['AER_nom']}</span>
+	<br />
+	<span>Avion : {$this->vol['avion']['AVI_immatriculation']}</spa>
+	<br />
+	<span>Pilote : {$this->vol['pilote']['utilisateur']['UTI_prenom']} {$this->vol['pilote']['utilisateur']['UTI_nom']}</span>
+	<br />
+	<span>Copilote : {$this->vol['coPilote']['utilisateur']['UTI_prenom']} {$this->vol['coPilote']['utilisateur']['UTI_nom']}</span>
+	<br />
+	<span>Date de Départ prévue : {$this->vol['VOL_dateDepartPrevue']}</span>
+	<br />
+	<span>Date de Départ effective : {$this->vol['VOL_dateDepartEffective']}</span>
+	<br />
+	<span>Date d'Arrivée effective : {$this->vol['VOL_dateArriveeEffective']}</span>
+VOL;
+?>
