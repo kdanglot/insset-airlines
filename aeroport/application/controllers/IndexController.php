@@ -39,6 +39,17 @@ class IndexController extends Zend_Controller_Action
 		$this->view->error = $this->_getParam('error');
 	
 
+	
+		// Si on est déjà connecté transmettre les infos à la vue
+		$auth = Zend_Auth::getInstance();
+		if($auth->hasIdentity()){
+			$this->view->dejaConnecte = $auth->getIdentity()->TUTI_alias;
+		}
+		
+		// Transmettre les messages d'erreur à la vue
+		$this->view->error = $this->_getParam('error');
+	
+
 		$formConnexion = new Application_Form_Connexion();
 		$this->view->formConnexion = $formConnexion;
 
@@ -119,5 +130,4 @@ class IndexController extends Zend_Controller_Action
 		$this->_redirector->gotoUrl('/index/index');
 		
     }
-    
 }
