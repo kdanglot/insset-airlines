@@ -35,4 +35,8 @@ class Application_Model_DbTable_Aeroport extends Zend_Db_Table_Abstract {
 				WHERE AER_id ='.$idAer.';';
 			return $rows = $db->fetchAll($sql);	
 	}
+	
+	public function getInfosAeroportById($idAeroport) {
+		return $this->find($idAeroport)->current();
+	}
 }
