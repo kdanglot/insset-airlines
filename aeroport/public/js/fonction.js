@@ -41,38 +41,46 @@ function remplirSelect(obj) {
 	    idPays = $('select#'+idSelect).val();
 	    // début de l'ajax
 	    $.ajax({
-	        type: "POST",
-	        // page qui fera le traitement
-	        url: baseUrl + "/ajax/aeroportbypays/idPays/"+idPays,
-	        dataType: "json",
-	        success: function(response){
-	        	// on récupère le résultat du traitement 
-	        	var optionData = response;
-	        	var obj = null;	        	
-		        var i = 1;
-		        
-	        	if (idSelect == 'pays-depart') {
-	        		obj = document.getElementById('aeroport-depart');
-	        	}
-	        	else {
-	        		obj = document.getElementById('aeroport-arrive');
-	        	}          
-	    
-	        	// on vérifie qui la réponse contient bien qqch
-	            if (optionData.length != 0 ) {
-	            	// permet de vider le select 
-	            	$('select#'+obj.id).empty();
-	            	// on rajoute l'option par défaut
-	                $('select#'+obj.id).append('<option value="-1" selected="selected">Choisissez un aéorport</option>');
-	            	
-	                // on ajoute le résultat au select
-	            	for (key in optionData) {                    	
-	                   	obj.options[i] = new Option(optionData[key].AER_nom, optionData[key].AER_id);
-	             		i++;
-	               	}               			
-	            }			
-	        }
-	    });		    
+	    	type: "POST",
+		    // page qui fera le traitement
+		    url: baseUrl + "/ajax/aeroportbypays/idPays/"+idPays,
+		    dataType: "json",
+		    success: function(response) {
+		    	// on récupère le résultat du traitement 
+		    	var optionData = response;
+		    	var obj = null;	        	
+		    	var i = 1;
+			 
+		    	// on récupère le select à remplir
+		    	if (idSelect == 'pays-depart') {
+		    		obj = document.getElementById('aeroport-depart');
+		    	} else {
+		    		obj = document.getElementById('aeroport-arrive');
+		    	}          
+		    
+		    	// on vide le select aéroport si l'utilisateur sélectionne la valeur par défaut 
+		    	// ou si le pays n'a pas d'aéroport
+		    	if (response == '') {
+		    		// alert('vide');
+		    		$('select#'+obj.id).empty();
+		    		$('select#'+obj.id).append('<option value="-1" selected="selected">Choisissez un aérorport</option>');
+		    	}
+		    
+		    	// on vérifie qui la réponse contient bien qqch
+		    	if (optionData.length != 0 ) {
+		    		// permet de vider le select 
+		    		$('select#'+obj.id).empty();
+		    		// on rajoute l'option par défaut
+		    		$('select#'+obj.id).append('<option value="-1" selected="selected">Choisissez un aérorport</option>');
+		            	
+		    		// on ajoute le résultat au select
+		    		for (key in optionData) {                    	
+		    			obj.options[i] = new Option(optionData[key].AER_nom, optionData[key].AER_id);
+		    			i++;
+		    		}               			
+		    	}			
+		    }	    	
+	    });		
 	    return false;		
 	});
 } // function remplirSelect()
