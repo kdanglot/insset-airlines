@@ -79,4 +79,11 @@ class Application_Model_DbTable_Utilisateur extends Zend_Db_Table_Abstract {
 	public function supprimerUtilisateur($idUtilisateur) {
 		return $this->delete('UTI_id =' . (int)$idUtilisateur);
 	}
+	
+	public function getInfosUtilisateur($idUtilisateur) {
+		$db = Zend_Registry::get('db');
+		$sql = 'SELECT * FROM utilisateurs WHERE UTI_id = '.$idUtilisateur.';';
+		return $db->fetchAll($sql);
+		
+	}
 } // Applicaion_Model_DbTable_User
