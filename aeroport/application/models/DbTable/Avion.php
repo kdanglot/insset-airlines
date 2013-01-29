@@ -220,4 +220,10 @@ class Application_Model_DbTable_Avion extends Zend_Db_Table_Abstract {
 		
 		$maintenance->save();
 	}
+	
+	public function getTypeAvionById($idAvion) {
+		$avion = $this->find($idAvion)->current();
+		$typeAvion = $avion->findParentApplication_Model_DbTable_TypesAvion();
+		return $typeAvion;
+	}
 }
