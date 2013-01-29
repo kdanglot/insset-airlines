@@ -3,75 +3,121 @@
 class IndexController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
-     	$acl = new Zend_Acl();
-     	$acl->addRole('admin');
-     	$acl->addResource('administrateur');
-     	$acl->allow('admin','administrateur', 'index');
-    } // init()
+    public function init(){
+		
+		// Mettre en place le redirecteur
+		$this->_redirector = $this->_helper->getHelper('Redirector');
+		
+		// Récupération ACL
+		$acl = Zend_Registry::get('acl');
+		
+		// Récupération du rôle enregistré en session
+		$session = new Zend_Session_Namespace('role');
+		// var_dump($session->role);exit;
+		$role = $session->role;
+		$controller = $this->getRequest()->getControllerName();
+		$action = $this->getRequest()->getActionName();
+		
+		// Vérification des droits
+		if(!$acl->isAllowed($role, $controller, $action)){
+			// Rediriger vers le controlleur adapté
+			$this->_redirector->gotoUrl('/index/index/error/Vous devez d\'abord vous connecter');
+		}
+		
+	} // init()
    
     public function indexAction() {
-	//	echo hash('SHA256', 'antoine');
+
+	
+		// Si on est déjà connecté transmettre les infos à la vue
+		$auth = Zend_Auth::getInstance();
+		if($auth->hasIdentity()){
+			$this->view->dejaConnecte = $auth->getIdentity()->TUTI_alias;
+		}
+		
+		// Transmettre les messages d'erreur à la vue
+		$this->view->error = $this->_getParam('error');
+	
+
 		$formConnexion = new Application_Form_Connexion();
 		$this->view->formConnexion = $formConnexion;
 
+		// Si on a reçu des données
 		if ($this->getRequest()->isPost()) {
        		$formData = $this->getRequest()->getPost();
+		
+			// Si ces données sont valides avec ce formulaire
         	if ($formConnexion->isValid($formData)) {
-            		$login = $formConnexion->getValue('login');
-            		$mdp = $formConnexion->getValue('mdp'); 
-            		$mdp = hash('SHA256', $mdp);
+			
+				// Récupérer ces données
+				$login = $formConnexion->getValue('login');
+				$mdp = hash('SHA256', $formConnexion->getValue('mdp'));
             		
-            		$db = Zend_Registry::get('db');
+				// Identification avec Adaptater DbTable
+				
+				$db = Zend_Registry::get('db');
             		
-            		// instanciation de Zend_Auth
-            		$auth = Zend_Auth::getInstance();
-            		// charger et parametrer l'adapteur
-            		// ne pas oublier de coder les mdp
-            		           		
-            		$dbAdapter = new Zend_Auth_Adapter_DbTable($db, 'utilisateurs', 'UTI_login', 'UTI_password');
-            		// charger les crédits (login/mdp) à tester
-            		$dbAdapter->setIdentity($login);
-            		//$dbAdapter->setCredential($mdp);
-            		$dbAdapter->setCredential($mdp);
-            		// on teste l'authentification
-            		$res = $auth->authenticate($dbAdapter);
-          
-            		if($res->isValid($formData)) {
+				// Adaptateur
+				$authAdapter = new Zend_Auth_Adapter_DbTable($db);
+				$authAdapter->setTableName('utilisateurs')
+							->setIdentityColumn('UTI_login')
+							->setCredentialColumn('UTI_password');
+				
+				// On entre les paramètres
+				$authAdapter->setIdentity($login)
+							->setCredential($mdp);
+				
+				// On récupère le résultat de l'authentification
+				$result = $authAdapter->authenticate();
+				
+				// Si l'authentification est réussie
+				if($result->isValid()){
+				
+					// Récupérer les infos sur l'utilisateur
+					$data = $authAdapter->getResultRowObject(null, 'UTI_password');
 					
-            			// on récupère les infos de la personne après authentification
-    					$dataUser = $dbAdapter->getResultRowObject(null, 'UTI_password');
-						
-    					// on stocke les données dans la session
-    					$auth->getStorage()->write($dataUser);
-						
-    					// on récupère l'id de l'utilisateur
-    					$idTypeUtilisateur = $dataUser->TUTI_id;
-    					
-						// on récupère l'alias de l'utilisateur
-    					$infosUser = new Application_Model_DbTable_TypeUtilisateur();
-    					$infosType = $infosUser->getTypeUtilisateur($idTypeUtilisateur);
-						
-						// Redirection
-						$this->_redirect('/' . $infosType->TUTI_alias . '/index');
-    	  
-            		}
-            		else {
-            			echo 'Erreur';
-            		}
+					// on récupère l'alias de l'utilisateur
+					$idTypeUtilisateur = $data->TUTI_id;
+					$infosUser = new Application_Model_DbTable_TypeUtilisateur();
+					$infosUser = $infosUser->getTypeUtilisateur($idTypeUtilisateur);
+					$data->TUTI_alias = $infosUser->TUTI_alias;
+					$data->TUTI_label = $infosUser->TUTI_label;
+					
+					$auth->getStorage()->write($data);
+					
+					// Rediriger vers le controlleur adapté
+					$this->_redirector->gotoUrl('/' . $infosUser->TUTI_alias . '/index');
+					
+				}
+				else{
+				
+					// Nettoyer l'identité
+					$auth = Zend_Auth::getInstance();
+					$auth->clearIdentity();
+					
+					// Afficher un message de refus
+					$this->view->errorMessage = 'Identifiants erronés';
+					
+				}
         	} 
 		}
        
     }
 	
-    public function deconnexionAction() 
-    {
-    	$auth = Zend_Auth::getInstance();
-    	$auth->clearIdentity();
-    	$this->_redirect('/index/index');
+	// Déconnexion
+    public function deconnexionAction() {
+    	
+		// Nettoyer l'identité
+		$auth = Zend_Auth::getInstance();
+		$auth->clearIdentity();
+		
+		// Détruire les infos de la session
+		$session = new Zend_Session_Namespace('role');
+		$session->role = 'invite';
+		
+		// Rediriger vers l'accueil
+		$this->_redirector->gotoUrl('/index/index');
+		
     }
-    
-
     
 }
