@@ -2,14 +2,18 @@
 class Application_Form_AjouterIncident extends Zend_Form {
 	
 	public function init() {
-		$eDate = new Zend_Form_Element_Text('dateIncident');
-		$eDate->setAttrib('placeholder', 'Date de l\'incident');
+		$typeIncident = new Application_Model_DbTable_TypeIncident();
+		$listeTypeIncident = $typeIncident->getTypeIncident();
 		
 		$eIncident = new Zend_Form_Element_Select('typeIncident');
+		$eIncident->setLabel('Incident');
 		$eIncident->addMultiOption('-1', 'Choix de l\'incident');
+		foreach ($listeTypeIncident as $incident) {
+			$eIncident->addMultiOption($incident['TINC_id'], $incident['TINC_nom']);
+		}
 		
 		$eBouton = new Zend_Form_Element_Submit('valider');
 		
-		$this->addElements(array($eDate, $eIncident, $eBouton));
+		$this->addElements(array($eIncident, $eBouton));
 	}
 }
