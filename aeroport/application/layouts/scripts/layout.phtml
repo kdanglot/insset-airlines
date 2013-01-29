@@ -34,6 +34,20 @@
 					<h1>INSSET Airlines</h1>
 				</header>
 					
+				<?php
+					if(isset($this->layout()->login)){
+						
+						$urlDeconnexion = $this->url(array('controller' => 'index', 'action' => 'deconnexion'), null, true);
+					
+						echo<<<INFOSCO
+						<p>
+							<span>Bienvenue, {$this->layout()->login} - {$this->layout()->role}</span>
+							<a href="$urlDeconnexion" >Déconnexion</a>
+						</p>
+INFOSCO;
+					}
+				?>
+					
 				<!-- CONTAINER -->			
 				<?php echo $this->layout()->content; ?>
 					

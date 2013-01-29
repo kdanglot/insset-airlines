@@ -2,6 +2,32 @@
 	<div id="avion">
 		<img src="<?php echo $this->baseUrl(); ?>/img/avion.png" alt="silhouette d'avion" />
 	</div>
+	<?php 
+	if(isset($this->error)){
+		echo<<<ERROR
+		<p>
+			<span>$this->error</span>
+		</p>
+ERROR;
+	}
+	
+	if(isset($this->dejaConnecte)) { 
+		
+		$urlDeconnexion = $this->url(array('controller' => 'index', 'action' => 'deconnexion'), null, true);
+		$urlAcces = $this->url(array('controller' => $this->dejaConnecte, 'action' => 'index'), null, true);
+		
+		echo<<<DEJACO
+		<p>
+			<span>Vous êtes déjà connecté en tant que : $this->dejaConnecte</span>
+			<br />
+			<a href="$urlAcces" >Accéder à votre page</a>
+			<br />
+			<a href="$urlDeconnexion" >Se Déconnecter</a>
+		</p>
+DEJACO;
+	} 
+	else{
+	?>
 	<fieldset id="fieldsetConnexion" >
 		<?php echo $this->formConnexion ?>
 	</fieldset>
@@ -55,4 +81,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<?php
+	}
+	?>
 </section>
