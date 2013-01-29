@@ -8,26 +8,10 @@ class Application_Form_AjouterPilote extends Zend_Form {
 		$loginDoesntExist = new Zend_Validate_Db_NoRecordExists('utilisateurs', 'UTI_login');
 		$mailDoesntExist = new Zend_Validate_Db_NoRecordExists('utilisateurs', 'UTI_mail');
 		$mailFormat = new Zend_Validate_EmailAddress();
-		$Decorator = array(
-    				'ViewHelper',
-    				'Errors',
-    				array('Description', array('tag' => 'p', 'class' => 'description')),
-    				array('HtmlTag', array('tag' => 'td')),
-    				array(array('tr' => 'HtmlTag'), array('tag' => 'tr')));
-
-		$DecoratorSubmit = array(
-            'ViewHelper',
-            array(array('td' => 'HtmlTag'), array('tag' => 'td', 'colspan' => 2)),
-            array(array('tr' => 'HtmlTag'), array('tag' => 'tr')));
 	
 
 		$this->setMethod('POST');
 		$this->setAttrib('id', 'ajouterPilote');
-		$this->setDecorators(
-			array(
-        	'FormElements',
-        	array('HtmlTag', array('tag' => 'table')),
-        	'Form'));
 
 		$ePrenom = new Zend_Form_Element_Text('prenom');
 		$ePrenom->setAttrib('id', 'prenom');
@@ -35,6 +19,7 @@ class Application_Form_AjouterPilote extends Zend_Form {
 		$ePrenom->setRequired(true);
 		$ePrenom->addFilter('Alnum');
 		$ePrenom->addValidator('NotEmpty');
+		
 
 		$eNom = new Zend_Form_Element_Text('nom');
 		$eNom->setAttrib('id', 'nom');

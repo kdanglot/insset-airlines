@@ -10,6 +10,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 	
 	// améliorer l'affichage des erreurs
 	public function ajouterligneAction() {
+
 		$aeroport = new Application_Model_DbTable_Aeroport();
 		$formAjouterLigne = new Application_Form_AjouterModifierLigne();
 		$this->view->formAjouterLigne = $formAjouterLigne;
