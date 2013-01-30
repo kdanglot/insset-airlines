@@ -241,7 +241,10 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$identity = $auth->getIdentity();
 	
 		$vol= $this->find($idVol)->current();
-		$vol->UTI_id_servicePlanning = $identity->UTI_id;
+		if ($identity->TUTI_alias == 'planning') {
+			$vol->UTI_id_servicePlanning = $identity->UTI_id;
+		}
+		//$vol->UTI_id_servicePlanning = $identity->UTI_id;
 		$vol->AER_id_depart	= $idAeroportDepart;
 		$vol->AER_id_arrivee = $idAeroportArrivee;
 		$vol->AVI_id = $idAvion;
@@ -275,7 +278,10 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	}
 	
 	public function getVolsToday() {
-		$sql = 'SELECT * FROM vols;';
+		$sql = 'SELECT *, COUNT(incidents.VOL_id) AS nbIncidents 
+				FROM vols, incidents
+				WHERE vols.VOL_id = incidents.VOL_id
+				GROUP BY incidents.VOL_id;';
 		
 		
 		return $this->getDbAdapter()->fetchAll($sql);
