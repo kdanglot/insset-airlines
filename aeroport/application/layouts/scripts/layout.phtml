@@ -30,23 +30,24 @@
 			
 				<!-- HEADER -->	
 				<header>
-					<img src="<?php echo $this->baseUrl(); ?>/img/logo.jpg" alt="Logo Insset Airlines" />
-					<h1>INSSET Airlines</h1>
-				</header>
-					
+					<img  src="<?php echo $this->baseUrl(); ?>/img/logo.jpg" alt="Logo Insset Airlines" />
+
 				<?php
 					if(isset($this->layout()->login)){
 						
 						$urlDeconnexion = $this->url(array('controller' => 'index', 'action' => 'deconnexion'), null, true);
 					
 						echo<<<INFOSCO
-						<p>
-							<span>Bienvenue, {$this->layout()->login} - {$this->layout()->role}</span>
+						<div id='identification' class="right">
+							<span>Bienvenue, {$this->layout()->login} - {$this->layout()->role}</span><br/><br/>
 							<a href="$urlDeconnexion" >Déconnexion</a>
-						</p>
+						</div>
 INFOSCO;
 					}
 				?>
+				</header>
+					
+
 					
 				<!-- CONTAINER -->			
 				<?php echo $this->layout()->content; ?>
