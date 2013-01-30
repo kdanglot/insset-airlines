@@ -3,7 +3,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	protected $_name = 'vols';
 	protected $primary = 'VOL_id';
 	
-    protected $_dependentTables = 'Application_Model_DbTable_Trajet';
+    protected $_dependentTables = array('Application_Model_DbTable_Trajet', 'Application_Model_DbTable_Places');
 	
 	protected $_referenceMap = array (
 			'Ligne' => array(
