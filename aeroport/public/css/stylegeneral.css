@@ -179,11 +179,17 @@ table.table_type1 td:first-child {
 	c'est pour le panneau de contrôle dans la page d'index du planning ;)
 */
 div#panel{
-	width:50%;
+	width:51%;
 	overflow:hidden;
-	background-color:green;
 	position:relative;
 	height:150px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	margin-bottom: 40px;
+	margin-right: 121px;
+	font-family:sansationbold, sans-serif;
+
+
 }
 div#panel button{
 	cursor:pointer;
@@ -194,7 +200,8 @@ div#panel button{
 	border:1px solid lightgrey;
 }
 div#panel button.actif{
-	background-color:lightblue;
+	background-color:#1CBEEF;
+	color: white;
 }
 div#panel button.cinqSemaines{
 	width:100%;
@@ -202,7 +209,6 @@ div#panel button.cinqSemaines{
 div#panel div.semaines{
 	overflow-x:scroll;
 	overflow-y:hidden;
-	background-color:red;
 	height:100px;
 	white-space:nowrap;
 	position:relative;
@@ -212,7 +218,6 @@ div#panel div.semaine{
 	display:inline-block;
 	width:148px;
 	height:100%;
-	background-color:yellow;
 }
 div#panel div.semaines button{
 	height:50%;
@@ -230,6 +235,39 @@ div#panel div.semaine div.jour{
 div#panel div.semaine div.jour button{
 	height:100%;
 }
+div#today{
+	width:170px;
+	overflow:hidden;
+	position:relative;	
+	margin-bottom: 40px;
+	height:150px;
+	margin-left: 121px;
+	border:1px solid lightgrey;
+	-webkit-border-radius:  10px;
+	-moz-border-radius: 10px;
+
+
+
+}
+div#today div.head{
+	-webkit-border-radius:  10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+	background-color: #1CBEEF;
+	color: white;
+	height: 20px;
+	padding: 5px 0 3px 0;
+
+
+}div#today span.DayOver{
+
+	font-size: 65px;
+
+
+
+
+
+}
+
 
 /* fin de ajouté par antoine */
 /* POLICES */

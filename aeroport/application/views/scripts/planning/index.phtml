@@ -10,17 +10,17 @@
 	
 	// PANNEAU DE CONTROLE D'AFFICHAGE
 	echo<<<PANEL
-	<div id="panel" >
-		<button value="$url" class="cinqSemaines actif" >
-			<span>Cette semaine + les 4 prochaines</span>
-		</button>
-		<div class="semaines" >
+		<div id="panel" class="right" >
+			<button value="$url" class="cinqSemaines actif" >
+				<span>Cette semaine + les 4 prochaines</span>
+			</button>
+			<div class="semaines" >
 PANEL;
 		$numSemaine = 0;
 		foreach($this->panel as $semaine){
 			$left = (($numSemaine ) * 148);
 			$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $semaine['value'], 'week' => '1'), null, true);
-			echo<<<SEMAINE
+	echo<<<SEMAINE
 			<div class="semaine" style="left:{$left}px;">
 				<button value="$url" >semaine $semaine[semaine]<br />{$semaine['jours'][0]['num']} {$semaine['jours'][0]['mois']} {$semaine['jours'][0]['annee']} -> {$semaine['jours'][6]['num']} {$semaine['jours'][0]['mois']}</button>
 				<div class="jours">
@@ -29,7 +29,7 @@ SEMAINE;
 				foreach($semaine['jours'] as $jour){
 					$left = ($numJour * 20) . 'px';
 					$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $jour['value'], 'week' => '1', 'day' => $jour['jourSemaine']), null, true);
-					echo<<<JOUR
+	echo<<<JOUR
 					<div class="jour" style="left:$left;">
 						<button value="$url" >$jour[label]<br />$jour[num]</button>
 					</div>
@@ -37,25 +37,29 @@ JOUR;
 					$numJour++;
 				}
 	
-			echo<<<SEMAINE
+	echo<<<SEMAINE
 				</div>
 			</div>
 SEMAINE;
 			$numSemaine++;
 		}
-		echo<<<PANEL
+	echo<<<PANEL
 		</div>
 	</div>
 PANEL;
-	
+
+	echo<<<TODAY
+
+TODAY;
+
 	echo<<<TABLESTART
-	<div id="today" >
+		<div id="today" class=" left" >
 		<div class="head" >Aujourd'hui</div>
 		<div class="body" >
 			<p>
 				<span>$todayFr</span>
 				<br />
-				<span>$todayNumber</span>
+				<span class="DayOver">$todayNumber</span>
 				<br />
 				<span>$todayMois</span>
 				<br />
@@ -63,6 +67,7 @@ PANEL;
 			</p>
 		</div>
 	</div>
+
 	<table id="tableplanning" class="table_type1" >
 		<thead>
 			<tr>
@@ -97,7 +102,7 @@ TABLESTART;
 					break;
 			}
 
-			echo<<<TABLEROW
+	echo<<<TABLEROW
 			<tr class="{$vol['class']}" >
 				<td>{$vol['depart']['prevu']}</td>
 				<td>{$vol['depart']['date']}</td>
