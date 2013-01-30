@@ -1,7 +1,7 @@
 <?php 
 $utilisateurCourant = $this->utilisateurCourant;
 ?>
-<table>
+<table class="table_type1">
 	<thead>
 		<th>Nom</th>
 		<th>Prenom</th>
@@ -13,31 +13,11 @@ $utilisateurCourant = $this->utilisateurCourant;
 foreach ($utilisateurCourant as $utilisateur){
 ?>
 	<tr>
-		<td>
-<?php
-			echo $utilisateur["UTI_nom"];
-?>
-		</td>
-		<td>
-<?php
-			echo $utilisateur["UTI_prenom"];
-?>
-		</td>
-		<td>
-<?php
-			echo $utilisateur["UTI_login"];
-?>
-		</td>
-		<td>
-<?php
-			echo $utilisateur["UTI_mail"];
-?>
-		</td>
-		<td>
-<?php
-			echo $utilisateur["typeUtilisateur"]["TUTI_label"];
-?>
-		</td>
+		<td> <?php echo $utilisateur["UTI_nom"]; ?></td>
+		<td><?php echo $utilisateur["UTI_prenom"]; ?></td>
+		<td><?php echo $utilisateur["UTI_login"]; ?></td>
+		<td><?php echo $utilisateur["UTI_mail"]; ?></td>
+		<td> <?php echo $utilisateur["typeUtilisateur"]["TUTI_label"]; ?></td>
 	</tr>
 <?php
 }

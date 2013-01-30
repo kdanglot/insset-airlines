@@ -41,6 +41,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$acl->addResource(new Zend_Acl_Resource('index'));
 		$acl->addResource(new Zend_Acl_Resource('maintenance'));
 		$acl->addResource(new Zend_Acl_Resource('planning'));
+		$acl->addResource(new Zend_Acl_Resource('commercial'));
 		
 		$acl->addRole(new Zend_Acl_Role('invite'));
 		$acl->addRole(new Zend_Acl_Role('drh'), 'invite');
@@ -49,6 +50,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$acl->addRole(new Zend_Acl_Role('pilote'), 'invite');
 		$acl->addRole(new Zend_Acl_Role('planning'), 'invite');
 		$acl->addRole(new Zend_Acl_Role('exploitation'), 'invite');
+		$acl->addRole(new Zend_Acl_Role('commercial'), 'invite');
 		$acl->addRole(new Zend_Acl_Role('administrateur'), array('drh', 'directionstrategique', 'maintenance', 'pilote', 'planning', 'exploitation'));
 		
 		$acl->deny(null, null);
@@ -62,6 +64,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$acl->allow('maintenance', 'maintenance');
 		$acl->allow('planning', 'planning');
 		$acl->allow('exploitation', 'exploitation');
+		$acl->allow('commercial', 'commercial');
+		$acl->allow('commercial', 'planning', 'index');
 		
 		$acl->allow('administrateur', 'administrateur');
 		
