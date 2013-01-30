@@ -1,0 +1,70 @@
+<?php 
+$reservations = $this->reservations;
+?>
+<table>
+	<thead>
+		<th>Agence de voyage</th>
+		<th>Places</th>
+		<th>Temps restant</th>
+		<th>Validation</th>
+	</thead>
+<?php
+foreach ($reservations as $reservation){
+?>
+	<tr>
+		<td>
+<?php
+			echo $reservation["agenceDeVoyage"]["AGE_nom"];
+?>
+		</td>
+		<td>
+<?php
+			echo $reservation["nbPlace"];
+?>
+		</td>
+		<td id="temp" class="decompte" dateFin="<?php echo $reservation["dateFin"]; ?>">
+			<span class="temps"></span>
+		</td>
+		<td>
+			<button onclick="document.location.href= '<?php echo $this->baseUrl("commercial/terminerreservation"); ?>/idReservation/<?php echo $reservation["RES_id"];?>';">Reserver</button>
+		</td>
+	</tr>
+<?php
+}
+?>
+</table>
+<script>
+
+jQuery(function($){
+
+$(".decompte").each(function( index ) {
+	var cible = new Date($(this).attr('dateFin'));
+	var timer = parseInt(cible.getTime() / 1000, 10);
+	decompte(timer, $(this));
+});
+
+function decompte(time, decomptePanel)
+{
+	var aujourdhui = new Date();
+	time_tmp = parseInt(aujourdhui.getTime() / 1000, 10);
+	restant = time - time_tmp;
+	
+	jour = parseInt((restant / (60 * 60 * 24)), 10);
+	heure = parseInt((restant / (60 * 60) - jour * 24), 10);
+	minute = parseInt((restant / 60 - jour * 24 * 60 - heure * 60), 10);
+	seconde = parseInt((restant - jour * 24 * 60 * 60 - heure * 60 * 60 - minute * 60), 10);
+	
+	decomptePanel.children(".temps").text(heure+':'+minute+':'+seconde);
+	
+	if (time_tmp < time){
+		setTimeout(function(){decompte(time, decomptePanel)} , 500);
+	}else{
+		// Temps fini, on fait ce qu'on veux
+		decomptePanel.children(".temps").text(0);
+		decomptePanel.children(".temps").text(0);
+		decomptePanel.children(".temps").text(0);
+		decomptePanel.children(".temps").text(0);
+	}
+}
+});
+</script>
