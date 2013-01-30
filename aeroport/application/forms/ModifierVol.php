@@ -35,12 +35,10 @@ class Application_Form_ModifierVol extends Zend_Form {
 		// Heure de départ effective
 		$eHeureDepartEffective = new Zend_Form_Element_Text('heureDepartEffective');
 		$eHeureDepartEffective->setLabel('Heure de départ effective');
-		$eHeureDepartEffective->setRequired(true);
 		
 		// Heure de d'arrivée effective
 		$eHeureArriveeEffective = new Zend_Form_Element_Text('heureArriveeEffective');
 		$eHeureArriveeEffective->setLabel('Heure d\'arrivée effective');
-		$eHeureArriveeEffective->setRequired(true);
 		
 		$eModifier = new Zend_Form_Element_Submit('modifier');
 		$eModifier->setAttrib('id', 'boutonModifier');
