@@ -1,0 +1,138 @@
+<?php 
+	$tabNomJours = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche');
+	$tabNomMois = array('janvier', 'février', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+	$today = new DateTime();
+	$todayFr = $tabNomJours[($today->format('N') - 1)];
+	$todayNumber = $today->format('d');
+	$todayMois = $tabNomMois[($today->format('n') - 1)];
+	$todayWeek = $today->format('W');
+	$url = $this->url(array('controller' => 'planning', 'action' => 'index'), null, true);
+	
+	// PANNEAU DE CONTROLE D'AFFICHAGE
+	echo<<<PANEL
+		<div id="panel" class="right" >
+			<button value="$url" class="cinqSemaines actif" >
+				<span>Cette semaine + les 4 prochaines</span>
+			</button>
+			<div class="semaines" >
+PANEL;
+		$numSemaine = 0;
+		foreach($this->panel as $semaine){
+			$left = (($numSemaine ) * 148);
+			$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $semaine['value'], 'week' => '1'), null, true);
+	echo<<<SEMAINE
+			<div class="semaine" style="left:{$left}px;">
+				<button value="$url" >semaine $semaine[semaine]<br />{$semaine['jours'][0]['num']} {$semaine['jours'][0]['mois']} {$semaine['jours'][0]['annee']} -> {$semaine['jours'][6]['num']} {$semaine['jours'][6]['mois']}</button>
+				<div class="jours">
+SEMAINE;
+				$numJour = 0;
+				foreach($semaine['jours'] as $jour){
+					$left = ($numJour * 20) . 'px';
+					$url = $this->url(array('controller' => 'planning', 'action' => 'index', 'date' => $jour['value'], 'week' => '1', 'day' => $jour['jourSemaine']), null, true);
+	echo<<<JOUR
+					<div class="jour" style="left:$left;">
+						<button value="$url" >$jour[label]<br />$jour[num]</button>
+					</div>
+JOUR;
+					$numJour++;
+				}
+	
+	echo<<<SEMAINE
+				</div>
+			</div>
+SEMAINE;
+			$numSemaine++;
+		}
+	echo<<<PANEL
+		</div>
+	</div>
+PANEL;
+
+	echo<<<TODAY
+
+TODAY;
+
+	echo<<<TABLESTART
+		<div id="today" class=" left" >
+		<div class="head" >Aujourd'hui</div>
+		<div class="body" >
+			<p>
+				<span>$todayFr</span>
+				<br />
+				<span class="DayOver">$todayNumber</span>
+				<br />
+				<span>$todayMois</span>
+				<br />
+				<span>semaine $todayWeek</span>
+			</p>
+		</div>
+	</div>
+
+	<table id="tableplanning" class="table_type1" >
+		<thead>
+			<tr>
+				<th>Départ Prévu</th>
+				<th>Aéroport</th>
+				<th>Arrivée Prévue</th>
+				<th>Aéroport</th>
+				<th>Avion</th>
+				<th>Ligne</th>
+				<th>Réservation</th>
+			</tr>
+		</thead>
+		<tbody>
+TABLESTART;
+// Parcourir le planning
+		foreach($this->planning as $vol){
+			$urlReserver = $this->url(array('controller' => 'commercial', 'action' => 'reserver', 'id' => $vol['id']), null, true);
+
+			echo<<<TABLEROW
+			<tr>
+				<td>{$vol['depart']['prevu']}</td>
+				<td>{$vol['depart']['nomAeroport']}</td>
+				<td>{$vol['arrivee']['date']}</td>
+				<td>{$vol['arrivee']['nomAeroport']}</td>
+				<td>{$vol['avion']['immatriculation']}</td>
+				<td>{$vol['ligne']}</td>
+				<td><a href="$urlReserver" >Réserver</a></td>
+			</tr>
+TABLEROW;
+		}
+	
+	echo<<<TABLEEND
+		</tbody>
+	</table>
+TABLEEND;
+	
+?>
+<script>
+$(document).ready(function() {
+
+	$('#panel .semaines').scrollLeft(9999999);
+	
+	$('#panel').one('click', 'button', function(event){
+		updateButton($(this));
+		updatePlanning($(this).attr('value'));
+	});
+	
+	
+	function updatePlanning(value){
+		$('#tableplanning tbody').html('<tr><td colspan="7"><img src="' + baseUrl + '/img/load.gif" /></td></tr>');
+		$.ajax({
+			url: value
+		}).done(function (data){
+			$('#tableplanning tbody').html(data);	
+			$('#panel').one('click', 'button', function(event){
+				updateButton($(this));
+				updatePlanning($(this).attr('value'));
+			});
+		});
+		
+	}
+	
+	function updateButton(element){
+		$('#panel button').removeClass('actif');
+		element.addClass('actif');
+	}
+});
+</script>

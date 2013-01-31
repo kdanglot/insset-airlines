@@ -33,6 +33,8 @@ class PlanningController extends Zend_Controller_Action
     	
 		$vols = new Application_Model_DbTable_Vol();
 		
+		$session = new Zend_Session_Namespace('role');
+		
 		$tabNomJours = array('L', 'M', 'M', 'J', 'V', 'S', 'D');
 		$tabNomMois = array('jan', 'fév', 'mar', 'avri', 'mai', 'juin', 'juil', 'août', 'sep', 'oct', 'nov', 'déc');
 		
@@ -40,6 +42,9 @@ class PlanningController extends Zend_Controller_Action
 		$tabJours = array();
 		$dernierVol = new DateTime();
 		$premierVol = new DateTime($vols->getFirstDateDepart());
+		if($session->role == 'commercial'){
+			$premierVol = new DateTime();
+		}
 		
 		$premierVol->sub(new DateInterval('P' . (intval($premierVol->format('w')) - 1) . 'D'));
 		$dernierVol->add(new DateInterval('P' . (intval($dernierVol->format('w')) - 1) . 'D'));
@@ -254,7 +259,21 @@ class PlanningController extends Zend_Controller_Action
 		
 		if($this->getRequest()->isXmlHttpRequest()){
 			$this->_helper->layout->disableLayout();
-			$this->render('indexajax');
+			switch($session->role){
+				case 'commercial' :
+					$this->render('indexajaxcommercial');
+					break;
+				case 'planning' : 
+					$this->render('indexajax');
+					break;
+			}
+		}
+		else{
+			switch($session->role){
+				case 'commercial' :
+					$this->render('indexcommercial');
+					break;
+			}
 		}
     }
 	

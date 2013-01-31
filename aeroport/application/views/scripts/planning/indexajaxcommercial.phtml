@@ -1,0 +1,19 @@
+<?php 
+// Parcourir le planning
+foreach($this->planning as $vol){
+	$urlReserver = $this->url(array('controller' => 'commercial', 'action' => 'reserver', 'id' => $vol['id']), null, true);
+
+	echo<<<TABLEROW
+	<tr>
+		<td>{$vol['depart']['date']}</td>
+		<td>{$vol['depart']['nomAeroport']}</td>
+		<td>{$vol['arrivee']['date']}</td>
+		<td>{$vol['arrivee']['nomAeroport']}</td>
+		<td>{$vol['avion']['immatriculation']}</td>
+		<td>{$vol['ligne']}</td>
+		<td><a href="$urlReserver" >Réserver</a></td>
+	</tr>
+TABLEROW;
+}
+	
+?>
