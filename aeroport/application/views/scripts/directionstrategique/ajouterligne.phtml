@@ -88,7 +88,16 @@ $formAjouterLigne = $this->formAjouterLigne;
 			pays.attr('name', 'aeroport-' + i);
 			pays.attr('id', 'aeroport-' + i);
 			pays.appendTo(etapesTab[i]);
+			var close = $('<button class="close" value="' + i + '" >X</button>');
+			close.appendTo(etapesTab[i]);
 			etapesTab[i].appendTo(etapes);
+		});
+		$('.etapes').on('click', '.close', function(event){
+			event.preventDefault();
+			var val = $(this).attr('value');
+			$('#pays-' + val).remove();
+			$('#aeroport-' + val).remove();
+			$(this).remove();
 		});
 	});
 </script>
