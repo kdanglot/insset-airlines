@@ -4,5 +4,7 @@
 	});
 </script>
 <?php
+$urlRetour = $this->url(array('controller' => 'administrateur', 'action' => 'index'), null, true);
+echo '<a href="' . $urlRetour . '" >Retour</a><br />';
 echo $this->formUtilisateur;
 ?>

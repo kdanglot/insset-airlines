@@ -56,9 +56,11 @@ class Application_Form_AjouterModifierUtilisateur extends Zend_Form {
 		$eTypeUtilisateur->setAttrib('id', 'typeUtilisateur');
 		$eTypeUtilisateur->setLabel("Type utilisateur");
 		$eTypeUtilisateur->setAttrib('name', 'typeUtilisateur');
+		$tabUtis = array();
 		foreach($typesUtilisateurs as $typeUtilisateur) {
-			$eTypeUtilisateur->addMultiOption($typeUtilisateur['TUTI_id'], $typeUtilisateur['TUTI_label']);
-		}		
+			$tabUtis[$typeUtilisateur['TUTI_id']] = utf8_encode($typeUtilisateur['TUTI_label']);
+		}
+		$eTypeUtilisateur->options = $tabUtis;
 		
 		$eDateEmbauche = new Zend_Form_Element_Text('dateEmbauche');
 		$eDateEmbauche->setAttrib('id', 'dateEmbauche');

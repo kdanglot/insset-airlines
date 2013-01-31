@@ -1,7 +1,8 @@
 <?php 
 $utilisateurCourant = $this->utilisateurCourant;
+$urlAddUti = $this->url(array('controller' => 'administrateur', 'action' => 'ajout'), null, true);
 ?>
-<button onclick="document.location.href= '<?php echo $this->baseUrl("administrateur/ajout"); ?>';">Ajouter</button>
+<a href="<?php echo $urlAddUti ?>" >Ajouter</a>
 <table class="table_type1">
 	<thead>
 		<th>Nom</th>
@@ -18,7 +19,7 @@ foreach ($utilisateurCourant as $utilisateur){
 		<td><?php echo $utilisateur["UTI_prenom"]; ?></td>
 		<td><?php echo $utilisateur["UTI_login"]; ?></td>
 		<td><?php echo $utilisateur["UTI_mail"]; ?></td>
-		<td> <?php echo $utilisateur["typeUtilisateur"]["TUTI_label"]; ?></td>
+		<td> <?php echo utf8_encode($utilisateur["typeUtilisateur"]["TUTI_label"]); ?></td>
 	</tr>
 <?php
 }

@@ -92,7 +92,7 @@ class IndexController extends Zend_Controller_Action
 					$infosUser = new Application_Model_DbTable_TypeUtilisateur();
 					$infosUser = $infosUser->getTypeUtilisateur($idTypeUtilisateur);
 					$data->TUTI_alias = $infosUser->TUTI_alias;
-					$data->TUTI_label = $infosUser->TUTI_label;
+					$data->TUTI_label = utf8_encode($infosUser->TUTI_label);
 					
 					$auth->getStorage()->write($data);
 					
