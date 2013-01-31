@@ -27,7 +27,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		Zend_Registry::set('db', $db);
 		
 	}
-	protected function _initView() {
+	/*protected function _initView() {
     $view = new Zend_View();
     //... code de paramétrage de votre vue : titre, doctype ...
     $view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
@@ -38,7 +38,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	$view->jQuery()->uiEnable();
     $viewRenderer->setView($view);
     return $view;
-} 
+} */
 	
 	protected function _initAcl(){
 		
