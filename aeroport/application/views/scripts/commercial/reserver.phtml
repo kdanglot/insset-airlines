@@ -1,0 +1,20 @@
+<div class="slider" id="selecteurNbPlace"></div>
+<div id="nbPlacesVoulu"></div>
+<?php 
+	$formPlace = $this->formPlace;
+	
+	$formPlace->setAction($this->baseUrl('commercial/lancerreservation/idVol/'.$this->idVol));
+	echo $formPlace;
+?>
+<script>
+jQuery(function($){
+	$( "#selecteurNbPlace" ).slider({ 
+			min:0, 
+			max: <?php echo $this->nbPlaces;?>, 
+			slide: function( event, ui ) {
+					$("#nbPlacesVoulu").text(ui.value);
+					$("#nbPlacesVouluInput").val(ui.value);
+				} 
+	});
+});
+</script>
