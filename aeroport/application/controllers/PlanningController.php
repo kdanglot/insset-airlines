@@ -28,6 +28,9 @@ class PlanningController extends Zend_Controller_Action
 		Zend_Layout::getMvcInstance()->assign('role', Zend_Auth::getInstance()->getIdentity()->TUTI_alias);
 		Zend_Layout::getMvcInstance()->assign('roleLabel', Zend_Auth::getInstance()->getIdentity()->TUTI_label);
 		
+		if($this->_getParam('view') == 'planning'){
+			$session->view = '';
+		}
     }
 
     public function indexAction() {
@@ -267,12 +270,18 @@ class PlanningController extends Zend_Controller_Action
 				case 'planning' : 
 					$this->render('indexajax');
 					break;
+				case 'administrateur' :
+					$this->render('indexajax' . $session->view);
+					break;
 			}
 		}
 		else{
 			switch($session->role){
 				case 'commercial' :
 					$this->render('indexcommercial');
+					break;
+				case 'administrateur' :
+					$this->render('index' . $session->view);
 					break;
 			}
 		}
