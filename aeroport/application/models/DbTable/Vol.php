@@ -139,25 +139,44 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$aeroport = new Application_Model_DbTable_Aeroport();
 		$ligneCalendrier = array();
 		foreach ($trajets as $trajet){
-			if ($j==0) {
+			if ($trajet->TRA_ordre == 0) {
 				$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_id_depart"] = $trajet->AER_id;
 				$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
+			}elseif ($trajet->TRA_ordre == 1){
+				$ligneCalendrier[count($trajets)-2]["aeroportArrivee"]["AER_id_arrivee"] = $trajet->AER_id;
+				$ligneCalendrier[count($trajets)-2]["aeroportArrivee"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
 			}else {
-				if ($j == (count($trajets)-1)) {
-					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_id_arrivee"] = $trajet->AER_id;
-					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
-				}else{
-					$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_id_depart"] = $trajet->AER_id;
-					$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
-		
-					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_id_arrivee"] = $trajet->AER_id;
-					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
-				}
+				$ligneCalendrier[$trajet->TRA_ordre-1]["aeroportDepart"]["AER_id_depart"] = $trajet->AER_id;
+				$ligneCalendrier[$trajet->TRA_ordre-1]["aeroportDepart"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
+	
+				$ligneCalendrier[$trajet->TRA_ordre-2]["aeroportArrivee"]["AER_id_arrivee"] = $trajet->AER_id;
+				$ligneCalendrier[$trajet->TRA_ordre-2]["aeroportArrivee"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
 			}
 		
-			$exTrajet = $trajet;
 			$j++;
 		}
+// 		foreach ($trajets as $trajet){
+// 			if ($j==0) {
+// 				$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_id_depart"] = $trajet->AER_id;
+// 				$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
+// 			}elseif ($j == 1){
+				
+// 			}else {
+// 				if ($j == (count($trajets)-1)) {
+// 					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_id_arrivee"] = $trajet->AER_id;
+// 					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
+// 				}else{
+// 					$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_id_depart"] = $trajet->AER_id;
+// 					$ligneCalendrier[$trajet->TRA_ordre]["aeroportDepart"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
+		
+// 					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_id_arrivee"] = $trajet->AER_id;
+// 					$ligneCalendrier[$exTrajet->TRA_ordre]["aeroportArrivee"]["AER_nom"] = $aeroport->find($trajet->AER_id)->current()->AER_nom;
+// 				}
+// 			}
+		
+// 			$exTrajet = $trajet;
+// 			$j++;
+// 		}
 		
 		return $ligneCalendrier;
 	}
