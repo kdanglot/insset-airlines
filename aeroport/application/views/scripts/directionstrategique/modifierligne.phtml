@@ -17,7 +17,68 @@
 		<li><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></li>
 	</ol>
 </div>
-<?php echo $this->form ?>
+<?php
+ // echo $this->form 
+ ?>
+<?php $form=$this->form ?>
+
+
+
+<form 	id="boutonAjouter"  
+		method="<?php echo $form->getMethod(); ?>" 
+		action="<?php echo $form->getAction();?>"  >
+
+<table class="center" width="50%" border="0">
+  <tr>
+    <td width="33%">&nbsp;</td>
+    <td width="10%">
+    	Périodicité : <?php echo $this->form->periodicite->renderViewHelper(); ?>
+    </td>
+    <td width="33%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><?php 
+
+    echo $this->form->heureDepart; 
+
+    ?> </td>
+    <td>&nbsp;</td>
+    <td><?php 
+    echo $this->form->heureArrivee;
+     ?> </td>
+  </tr>
+  <tr>
+    <td class="right"><?php
+     echo $this->form->paysDepart;
+     ?> </td>
+    <td>&nbsp;</td>
+    <td class="left" ><?php 
+    echo $this->form->paysArrive;
+     ?> </td>
+  </tr>
+  <tr>
+    <td class="right"><?php 
+    echo $this->form->aeroportDepart;
+     ?> </td>
+
+    <td>&nbsp;</td>
+    <td class="left"  ><?php 
+    echo $this->form->aeroportArrive;
+     ?> </td>
+  </tr>
+    <tr>
+    	<td>&nbsp;</td>
+    <td > <?php  echo $this->formSubmit('boutonModifier', 'Modifier') ?> </td>
+    <td><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></td>
+  </tr>
+</table>
+
+</form>
 
 
 
