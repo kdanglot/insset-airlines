@@ -73,12 +73,10 @@ class Application_Form_AjouterPilote extends Zend_Form {
 			$eTypeBrevet->addMultiOption($b['TBRE_id'], $b['TBRE_nom']);
 		}
 		
-		$eDateEmbauche = new ZendX_JQuery_Form_Element_DatePicker('dateEmbauche');
+		$eDateEmbauche = new Zend_Form_Element_Text('dateEmbauche');
 		$eDateEmbauche->setAttrib('id', 'dateEmbauche');
 		$eDateEmbauche->setAttrib('placeholder', 'Date embauche');
 		$eDateEmbauche->setRequired(true);
-		$eDateEmbauche->setJQueryParam('dateFormat', 'yy-mm-dd');
-
 
 		
 		$eValider = new Zend_Form_Element_Submit('valider');
