@@ -163,8 +163,7 @@ REQUETE;
 		$this->delete('LIG_id =' . (int)$id);
 	} // supprimerLigne()
 	
-	public function insertLigne($idUtilisateur, $heureDepart, $heureArrivee, $paysDepart, $aeroportDepart,
-			 $paysArrive, $aeroportArrive, $periodicite, $trajets) {
+	public function insertLigne($idUtilisateur, $heureDepart, $heureArrivee, $aeroportDepart, $aeroportArrive, $periodicite, $trajets) {
 		$dataLigne = array(
 			'UTI_id_directionStrategique' => $idUtilisateur,
 			'LIG_heureDepart' => $heureDepart,

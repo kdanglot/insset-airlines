@@ -49,44 +49,49 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 				
 				$heureDepart = $formData['heureDepart'];
 				$heureArrivee = $formData['heureArrivee'];
-				$paysDepart = $formData['pays-depart'];
 				$aeroportDepart = $formData['aeroport-depart'];
-				$paysArrive = $formData['pays-arrive'];
 				$aeroportArrive = $formData['aeroport-arrive'];
 				$periodicite = $formData['periodicite'];
 				
-				$formAjouterLigne->getELement('periodicite')->setValue($periodicite);
-				$formAjouterLigne->getElement('paysDepart')->setValue($paysDepart);
-				
-				$list = $aeroport->aeroportPays($paysDepart);
-				foreach ($list as $a) {
-					$formAjouterLigne->getElement('aeroportDepart')->addMultiOption($a['AER_id'], $a['AER_nom']);
+				$trajets = array();
+				$i = 0;
+				while(1){
+					if(isset($formData['aeroport-' . $i])){
+						$trajets[] = $formData['aeroport-' . $i];
+					}
+					else{
+						break;
+					}
+					$i++;
 				}
-				$formAjouterLigne->getElement('aeroportDepart')->setValue($aeroportDepart);
-				$formAjouterLigne->getElement('paysArrive')->setValue($paysArrive);
+				// var_dump($trajets);exit;	
+				// $formAjouterLigne->getELement('periodicite')->setValue($periodicite);
+				// $formAjouterLigne->getElement('paysDepart')->setValue($paysDepart);
 				
-				$list = $aeroport->aeroportPays($paysArrive);
-				foreach ($list as $a) {
-					$formAjouterLigne->getElement('aeroportArrive')->addMultiOption($a['AER_id'], $a['AER_nom']);
-				}
-				$formAjouterLigne->getElement('aeroportArrive')->setValue($aeroportArrive);
+				// $list = $aeroport->aeroportPays($paysDepart);
+				// foreach ($list as $a) {
+					// $formAjouterLigne->getElement('aeroportDepart')->addMultiOption($a['AER_id'], $a['AER_nom']);
+				// }
+				// $formAjouterLigne->getElement('aeroportDepart')->setValue($aeroportDepart);
+				// $formAjouterLigne->getElement('paysArrive')->setValue($paysArrive);
+				
+				// $list = $aeroport->aeroportPays($paysArrive);
+				// foreach ($list as $a) {
+					// $formAjouterLigne->getElement('aeroportArrive')->addMultiOption($a['AER_id'], $a['AER_nom']);
+				// }
+				// $formAjouterLigne->getElement('aeroportArrive')->setValue($aeroportArrive);
 				
 				// Vérification des listes déroulantes
-				if ($paysDepart == '-1') {
-					$this->view->message = 'Veuillez choisir un pays de départ';
-				} else if ($aeroportDepart == '-1') {
-					$this->view->message = 'Veuillez choisir un aéroport de départ';
-				} else if ($paysArrive == '-1') {
-					$this->view->message = 'Veuillez choisir un pays d\'arrivé';
+				if ($aeroportDepart == '-1') {
+					$this->view->message = 'Veuillez choisir un aéroport de départ.';
 				} else if ($aeroportArrive == '-1') {
-					$this->view->message = 'Veuillez choisir un aéroport de d\'arrivé';
-				} else if (($paysDepart == $paysArrive) && ($aeroportDepart == $aeroportArrive)) {
-					$this->view->message = 'Vous avez selectionné le même aéroport !!!';
+					$this->view->message = 'Veuillez choisir un aéroport de d\'arrivée.';
+				} else if ($aeroportDepart == $aeroportArrive) {
+					$this->view->message = 'Vous avez selectionné le même aéroport.';
 				} else {
-						$ligne = new Application_Model_DbTable_Ligne();
-						$ligne->insertLigne($identity->UTI_id, $heureDepart, $heureArrivee, $paysDepart,
-						$aeroportDepart, $paysArrive, $aeroportArrive, $periodicite);	
-						$this->_helper->redirector('index');
+					$ligne = new Application_Model_DbTable_Ligne();
+					$ligne->insertLigne($identity->UTI_id, $heureDepart, $heureArrivee, $aeroportDepart, $aeroportArrive, $periodicite, $trajets);
+					$this->_helper->redirector('index');
 				}
 			} 
 		}
