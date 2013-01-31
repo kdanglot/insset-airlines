@@ -14,6 +14,17 @@ class Application_Model_DbTable_Places extends Zend_Db_Table_Abstract {
 	);
     
     public function countPlacesDispoByVol($idVol) {
-    	return count($this->fetchAll($this->select()->from("places")->where("VOL_id = ?", $idVol)->where("PLA_statut = 0")));
+    	$places = $this->fetchAll($this->select()->from("places")->where("VOL_id = ?", $idVol)->where("PLA_statut = 0"));
+    	
+    	$reservationTable = new Application_Model_DbTable_Reservation();
+    	$nbPlaceLibre = 0;
+    	
+    	foreach ($places as $place) {
+    		if (!$reservationTable->placeReservee($place)) {
+    			$nbPlaceLibre++;
+    		};
+    	}
+    	
+    	return $nbPlaceLibre;
     }
 }

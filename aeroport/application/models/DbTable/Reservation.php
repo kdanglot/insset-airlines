@@ -114,4 +114,25 @@ class Application_Model_DbTable_Reservation extends Zend_Db_Table_Abstract {
 			}
 		}
 	}
+	
+	public function placeReservee($place){
+			//Rexuperation du ou des reservations des places
+			$placeReservees = $place->findApplication_Model_DbTable_PlacesReservees();
+			
+			if (count($placeReservees) != 0) {
+				foreach ($placeReservees as $placeReservee) {
+					$reservation = $placeReservee->findParentApplication_Model_DbTable_Reservation();
+					$dateDebutReservation = new DateTime($reservation->RES_dateDebut);
+					$dateFinReservation = $dateDebutReservation->add(new DateInterval('PT2H'));
+					$now = new DateTime("now");
+					//Si la place n'est pas déja reservées, on la prend.
+					if($reservation->RES_validee == 1 || $dateFinReservation > $now){
+						return true;
+					}
+				}
+				return false;
+			}else{
+				return false;
+			}
+	}
 }
