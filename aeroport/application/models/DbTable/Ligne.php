@@ -164,7 +164,7 @@ REQUETE;
 	} // supprimerLigne()
 	
 	public function insertLigne($idUtilisateur, $heureDepart, $heureArrivee, $paysDepart, $aeroportDepart,
-			 $paysArrive, $aeroportArrive, $periodicite) {
+			 $paysArrive, $aeroportArrive, $periodicite, $trajets) {
 		$dataLigne = array(
 			'UTI_id_directionStrategique' => $idUtilisateur,
 			'LIG_heureDepart' => $heureDepart,
@@ -183,9 +183,19 @@ REQUETE;
 				'AER_id' => $aeroportArrive, 
 				'TRA_ordre' => 1);		
 		
-		$trajet = new Application_Model_DbTable_Trajet();
-		$trajet->insert($dataDepart);
-		$trajet->insert($dataArrivee);
+		$trajetTable = new Application_Model_DbTable_Trajet();
+		$trajetTable->insert($dataDepart);
+		$trajetTable->insert($dataArrivee);
+		
+		$i = 2;
+		foreach ($trajets as $trajet){
+			$trajetLigne = $trajetTable->createRow();
+			$trajetLigne->LIG_id = $idLigne;	
+			$trajetLigne->AER_id = $trajet;
+			$trajetLigne->TRA_ordre = $i;
+			$trajetLigne->save();
+			$i++;
+		}
 		
 	}
 
