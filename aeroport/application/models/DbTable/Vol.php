@@ -257,9 +257,11 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	}
 	
 	public function getVolsEnCours() {
-		$sql = 'SELECT VOL_id, AER_id_depart, AER_id_arrivee, VOL_dateDepartEffective, VOL_dateArriveeEffective 
-		  		FROM vols 
-		  		WHERE VOL_dateDepartEffective IS NOT NULL';
+		$sql = 'SELECT vols.VOL_id, AER_id_depart, AER_id_arrivee, VOL_dateDepartEffective, VOL_dateArriveeEffective, COUNT(incidents.VOL_id) AS nbIncidents
+		  		FROM vols, incidents
+		  		WHERE vols.VOL_id = incidents.VOL_id
+		  		AND VOL_dateDepartEffective IS NOT NULL
+				AND VOL_dateArriveeEffective IS NULL';
 		
 		$aeroport = new Application_Model_DbTable_Aeroport();
 	
@@ -271,7 +273,8 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 			$tabRes[$i]['AER_depart'] = ($aeroport->getNomAeroportById($r['AER_id_depart']));
 			$tabRes[$i]['AER_arrivee'] = ($aeroport->getNomAeroportById($r['AER_id_arrivee']));
 			$tabRes[$i]['VOL_dateDepartEffective'] = $r['VOL_dateDepartEffective'];
-			$tabRes[$i]['VOL_dateArriveeEffective'] = $r['VOL_dateArriveeEffective'];	
+			$tabRes[$i]['VOL_dateArriveeEffective'] = $r['VOL_dateArriveeEffective'];
+			$tabRes[$i]['nbIncidents'] = $r['nbIncidents'];	
 			$i++;		
 		}
 		return $tabRes;
