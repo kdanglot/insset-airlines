@@ -19,7 +19,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		 
 		// element Text heure de depart + attributs
 		$eHeureDepart = new Zend_Form_Element_Text('heureDepart');
-		$eHeureDepart->setAttrib('placeholder', 'heureDepart');
+		$eHeureDepart->setAttrib('placeholder', 'heure Départ');
 		$eHeureDepart->setAttrib('autofocus', 'autofocus');
 		$eHeureDepart->setLabel('Heure de départ : ');
 		$eHeureDepart->setRequired(true);
@@ -29,8 +29,8 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 
 		// element Text heure d'arrive + attributs
 		$eHeureArrivee = new Zend_Form_Element_Text('heureArrivee');
-		$eHeureArrivee->setAttrib('placeholder', "Durée");
-		$eHeureArrivee->setLabel("Durée");
+		$eHeureArrivee->setAttrib('placeholder', "heure arrivée");
+		$eHeureArrivee->setLabel("Heure de arrivée : ");
 		$eHeureArrivee->setRequired(true);
 		$eHeureArrivee->addFilter('StringTrim');
 		$eHeureDepart->setAttrib('required', 'required');

@@ -42,43 +42,38 @@ $formAjouterLigne = $this->formAjouterLigne;
     <td width="33%">&nbsp;</td>
   </tr>
   <tr>
-    <td>Départ</td>
     <td></td>
-    <td>Durée</td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
     <td><?php 
-    echo $this->formAjouterLigne->heureDepart->renderViewHelper(); 
-    echo $this->formAjouterLigne->heureDepart->renderLabel(); 
+
+    echo $this->formAjouterLigne->heureDepart; 
 
     ?> </td>
     <td>&nbsp;</td>
     <td><?php 
-    echo $this->formAjouterLigne->heureArrivee->renderViewHelper();
-    echo $this->formAjouterLigne->heureArrivee->renderLabel();
+    echo $this->formAjouterLigne->heureArrivee;
      ?> </td>
   </tr>
   <tr>
     <td class="right"><?php
-     echo $this->formAjouterLigne->paysDepart->renderViewHelper();
-     echo $this->formAjouterLigne->paysDepart->renderLabel();
+     echo $this->formAjouterLigne->paysDepart;
      ?> </td>
     <td>&nbsp;</td>
     <td class="left" ><?php 
-    echo $this->formAjouterLigne->paysArrive->renderViewHelper();
-    echo $this->formAjouterLigne->paysArrive->renderLabel();
+    echo $this->formAjouterLigne->paysArrive;
      ?> </td>
   </tr>
   <tr>
     <td class="right"><?php 
-    echo $this->formAjouterLigne->aeroportDepart->renderViewHelper();
-    echo $this->formAjouterLigne->aeroportDepart->renderLabel();
+    echo $this->formAjouterLigne->aeroportDepart;
      ?> </td>
 
     <td>&nbsp;</td>
     <td class="left"  ><?php 
-    echo $this->formAjouterLigne->aeroportArrive->renderViewHelper();
-    echo $this->formAjouterLigne->aeroportArrive->renderLabel();
+    echo $this->formAjouterLigne->aeroportArrive;
      ?> </td>
   </tr>
     <tr>
