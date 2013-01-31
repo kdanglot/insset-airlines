@@ -96,8 +96,12 @@ class IndexController extends Zend_Controller_Action
 					
 					$auth->getStorage()->write($data);
 					
-					// Rediriger vers le controlleur adapté
-					$this->_redirector->gotoUrl('/' . $infosUser->TUTI_alias . '/index');
+					if($data->TUTI_alias != "pilote"){
+						// Rediriger vers le controlleur adapté
+						$this->_redirector->gotoUrl('/' . $infosUser->TUTI_alias . '/index');
+					}else{
+						$this->_redirector->gotoUrl('index/deconnexion');
+					}
 					
 				}
 				else{
