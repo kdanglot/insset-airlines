@@ -2,7 +2,13 @@
 	$auth = Zend_Auth::getInstance();
 	$identity = $auth->getIdentity();
 ?>
+  <script type="text/javascript">
+ $(function() {
+        $("#heureDepart").datetimepicker({timeOnly: true, timeFormat: "hh:mm"});
+        $("#heureArrivee").datetimepicker({timeOnly: true, timeFormat: "hh:mm"});
+    });
 
+  </script>
 <br />	
 <br />
 <h1>Modifier une Ligne</h1>
