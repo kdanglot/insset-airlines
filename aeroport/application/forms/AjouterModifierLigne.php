@@ -25,6 +25,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eHeureDepart->setRequired(true);
 		$eHeureDepart->addFilter('StringTrim');
 		$eHeureDepart->addValidator('NotEmpty');
+		$eHeureDepart->addValidator(new Zend_Validate_Date('H:i'));
 
 		// element Text heure d'arrive + attributs
 		$eHeureArrivee = new Zend_Form_Element_Text('heureArrivee');
@@ -33,6 +34,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eHeureArrivee->setRequired(true);
 		$eHeureArrivee->addFilter('StringTrim');
 		$eHeureArrivee->addValidator('NotEmpty');
+		$eHeureArrivee->addValidator(new Zend_Validate_Date('H:i'));
 
 		
 		// element Select pays de depart + attributs
