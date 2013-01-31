@@ -61,7 +61,7 @@ class PlanningController extends Zend_Controller_Action
 			$annee = intval($premierVol->format('Y'));
 			$mois = intval($premierVol->format('n')) - 1;
 			$semaine = intval($premierVol->format('W'));
-			$jour = intval($premierVol->format('d'));
+			$jour = $premierVol->format('d');
 			
 			
 			if($semaine == $semainePre and $annee != $anneePre){
