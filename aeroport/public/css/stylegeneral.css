@@ -52,7 +52,7 @@ header img{
 
 }
 /*table.centre{float: right;}*/
-tr {margin-top: 12px;margin-bottom: 12px}
+/*tr {margin-top: 12px;margin-bottom: 12px}*/
 select {
 	width: 150px;
 	height: 26px;
@@ -150,6 +150,7 @@ table.table_type1 tr {
 	border-top: 1px solid #ededed;
 	border-left: 1px solid #ededed;
 	padding: 10px 10px 10px 10px;
+	height: 25px
 	}
 table.table_type1 tr:hover { 
 	border-top: 1px solid #ededed;
@@ -169,7 +170,6 @@ table.table_type1 th {
 
 }
 table.table_type1 td { 
-
 	vertical-align:middle; 
 }
 
