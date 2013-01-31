@@ -306,9 +306,11 @@ class PlanningController extends Zend_Controller_Action
 				$pilote = $formCreer->getValue('pilote');
 				$copilote = $formCreer->getValue('copilote');
 			
-				$vol = new Application_Model_DbTable_Vol();
-				$dateComposee = DateTime::createFromFormat('YmdH:i', ($dateDepart . $heureDepart));
-				$vol->ajoutVol($ligne, $dateComposee->format('Y-m-d H:i:s'), $aeroportDepart, $aeroportArrivee, $avion, $pilote, $copilote);
+				if ($pilote != $copilote) {
+					$vol = new Application_Model_DbTable_Vol();
+					$dateComposee = DateTime::createFromFormat('YmdH:i', ($dateDepart . $heureDepart));
+					$vol->ajoutVol($ligne, $dateComposee->format('Y-m-d H:i:s'), $aeroportDepart, $aeroportArrivee, $avion, $pilote, $copilote);
+				}
 				
 				// Après les modifications faites on revient à l'index
 				$this->_helper->redirector('index');
@@ -406,12 +408,15 @@ class PlanningController extends Zend_Controller_Action
 				$pilote = $formPlanifier->getValue('pilote');
 				$copilote = $formPlanifier->getValue('copilote');
 				
-				$infosVol = $vol->getVol($idVol);
-			
-				$dateDepart = $infosVol['VOL_dateDepartEffective'];
-				$dateArrivee = $infosVol['VOL_dateArriveeEffective'];				
 				
-				$vol->modifierVol($idVol, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
+				if ($pilote != $copilote) {
+					$infosVol = $vol->getVol($idVol);
+			
+					$dateDepart = $infosVol['VOL_dateDepartEffective'];
+					$dateArrivee = $infosVol['VOL_dateArriveeEffective'];				
+				
+					$vol->modifierVol($idVol, $dateDepart, $aeroportDepart, $dateArrivee, $aeroportArrivee, $avion, $pilote, $copilote);
+				}
 				
 				// Après les modifications faites on revient à l'index
 				$this->_helper->redirector('index');

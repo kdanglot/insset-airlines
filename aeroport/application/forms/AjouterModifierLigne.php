@@ -28,8 +28,8 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 
 		// element Text heure d'arrive + attributs
 		$eHeureArrivee = new Zend_Form_Element_Text('heureArrivee');
-		$eHeureArrivee->setAttrib('placeholder', "Heure d'arrivée");
-		$eHeureArrivee->setLabel("Heure d'arrivée");
+		$eHeureArrivee->setAttrib('placeholder', "Durée");
+		$eHeureArrivee->setLabel("Durée");
 		$eHeureArrivee->setRequired(true);
 		$eHeureArrivee->addFilter('StringTrim');
 		$eHeureArrivee->addValidator('NotEmpty');

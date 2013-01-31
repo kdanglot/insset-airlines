@@ -39,11 +39,10 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$eMail->setRequired(true);
 		$eMail->addValidator('NotEmpty');
 		
-		$eDateEmbauche = new ZendX_JQuery_Form_Element_DatePicker('dateEmbauche');
+		$eDateEmbauche = new Zend_Form_Element_Text('dateEmbauche');
 		$eDateEmbauche->setAttrib('id', 'dateEmbauche');
 		$eDateEmbauche->setAttrib('placeholder', 'Date embauche');
 		$eDateEmbauche->setRequired(true);
-		$eDateEmbauche->setJQueryParam('dateFormat', 'yy-mm-dd');
 
 		
 		$eBrevet = new Zend_Form_Element_MultiCheckbox('brevets');		

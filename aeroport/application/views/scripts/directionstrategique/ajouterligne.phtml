@@ -5,8 +5,8 @@
   <script src="<?php echo $this->baseUrl();?>/js/jquery-ui-timepicker-addon.js"></script>
   <script type="text/javascript">
  $(function() {
-        $("#heureDepart").datetimepicker({showSecond: true, dateFormat: "yy-mm-dd", timeFormat: "hh:mm:ss"});
-        $("#heureArrivee").datetimepicker({showSecond: true, dateFormat: "yy-mm-dd", timeFormat: "hh:mm:ss"});
+        $("#heureDepart").datetimepicker({timeOnly: true, dateFormat: "", timeFormat: "hh:mm"});
+        $("#heureArrivee").datetimepicker({timeOnly: true,  dateFormat: "yy-mm-dd", timeFormat: "hh:mm"});
     });
 
   </script>
@@ -43,8 +43,8 @@ $formAjouterLigne = $this->formAjouterLigne;
   </tr>
   <tr>
     <td>Départ</td>
-    <td>&nbsp;</td>
-    <td>Arrivée</td>
+    <td></td>
+    <td>Durée</td>
   </tr>
   <tr>
     <td><?php echo $this->formAjouterLigne->heureDepart->renderViewHelper(); ?> </td>
@@ -68,6 +68,27 @@ $formAjouterLigne = $this->formAjouterLigne;
     <td><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></td>
   </tr>
 </table>
+<button class="addEtape" >Ajouter une étape</button>
+<ol class="etapes" >
+</ol>
 </form>
-
-
+<script>
+	$(document).ready(function () {
+		var etapes = $('.etapes');
+		var etapesTab = [];
+		$('.addEtape').on('click', function(event){
+			event.preventDefault();
+			var i = etapesTab.length;
+			etapesTab[i] = $('<li>');
+			var pays = $('#pays-depart').clone();
+			pays.attr('name', 'pays-' + i);
+			pays.attr('id', 'pays-' + i);
+			pays.appendTo(etapesTab[i]);
+			var pays = $('#aeroport-depart').clone();
+			pays.attr('name', 'aeroport-' + i);
+			pays.attr('id', 'aeroport-' + i);
+			pays.appendTo(etapesTab[i]);
+			etapesTab[i].appendTo(etapes);
+		});
+	});
+</script>

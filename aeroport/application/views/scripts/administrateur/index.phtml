@@ -1,16 +1,22 @@
 <div id='navigation'>
-	<a href=<?= $this->baseUrl('/drh/index/');?>>drh</a>
-	<a href=<?= $this->baseUrl('/exploitation/index/');?>>exploitation</a>
-	<a href=<?= $this->baseUrl('/commercial/index/');?>>commercial</a>
-	<a href=<?= $this->baseUrl('/directionstrategique/index/');?>>direction strategique</a>
-	<a href=<?= $this->baseUrl('/planning/index/');?>>planning</a>
-	<a href=<?= $this->baseUrl('/maintenance/index/');?>>maintenance</a>
+	<a class="menu" href=<?= $this->baseUrl('/drh/index/');?>>drh</a>
+	<a class="menu" href=<?= $this->baseUrl('/exploitation/index/');?>>exploitation</a>
+	<a class="menu" href=<?= $this->baseUrl('/commercial/index/');?>>commercial</a>
+	<a class="menu" href=<?= $this->baseUrl('/directionstrategique/index/');?>>direction strategique</a>
+	<a  class="menu" href=<?= $this->baseUrl('/planning/index/');?>>planning</a>
+	<a class="menu" href=<?= $this->baseUrl('/maintenance/index/');?>>maintenance</a>
 </div>
+<br/>
+<br/>
+
+<br/>
+
 <?php 
 $utilisateurCourant = $this->utilisateurCourant;
 $urlAddUti = $this->url(array('controller' => 'administrateur', 'action' => 'ajout'), null, true);
 ?>
-<a href="<?php echo $urlAddUti ?>" >Ajouter</a>
+<div class="action_page " >	
+<a class="menu" href="<?php echo $urlAddUti ?>" >Ajouter</a></div>
 <table class="table_type1">
 	<thead>
 		<th>Nom</th>

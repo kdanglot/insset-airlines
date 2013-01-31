@@ -40,10 +40,14 @@
 					
 						echo<<<INFOSCO
 						<div id='identification' class="right">
-							<span>Bienvenue, {$this->layout()->login} - {$this->layout()->role}</span><br/><br/>
+							<span>Bienvenue, {$this->layout()->login} - {$this->layout()->roleLabel}</span><br/><br/>
 							<a href="$urlDeconnexion" >Déconnexion</a>
 						</div>
 INFOSCO;
+					if($this->layout()->role == 'administrateur'){
+						echo "menuadmin";
+					}
+					
 					}
 				?>
 				</header>
