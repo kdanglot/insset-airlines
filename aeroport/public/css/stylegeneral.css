@@ -51,6 +51,18 @@ header img{
 	margin-top:5px;
 
 }
+.menu {
+
+	color:#6297a2;	
+	border: 1px solid #ededed;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	background-color: #D5ECED;
+	padding: 2px 4px;
+	margin-top:5px;
+
+}
 /*table.centre{float: right;}*/
 /*tr {margin-top: 12px;margin-bottom: 12px}*/
 select {
