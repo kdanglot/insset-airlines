@@ -2,8 +2,6 @@
 class Application_Form_ReserverPlace extends Zend_Form {
 	
 	public function init() {
-		$view = Zend_Layout::getMvcInstance()->getView();
-		$this->setAction($view->baseUrl('commercial/lancerreservation'));
 		
 		$this->setMethod('POST');
 		
