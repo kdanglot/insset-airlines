@@ -45,7 +45,16 @@
 						</div>
 INFOSCO;
 					if($this->layout()->role == 'administrateur'){
-						echo "menuadmin";
+						?>
+						<div id='navigation'>
+	<a class="menu" href=<?= $this->baseUrl('/drh/index/');?>>drh</a>
+	<a class="menu" href=<?= $this->baseUrl('/exploitation/index/');?>>exploitation</a>
+	<a class="menu" href=<?= $this->baseUrl('/commercial/index/');?>>commercial</a>
+	<a class="menu" href=<?= $this->baseUrl('/directionstrategique/index/');?>>direction strategique</a>
+	<a  class="menu" href=<?= $this->baseUrl('/planning/index/');?>>planning</a>
+	<a class="menu" href=<?= $this->baseUrl('/maintenance/index/');?>>maintenance</a>
+</div>
+						<?php
 					}
 					
 					}

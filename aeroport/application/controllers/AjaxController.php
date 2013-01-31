@@ -22,9 +22,6 @@ class AjaxController extends Zend_Controller_Action {
 			$this->_redirector->gotoUrl('/index/index/error/Vous devez d\'abord vous connecter');
 		}
 	
-		// Informer le Layout des détails sur le connecté
-		Zend_Layout::getMvcInstance()->assign('login', Zend_Auth::getInstance()->getIdentity()->UTI_login);
-		Zend_Layout::getMvcInstance()->assign('role', Zend_Auth::getInstance()->getIdentity()->TUTI_label);
 	}
 	
 	public function aeroportbypaysAction() {
