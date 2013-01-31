@@ -2,6 +2,14 @@
 	$auth = Zend_Auth::getInstance();
 	$identity = $auth->getIdentity();
 ?>
+  <script src="<?php echo $this->baseUrl();?>/js/jquery-ui-timepicker-addon.js"></script>
+  <script type="text/javascript">
+ $(function() {
+        $("#heureDepart").datetimepicker({showSecond: true, dateFormat: "yy-mm-dd", timeFormat: "hh:mm:ss"});
+        $("#heureArrivee").datetimepicker({showSecond: true, dateFormat: "yy-mm-dd", timeFormat: "hh:mm:ss"});
+    });
+
+  </script>
 
 <br />	
 <br />

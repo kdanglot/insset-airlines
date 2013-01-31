@@ -64,6 +64,7 @@ class Application_Form_AjouterPilote extends Zend_Form {
 		
 		$eTypeBrevet = new Zend_Form_Element_Multiselect('typeBrevet');
 		$eTypeBrevet->setAttrib('id', 'typeBrevet');
+		$eTypeBrevet->setAttrib('size', '5');
 		$eTypeBrevet->setLabel('Type de brevet :');
 		$eTypeBrevet->setRequired(true);
 
@@ -72,10 +73,12 @@ class Application_Form_AjouterPilote extends Zend_Form {
 			$eTypeBrevet->addMultiOption($b['TBRE_id'], $b['TBRE_nom']);
 		}
 		
-		$eDateEmbauche = new Zend_Form_Element_Text('dateEmbauche');
+		$eDateEmbauche = new ZendX_JQuery_Form_Element_DatePicker('dateEmbauche');
 		$eDateEmbauche->setAttrib('id', 'dateEmbauche');
 		$eDateEmbauche->setAttrib('placeholder', 'Date embauche');
 		$eDateEmbauche->setRequired(true);
+		$eDateEmbauche->setJQueryParam('dateFormat', 'yy-mm-dd');
+
 
 		
 		$eValider = new Zend_Form_Element_Submit('valider');

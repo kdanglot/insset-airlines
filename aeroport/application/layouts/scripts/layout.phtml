@@ -7,6 +7,8 @@
 <html lang="fr" >
 	<head>
 		<meta charset="utf-8" /> 
+		        <?php  echo $this->jquery(); ?>
+
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/reset.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/stylegeneral.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/js/css/smoothness/jquery-ui-1.10.0.custom.min.css" />
@@ -14,7 +16,7 @@
 			<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/ie.css" />
 		<![endif]-->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-		<script src="<?php echo $this->baseUrl();?>/js/js/jquery-ui-1.10.0.custom.min.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/js/js/jquery-ui-1.10.0.custom.min.js"></script>
 		
 		<!-- Script qui met à disposition la baseUrl pour les autres scripts JS -->
 		<!-- ça sert par exemple pour l'ajax -->
