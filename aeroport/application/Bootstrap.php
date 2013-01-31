@@ -51,7 +51,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$acl->addRole(new Zend_Acl_Role('planning'), 'invite');
 		$acl->addRole(new Zend_Acl_Role('exploitation'), 'invite');
 		$acl->addRole(new Zend_Acl_Role('commercial'), 'invite');
-		$acl->addRole(new Zend_Acl_Role('administrateur'), array('drh', 'directionstrategique', 'maintenance', 'pilote', 'planning', 'exploitation'));
+		$acl->addRole(new Zend_Acl_Role('administrateur'), array('drh', 'directionstrategique', 'maintenance', 'pilote', 'planning', 'exploitation', 'commercial'));
 		
 		$acl->deny(null, null);
 		
