@@ -1,7 +1,7 @@
 <?php 
 // Parcourir le planning
 foreach($this->planning as $vol){
-	$urlReserver = $this->url(array('controller' => 'commercial', 'action' => 'reserver', 'id' => $vol['id']), null, true);
+	$urlReserver = $this->url(array('controller' => 'commercial', 'action' => 'reserver', 'idVol' => $vol['id']), null, true);
 
 	echo<<<TABLEROW
 	<tr>

@@ -82,9 +82,10 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 				} else if (($paysDepart == $paysArrive) && ($aeroportDepart == $aeroportArrive)) {
 					$this->view->message = 'Vous avez selectionné le même aéroport !!!';
 				} else {
+					$trajets = [2, 3];
 						$ligne = new Application_Model_DbTable_Ligne();
 						$ligne->insertLigne($identity->UTI_id, $heureDepart, $heureArrivee, $paysDepart,
-						$aeroportDepart, $paysArrive, $aeroportArrive, $periodicite);	
+						$aeroportDepart, $paysArrive, $aeroportArrive, $periodicite, $valeurPeriodicite, $trajets);	
 						$this->_helper->redirector('index');
 				}
 			} 

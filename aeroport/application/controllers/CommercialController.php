@@ -4,13 +4,25 @@ class CommercialController extends Zend_Controller_Action
 {
 
     public function init() {
-    	$auth = Zend_Auth::getInstance();
-    	$identity = $auth->getIdentity();
-    	//$typeUtilisateur = $identity->UTI_typeEmploye;
-    	
-    	/*if('administrateur' != $typeUtilisateur) {
-    		$this->_redirect('index/index');
-    	}*/
+		
+		// Mettre en place le redirecteur
+		$this->_redirector = $this->_helper->getHelper('Redirector');
+		
+		// Récupération ACL
+		$acl = Zend_Registry::get('acl');
+		
+		// Récupération du rôle enregistré en session
+		$session = new Zend_Session_Namespace('role');
+		// var_dump($session->role);exit;
+		$role = $session->role;
+		$controller = $this->getRequest()->getControllerName();
+		$action = $this->getRequest()->getActionName();
+		
+		// Vérification des droits
+		if(!$acl->isAllowed($role, $controller, $action)){
+			// Rediriger vers le controlleur adapté
+			$this->_redirector->gotoUrl('/index/index/error/Vous devez d\'abord vous connecter');
+		}
     }
 
     public function indexAction() {
