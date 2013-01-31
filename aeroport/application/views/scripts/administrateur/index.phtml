@@ -1,3 +1,11 @@
+<div id='navigation'>
+	<a href=<?= $this->baseUrl('/drh/index/');?>>drh</a>
+	<a href=<?= $this->baseUrl('/exploitation/index/');?>>exploitation</a>
+	<a href=<?= $this->baseUrl('/commercial/index/');?>>commercial</a>
+	<a href=<?= $this->baseUrl('/directionstrategique/index/');?>>direction strategique</a>
+	<a href=<?= $this->baseUrl('/planning/index/');?>>planning</a>
+	<a href=<?= $this->baseUrl('/maintenance/index/');?>>maintenance</a>
+</div>
 <?php 
 $utilisateurCourant = $this->utilisateurCourant;
 $urlAddUti = $this->url(array('controller' => 'administrateur', 'action' => 'ajout'), null, true);
