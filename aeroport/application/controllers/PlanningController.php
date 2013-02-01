@@ -51,9 +51,9 @@ class PlanningController extends Zend_Controller_Action
 		}
 		
 		$premierVol->sub(new DateInterval('P' . (intval($premierVol->format('w')) - 1) . 'D'));
-		$dernierVol->add(new DateInterval('P' . (intval($dernierVol->format('w')) - 1) . 'D'));
+		// $dernierVol->add(new DateInterval('P' . (intval($dernierVol->format('w')) - 1) . 'D'));
 		$dernierVol->add(new DateInterval('P4W'));
-		
+		// exit;
 		$dernierVolStr = $dernierVol->format('Y-W');
 		
 		$semainePre = 0;

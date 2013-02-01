@@ -191,6 +191,41 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 		} 
 	}
 	
+	// améliorer l'affichage des erreurs
+	public function ajoutervoluniqueAction() {
+
+		$aeroport = new Application_Model_DbTable_Aeroport();
+		$formAjouterVolUnique = new Application_Form_AjouterModifierVolUnique();
+		$this->view->formAjouterVolUnique = $formAjouterVolUnique;
+		
+		$auth = Zend_Auth::getInstance();
+		$identity = $auth->getIdentity();
+		
+		if ($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+			if ($formAjouterVolUnique->isValid($formData)) {				
+				// var_dump($formData);exit;
+				$dateDepart = $formData['dateDepart'];
+				$aeroportDepart = $formData['aeroport-depart'];
+				$aeroportArrive = $formData['aeroport-arrive'];
+				$avion = $formData['avion'];
+				
+				if ($aeroportDepart == '-1') {
+					$this->view->message = 'Veuillez choisir un aéroport de départ.';
+				} else if ($aeroportArrive == '-1') {
+					$this->view->message = 'Veuillez choisir un aéroport de d\'arrivée.';
+				} else if ($aeroportDepart == $aeroportArrive) {
+					$this->view->message = 'Vous avez selectionné le même aéroport.';
+				} else {
+					$vol = new Application_Model_DbTable_Vol();
+					$vol->ajoutVol(0, $dateDepart, $aeroportDepart, $aeroportArrive, $avion, null, null);
+					$this->_helper->redirector('index');
+				}
+			}
+		}
+
+	}
+	
 	public function deleteAction() {
 		$idLigne = $this->_request->getParam('idLigne');
 		

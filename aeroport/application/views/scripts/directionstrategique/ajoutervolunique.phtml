@@ -1,0 +1,20 @@
+<?php 
+	$auth = Zend_Auth::getInstance();
+	$identity = $auth->getIdentity();
+?>
+
+  <script type="text/javascript">
+ $(function() {
+        $("#dateDepart").datetimepicker({dateFormat: "yy-mm-dd", timeFormat: "hh:mm"});
+    });
+
+  </script>
+
+<br />	
+<br />
+<div class='message'>
+<?php echo $this->message;?>
+</div>
+<h1>Ajouter un vol à la carte </h1>
+<?php 
+echo $this->formAjouterVolUnique; 

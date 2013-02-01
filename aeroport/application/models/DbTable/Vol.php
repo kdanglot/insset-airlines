@@ -91,7 +91,7 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 				for ($i = 0; $i < $nbSemaine; $i++) {	
 						
 					//Creation des lignes devant décollé le jour et la semaine en question.
-					$calendrierVol[($i*7)+($periodicite->TPER_info)][$ligne->LIG_id] = $this->remplirTrajetCalendrier($ligne);
+					$calendrierVol[($i*7)+($periodicite->TPER_info-1)][$ligne->LIG_id] = $this->remplirTrajetCalendrier($ligne);
 
 					//On fouille les vols de la ligne.
 					foreach ($vols as $vol){

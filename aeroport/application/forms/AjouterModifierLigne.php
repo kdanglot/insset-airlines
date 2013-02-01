@@ -55,7 +55,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eAeroportDepart->setAttrib('id', 'aeroport-depart');
 		$eAeroportDepart->setAttrib('name', 'aeroport-depart');
 		$eAeroportDepart->addMultiOption('-1', 'Choisissez un aeroport');
-	//	$eAeroportDepart->setRequired(true);	
+		$eAeroportDepart->setRequired(true);	
 		
 		// element Select pays d'arrivé + attributs
 		$ePaysArrive = new Zend_Form_Element_Select('paysArrive');
@@ -67,7 +67,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		foreach($lesPays as $p) {
 		 $ePaysArrive->addMultiOption($p['PAY_id'], $p['PAY_nom']);
 		}
-		//$ePaysArrive->setRequired(true);
+		$ePaysArrive->setRequired(true);
 		
 		// element Text aeroport d'arrive + attributs
 		$eAeroportArrive = new Zend_Form_Element_Select('aeroportArrive');
@@ -75,19 +75,18 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		$eAeroportArrive->setAttrib('name', 'aeroport-arrive');
 		$eAeroportArrive->setAttrib('id', 'aeroport-arrive');
 		$eAeroportArrive->addMultiOption('-1', 'Choisissez un aeroport');
-	//	$eAeroportArrive->setRequired(true);
+		$eAeroportArrive->setRequired(true);
 		
 		// element Select periodicite + attributs
 		$ePeriodicite = new Zend_Form_Element_Select('periodicite');
 		$ePeriodicite->setLabel('Periodicite : ');
 		$periodicites = new Application_Model_DbTable_TypePeriodicite();
 		// var_dump($periodicites->fetchAll()); exit;
-		$tabPeriodicites = array();
 		foreach($periodicites->fetchAll() as $periodicite){
-			$tabPeriodicites[$periodicite->TPER_id] = $periodicite->TPER_alias;
+			if($periodicite->TPER_id > 0){
+				$ePeriodicite->addMultiOption($periodicite['TPER_id'], $periodicite['TPER_alias']);
+			}
 		}
-		array_shift($tabPeriodicites);
-		$ePeriodicite->options = $tabPeriodicites;
 		$ePeriodicite->setRequired(true);		
 
 		// element Submit connexion + attributs
