@@ -84,8 +84,9 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 		// var_dump($periodicites->fetchAll()); exit;
 		$tabPeriodicites = array();
 		foreach($periodicites->fetchAll() as $periodicite){
-			$tabPeriodicites[$periodicite->TPER_id] = $periodicite->TPER_label;
+			$tabPeriodicites[$periodicite->TPER_id] = $periodicite->TPER_alias;
 		}
+		array_shift($tabPeriodicites);
 		$ePeriodicite->options = $tabPeriodicites;
 		$ePeriodicite->setRequired(true);		
 
