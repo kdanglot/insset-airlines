@@ -42,6 +42,7 @@ class Application_Form_ModifierPilote extends Zend_Form {
 		$eDateEmbauche = new Zend_Form_Element_Text('dateEmbauche');
 		$eDateEmbauche->setAttrib('id', 'dateEmbauche');
 		$eDateEmbauche->setAttrib('placeholder', 'Date embauche');
+		$eDateEmbauche->addValidator( new Zend_Validate_Date(array('format' => 'yyyy-mm-dd')));
 		$eDateEmbauche->setRequired(true);
 
 		

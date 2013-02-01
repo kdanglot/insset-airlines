@@ -7,7 +7,6 @@ class Application_Form_AjouterIncident extends Zend_Form {
 		
 		$eIncident = new Zend_Form_Element_Select('typeIncident');
 		$eIncident->setLabel('Incident');
-		$eIncident->addMultiOption('-1', 'Choix de l\'incident');
 		foreach ($listeTypeIncident as $incident) {
 			$eIncident->addMultiOption($incident['TINC_id'], $incident['TINC_nom']);
 		}
