@@ -95,7 +95,7 @@ class Application_Form_AjouterModifierligne extends Zend_Form {
 
 
 		// ajout des elements au formulaire
-		$this->addElements(array($ePeriodicite, $eHeureDepart, $eHeureArrivee, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAjouter));
+		$this->addElements(array($eIdLigne, $ePeriodicite, $eHeureDepart, $eHeureArrivee, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAjouter));
 
 	} // init()
 

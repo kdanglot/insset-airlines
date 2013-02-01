@@ -111,7 +111,7 @@ $formAjouterLigne = $this->formAjouterLigne;
 			var val = $(this).attr('value');
 			$('#pays-' + val).remove();
 			$('#aeroport-' + val).remove();
-			$(this).remove();
+			$(this).parent().remove();
 		});
 	});
 </script>

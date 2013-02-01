@@ -66,13 +66,8 @@ REQUETE;
 					FROM trajets
 					NATURAL JOIN aeroports
 					NATURAL JOIN aeroportsappartiennentvilles
-					NATURAL JOIN villes, (
-						SELECT (COUNT( * ) - 1) c, LIG_id
-						FROM trajets
-						GROUP BY LIG_id
-						)nombre
-					WHERE trajets.TRA_ordre = nombre.c
-					AND trajets.LIG_id = nombre.LIG_id
+					NATURAL JOIN villes
+					WHERE TRA_ordre = '1'
 					)arrivee, (
 					SELECT AER_id idAeroportDepart, LIG_id, AER_nom nomAeroportDepart, VIL_id idVilleDepart, VIL_nom nomVilleDepart
 					FROM trajets
@@ -89,51 +84,9 @@ REQUETE;
 		return $result;	
 	} // afficherLigne()
 	
-	public function ajouterLigne($heureDepart, $heureDepart, $heureArrivee, $trajets, $periodicite) {
 	
-		$auth = Zend_Auth::getInstance();
-		$identity = $auth->getIdentity();
-		
-		$bdd = Zend_Registry::get('db');
-		
-		$infosLigne = <<<REQUETE
-			INSERT INTO lignes
-			(UTI_id_directionStrategique, LIG_heureDepart, LIG_heureArrivee, LIG_typePeriodicite, LIG_dateAjout)
-			VALUES
-			(:idUser, :heureDepart, :heureArrivee, :typePeriodicite, :dateAjout)
-REQUETE;
-		
-		$ajouterLigne = $bdd->prepare($infosLigne);
-			$ajouterLigne->bindValue('idUser', $identity->UTI_id, PDO::PARAM_INT);
-			$ajouterLigne->bindValue('heureDepart', $heureDepart, PDO::PARAM_STR);
-			$ajouterLigne->bindValue('heureArrivee', $heureArrivee, PDO::PARAM_STR);
-			$ajouterLigne->bindValue('typePeriodicite', $periodicite, PDO::PARAM_STR);
-			$ajouterLigne->bindValue('dateAjout', 'NOW()', PDO::PARAM_STR);
-		$ajouterLigne->execute();
-		
-		$infosTrajet = <<<REQUETE
-			INSERT INTO trajets
-			(LIG_id, AER_id, TRA_ordre)
-			VALUES
-			(:idLigne, :idAeroport, :ordre)
-REQUETE;
-		$idAeroport; 
-		$ordre = 0;
-
-		$ajouterTrajet = $bdd->prepare($infosTrajet);
-			$ajouterTrajet->bindValue('idLigne', $bdd->lastInsertId(), PDO::PARAM_INT);
-			$ajouterTrajet->bindParam('idAeroport', $idAeroport, PDO::PARAM_INT);
-			$ajouterTrajet->bindParam('ordre', $ordre, PDO::PARAM_INT);
-			
-		foreach($trajets as $aeroport){
-			$idAeroport = $aeroport;
-			$ajouterTrajet->execute();
-			$ordre ++;
-		}
-		
-	} // ajouterLigne()
+	public function modifierLigne($id, $heureDepart, $heureArrivee, $aeroportDepart, $aeroportArrive, $periodicite, $trajets) {
 	
-	public function modifierLigne($id, $heureDepart, $heureArrivee, $aeroportDepart, $aeroportArrive, $periodicite) {
 		$dataLigne = array(
 				'LIG_heureDepart' => $heureDepart,
 				'LIG_heureArrivee' => $heureArrivee,
@@ -141,21 +94,38 @@ REQUETE;
 		);
 		$this->update($dataLigne, 'LIG_id = '. (int)$id);
 		$dataDepart = array (
+				'LIG_id' => $id,
 				'AER_id' => $aeroportDepart,
 				'TRA_ordre' => 0
 				);
 		
 		$dataArrivee = array (
+				'LIG_id' => $id,
 				'AER_id' => $aeroportArrive,
 				'TRA_ordre' => 1
 				);
 		
-		$trajet = new Application_Model_DbTable_Trajet();
-		$where = $trajet->getAdapter()->quoteInto('LIG_id = ?', $id);
 		
-		$trajet->update($dataDepart, $where);
-		//$trajet->update($dataDepart, 'LIG_id = '.$id);
-		//$trajet->update($dataArrivee, 'LIG_id = '.$id);
+		// Vider préalablement tous les trajets
+		$ligne = $this->find($id)->current();
+		$lestrajets = $ligne->findApplication_Model_DbTable_Trajet();
+		foreach ($lestrajets as $trajet){
+		 $trajet->delete();
+		}
+		
+		$trajetTable = new Application_Model_DbTable_Trajet();
+		$trajetTable->insert($dataDepart);
+		$trajetTable->insert($dataArrivee);
+		
+		$i = 2;
+		foreach ($trajets as $trajet){
+			$trajetLigne = $trajetTable->createRow();
+			$trajetLigne->LIG_id = $id;	
+			$trajetLigne->AER_id = $trajet;
+			$trajetLigne->TRA_ordre = $i;
+			$trajetLigne->save();
+			$i++;
+		}
 		
 	} // modifierLigne()
 	

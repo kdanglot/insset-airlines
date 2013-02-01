@@ -17,73 +17,74 @@
 		<li><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></li>
 	</ol>
 </div>
-<?php
- // echo $this->form 
- ?>
-<?php $form=$this->form ?>
+		
+<?php 
 
+$form = $this->form;
+echo<<<FORM
+<form id="modifierLigne" method="{$form->getMethod()}" action="{$form->getAction()}" >
+	{$form->id->renderViewHelper()}
+	$form->periodicite
+	$form->heureDepart
+	$form->paysDepart
+	$form->aeroportDepart
+	<span>Trajets</span>
+	<br />
+	<button class="addEtape" >Ajouter une étape</button>
+	<ol class="etapes" >
+FORM;
 
-
-<form 	id="boutonAjouter"  
-		method="<?php echo $form->getMethod(); ?>" 
-		action="<?php echo $form->getAction();?>"  >
-
-<table class="center" width="50%" border="0">
-  <tr>
-    <td width="33%">&nbsp;</td>
-    <td width="10%">
-    	Périodicité : <?php echo $this->form->periodicite->renderViewHelper(); ?>
-    </td>
-    <td width="33%">&nbsp;</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><?php 
-
-    echo $this->form->heureDepart; 
-
-    ?> </td>
-    <td>&nbsp;</td>
-    <td><?php 
-    echo $this->form->heureArrivee;
-     ?> </td>
-  </tr>
-  <tr>
-    <td class="right"><?php
-     echo $this->form->paysDepart;
-     ?> </td>
-    <td>&nbsp;</td>
-    <td class="left" ><?php 
-    echo $this->form->paysArrive;
-     ?> </td>
-  </tr>
-  <tr>
-    <td class="right"><?php 
-    echo $this->form->aeroportDepart;
-     ?> </td>
-
-    <td>&nbsp;</td>
-    <td class="left"  ><?php 
-    echo $this->form->aeroportArrive;
-     ?> </td>
-  </tr>
-    <tr>
-    	<td>&nbsp;</td>
-    <td > <?php  echo $this->formSubmit('boutonModifier', 'Modifier') ?> </td>
-    <td><a href="<?php echo $this->url(array('controller' => 'directionstrategique', 'action' => 'index')) ?>">Annuler</a></td>
-  </tr>
-</table>
-
+	for($i = 0; $i<sizeof($this->trajets); $i++){
+		echo '<li>';
+		echo $this->trajets[$i]['paysSelect']->renderViewHelper();
+		echo $this->trajets[$i]['aeroportSelect']->renderViewHelper();
+		echo '<button class="close" value="' . $i . '" >X</button>';
+		echo '</li>';
+	}
+	$retour = $this->url(array('controller' => 'directionstrategique', 'action' => 'index'), null, true);
+echo<<<FORM
+	</ol>
+	$form->heureArrivee
+	$form->paysArrive
+	$form->aeroportArrive
+	$form->ajouter
 </form>
-
-
-
-
+<a href="$retour">Annuler</a>
+FORM;
 	
+?>
+<script type="text/javascript">
+$(document).ready(function () {
+	$("#heureDepart").datetimepicker({timeOnly: true, dateFormat: "", timeFormat: "hh:mm"});
+	$("#heureArrivee").datetimepicker({timeOnly: true,  dateFormat: "yy-mm-dd", timeFormat: "hh:mm"});
+	var correct = <?php echo sizeof($this->trajets) ?>;
+	var etapes = $('.etapes');
+		var etapesTab = [];
+		$('.addEtape').on('click', function(event){
+			event.preventDefault();
+			var i = etapesTab.length + correct;
+			etapesTab[i] = $('<li>');
+			var pays = $('#pays-depart').clone();
+			pays.attr('name', 'pays-' + i);
+			pays.attr('id', 'pays-' + i);
+			pays.appendTo(etapesTab[i]);
+			var aer = $('#aeroport-depart').clone();
+			aer.find('option:not(:first-child)').remove();
+			aer.attr('name', 'aeroport-' + i);
+			aer.attr('id', 'aeroport-' + i);
+			aer.appendTo(etapesTab[i]);
+			var close = $('<button class="close" value="' + i + '" >X</button>');
+			close.appendTo(etapesTab[i]);
+			etapesTab[i].appendTo(etapes);
+			pays.find(':selected').prop('selected', false);
+		});
+		$('.etapes').on('click', '.close', function(event){
+			event.preventDefault();
+			var val = $(this).attr('value');
+			$('#pays-' + val).remove();
+			$('#aeroport-' + val).remove();
+			$(this).parent().remove();
+		});
 	
-	
-	
+});
+</script>
