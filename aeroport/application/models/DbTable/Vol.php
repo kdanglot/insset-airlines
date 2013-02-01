@@ -123,6 +123,25 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 					$dateJour = $dateJour->add(new DateInterval('P7D'));
 				}
 			}
+			else if ($periodicite->TPER_label == "unique") {//Si, on a affaire a une ligne unique
+				//On fouille les vols de la ligne.
+				foreach ($vols as $vol){
+
+					// Mise en forme de la date de debut du vol.
+					if($vol->VOL_dateDepartEffective==""){
+						$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartPrevue);
+					}else{
+						$dateDepart = DateTime::createFromFormat('Y-m-d H:i:s', $vol->VOL_dateDepartEffective);
+					}
+
+					// Comparaison avec la semaine en question.
+					if( $dateDepart->format('W') >= $dateJour->format('W') && $dateDepart->format('W') <= $dateJour->format('W')+$nbSemaine && $dateJour->format('Y') == $dateDepart->format('Y')){
+
+						//On ajoute le vol à la ligne voulu.
+						$calendrierVol[(($dateDepart->format('W')- $dateJour->format('W'))*7)+($dateDepart->format('N')-1)][$ligne->LIG_id][0] = $this->remplirVolTab($vol);
+					}
+				}
+			}
 		}
 		
 		return $calendrierVol;
@@ -182,7 +201,6 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 	}
 	
 	public function remplirVolTab($vol){
-	
 		$volTab["VOL_id"] = $vol->VOL_id;
 		$volTab['LIG_id'] = $vol->LIG_id;
 		$aeroport = new Application_Model_DbTable_Aeroport();
@@ -192,8 +210,10 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 		$volTab["aeroportArrivee"]["AER_nom"] = $aeroport->find($vol->AER_id_arrivee)->current()->AER_nom;
 		
 		$avion = $vol->findParentApplication_Model_DbTable_Avion();
+		if(isset($avion)){
 		$volTab["avion"]["AVI_id"] = $avion->AVI_id;
 		$volTab["avion"]["AVI_immatriculation"] = $avion->AVI_immatriculation;
+		}
 		
 		$pilotes = new Application_Model_DbTable_Pilote();
 		$volTab["pilote"]["PIL_id"] = $vol->PIL_id;
@@ -210,14 +230,12 @@ class Application_Model_DbTable_Vol extends Zend_Db_Table_Abstract {
 			$volTab["coPilote"]["utilisateur"]["UTI_nom"] = $utilisateur->UTI_nom;
 			$volTab["coPilote"]["utilisateur"]["UTI_prenom"] = $utilisateur->UTI_prenom;
 			$volTab["coPilote"]["utilisateur"]["UTI_mail"] = $utilisateur->UTI_mail;  
-			
 		$volTab["VOL_dateDepartPrevue"] = $vol->VOL_dateDepartPrevue;
 		$volTab["VOL_dateDepartEffective"] = $vol->VOL_dateDepartEffective;
 		$volTab["VOL_dateArriveeEffective"] = $vol->VOL_dateArriveeEffective;	
 
 		return $volTab;
 	}
-	
 	public function getVol($idVol){
 		$vol = $this->find($idVol)->current();
 		$volTab = $this->remplirVolTab($vol);
