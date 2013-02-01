@@ -66,6 +66,18 @@ class Application_Form_AjouterModifierVolUnique extends Zend_Form {
 		$eAvion->setLabel("Avion");
 		$eAvion->setRequired(true);
 		$eAvion->options = $avions->afficherListeAvionsDisponibles();
+
+		// Liste des Pilotes
+		$ePilote = new Zend_Form_Element_Select('pilote');
+		$ePilote->setLabel("Pilote");
+		$ePilote->setRequired(true);
+		$ePilote->options = $pilotes->afficherListePilotesDisponibles();
+		
+		// Liste des Copilotes
+		$eCopilote = new Zend_Form_Element_Select('copilote');
+		$eCopilote->setLabel("Copilote");
+		$eCopilote->setRequired(true);
+		$eCopilote->options = $pilotes->afficherListePilotesDisponibles();
 		
 		// element Submit connexion + attributs
 		$eAjouter = new Zend_Form_Element_Submit('ajouter');
@@ -73,7 +85,7 @@ class Application_Form_AjouterModifierVolUnique extends Zend_Form {
 
 
 		// ajout des elements au formulaire
-		$this->addElements(array($heureDepart, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAvion, $eAjouter));
+		$this->addElements(array($heureDepart, $ePaysDepart, $eAeroportDepart, $ePaysArrive, $eAeroportArrive, $eAvion, $ePilote, $eCopilote, $eAjouter));
 
 	} // init()
 

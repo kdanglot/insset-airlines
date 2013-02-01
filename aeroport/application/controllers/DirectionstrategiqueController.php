@@ -208,6 +208,8 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 				$dateDepart = $formData['dateDepart'];
 				$aeroportDepart = $formData['aeroport-depart'];
 				$aeroportArrive = $formData['aeroport-arrive'];
+				$pilote = $formData['pilote'];
+				$copilote = $formData['copilote'];
 				$avion = $formData['avion'];
 				
 				if ($aeroportDepart == '-1') {
@@ -218,7 +220,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action {
 					$this->view->message = 'Vous avez selectionné le même aéroport.';
 				} else {
 					$vol = new Application_Model_DbTable_Vol();
-					$vol->ajoutVol(0, $dateDepart, $aeroportDepart, $aeroportArrive, $avion, null, null);
+					$vol->ajoutVol(0, $dateDepart, $aeroportDepart, $aeroportArrive, $avion, $pilote, $copilote);
 					$this->_helper->redirector('index');
 				}
 			}
